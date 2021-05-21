@@ -9,7 +9,7 @@ import SceneList from "./SceneSelector/SceneList";
 import SceneSelectorSubmenu from "./SceneSelector/Row/Submenu/SceneSelectorSubmenu";
 import SceneSelector from "./SceneSelector/SceneSelector";
 
-export default class ControlBar extends Component {
+export default class SceneControlBar extends Component {
   render() {
     const scenes = this.context.params.scenes;
     const scene = getSceneFromId(scenes, this.props.currentScene);

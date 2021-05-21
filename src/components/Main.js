@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Scene, {SceneTypes} from "./Scene/Scene";
-import ControlBar from "./ControlBar/ControlBar";
+import SceneControlBar from "./ControlBar/SceneControlBar";
 import SceneEditor, {SceneEditingType} from "./EditingDialog/SceneEditor";
 import InteractionsBar from "./InteractionsBar/InteractionsBar";
 import './Main.scss';
@@ -20,6 +20,7 @@ export default class Main extends React.Component {
 
     this.state = {
       editingScene: SceneEditingType.NOT_EDITING,
+      editingPlaylist: PlaylistEditingType.NOT_EDITING,
       editingLibrary: null,
       editingInteraction: InteractionEditingType.NOT_EDITING,
       currentScene: this.props.initialScene,
@@ -378,7 +379,7 @@ export default class Main extends React.Component {
             onCloseOverlay={ this.handleCloseSceneOverlay }
           />
         </div>
-        <ControlBar
+        <SceneControlBar
           currentScene={this.state.currentScene}
           editScene={this.editScene.bind(this)}
           deleteScene={this.deleteScene.bind(this)}
@@ -409,6 +410,13 @@ export default class Main extends React.Component {
             currentScene={this.state.currentScene}
             editingInteraction={this.state.editingInteraction}
             library={this.state.editingLibrary}
+          />
+        }        
+        
+        <PlaylistControlBar />
+        {
+          (this.state.editingPlaylist !== PlaylistEditingType.NOT_EDITING) &&
+          <PlaylistEditor
           />
         }
       </div>

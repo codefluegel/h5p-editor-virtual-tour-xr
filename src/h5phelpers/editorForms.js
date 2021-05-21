@@ -13,6 +13,13 @@ export const getSceneField = (field) => {
   );
 };
 
+export const getPlaylistField = (field) => { 
+  return H5PEditor.findSemanticsField(
+    'playlists',
+    field
+  );
+};
+
 /**
  * Get interactions field within a scene from the Three Image semantics
  * structure
