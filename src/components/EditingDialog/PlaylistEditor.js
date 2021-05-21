@@ -88,7 +88,7 @@ export default class PlaylistEditor extends React.Component {
 PlaylistEditor.contextType = H5PContext;
 
 PlaylistEditor.propTypes = {
-  editingPlaylist: editingPlaylistType,
+  editingPlaylist: PropTypes.number.isRequired,
   doneAction: PropTypes.func.isRequired,
   removeAction: PropTypes.func.isRequired,
 };
