@@ -1,5 +1,3 @@
-/// <reference path="../../index.d.ts" />
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import Scene, {SceneTypes} from "./Scene/Scene";
