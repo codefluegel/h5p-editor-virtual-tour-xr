@@ -18,10 +18,12 @@ export default class PlaylistSelector extends React.Component {
    */
   constructor(props) {
     super(props);
-    this.props = props;
     this.state = {
       isExpanded: false,
     };
+
+    // Unnecessary, however helps type checking
+    this.props = props;
   }
 
   render() {

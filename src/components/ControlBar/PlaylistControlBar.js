@@ -20,6 +20,8 @@ export default class PlaylistControlBar extends Component {
    */
   constructor(props) {
     super(props);
+
+    // Unnecessary, however helps type checking
     this.props = props;
   }
 
