@@ -1,6 +1,4 @@
 // @ts-check
-/// <reference path="../../../../../index.d.ts" />
-
 
 import React from 'react';
 import './ActivePlaylistRow.scss';

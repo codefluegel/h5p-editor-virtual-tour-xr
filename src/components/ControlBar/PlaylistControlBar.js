@@ -8,11 +8,26 @@ import { PlaylistEditingType } from '../EditingDialog/PlaylistEditor';
 import PlaylistSelector from './SceneSelector/PlaylistSelector';
 
 export default class PlaylistControlBar extends Component {
+  /**
+   * @param {Object} props 
+   * @param {number} props.currentPlaylist
+   * @param {boolean} props.isPlaylistSelectorExpanded
+   * @param {() => void} props.toggleExpandPlaylistSelector
+   * @param {(playlist: Playlist) => void} props.changePlaylist
+   * @param {(playlistId: number) => void} props.newPlaylist
+   * @param {(playlistId: number) => void} props.editPlaylist
+   * @param {(playlistId: number) => void} props.deletePlaylist
+   */
+  constructor(props) {
+    super(props);
+    this.props = props;
+  }
+
   render() {
     return (
       <div className='h5p-control-bar'>
         <PlaylistSelector
-          currentPlaylist={this.props.currentPlaylist}
+          currentPlaylistId={this.props.currentPlaylist}
           isExpanded={this.props.isPlaylistSelectorExpanded}
           toggleExpand={this.props.toggleExpandPlaylistSelector.bind(this)}
         >
