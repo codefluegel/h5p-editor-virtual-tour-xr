@@ -2,7 +2,11 @@
 
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import './ControlBar.scss';
+import { PlaylistTypes } from "../Playlist/Playlist";
+import {getPlaylistFromId} from "../../h5phelpers/playlistParams";
+import PlaylistList from "./SceneSelector/PlaylistList";
+import PlaylistSelectorSubmenu from "./SceneSelector/Row/Submenu/PlaylistSelectorSubmenu";
+import './PlaylistControlBar.scss';
 import {H5PContext} from "../../context/H5PContext";
 import { PlaylistEditingType } from '../EditingDialog/PlaylistEditor';
 import PlaylistSelector from './SceneSelector/PlaylistSelector';
@@ -29,12 +33,12 @@ export default class PlaylistControlBar extends Component {
     return (
       <div className='h5p-control-bar'>
         <PlaylistSelector
-          currentPlaylistId={this.props.currentPlaylist}
+          currentPlaylist={this.props.currentPlaylist}
           isExpanded={this.props.isPlaylistSelectorExpanded}
           toggleExpand={this.props.toggleExpandPlaylistSelector.bind(this)}
         >
           <PlaylistList
-            playlist={this.context.params.playlists}
+            playlists={this.context.params.playlists}
             markedPlaylist={this.props.currentPlaylist}
             onPlaylistClick={this.props.changePlaylist}
           >

@@ -11,7 +11,7 @@ import { PlaylistEditingType } from '../components/EditingDialog/PlaylistEditor'
  */
 export const getPlaylistFromId = (playlists, playlistId) => {
   return playlists.find(playlist => {
-    return playlist.id === playlistId;
+    return playlist.playlistId === playlistId;
   });
 };
 
@@ -19,19 +19,20 @@ export const getPlaylistFromId = (playlists, playlistId) => {
  * Updates a playlist within parameters
  *
  * @param {Playlist[]} playlists
- * @param {Playlist} newPlaylist
- * @param {number} playlistId
+ * @param {Playlist} params
+ * @param {number} editingPlaylist
  * @returns {Playlist[]}
  */
-export const updatePlaylist = (playlists, newPlaylist, playlistId = -1) => {
-  if (playlistId === PlaylistEditingType.NEW_PLAYLIST) {
-    playlists.push(newPlaylist);
-    return playlists;
+export const updatePlaylist = (playlists, params, editingPlaylist = -1) => {
+  if (editingPlaylist === PlaylistEditingType.NEW_PLAYLIST) {
+    var thisPlaylist = playlists ? playlists : [];
+    thisPlaylist.push(params);
+    return thisPlaylist;
   }
 
   return playlists.map(playlist => {
-    if (playlist.id === playlistId) {
-      playlist = newPlaylist;
+    if (playlist.playlistId === editingPlaylist) {
+      playlist = params;
     }
     return playlist;
   });

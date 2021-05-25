@@ -13,11 +13,11 @@ import {getPlaylistField} from "../editorForms";
 export const createPlaylistForm = (field, params, wrapper, parent) => {
   const playlistField = getPlaylistField(field);
   const hiddenPlaylistFields = [
-    'id',
+    'playlistId',
   ];
 
-  const playlistFields = playlistField.field.fields.filter(sceneField => {
-    return !hiddenPlaylistFields.includes(sceneField.name);
+  const playlistFields = playlistField.field.fields.filter(playlistField => {
+    return !hiddenPlaylistFields.includes(playlistField.name);
   });
 
   H5PEditor.processSemanticsChunk(
@@ -36,9 +36,7 @@ export const createPlaylistForm = (field, params, wrapper, parent) => {
  */
 export const getDefaultPlaylistParams = (playlists) => {
   return {
-    id: getUniquePlaylistId(playlists),
-    tracks: [],
-    title: '',
+    playlistId: getUniquePlaylistId(playlists),
   };
 };
 
@@ -49,11 +47,11 @@ export const getDefaultPlaylistParams = (playlists) => {
  * @returns {number}
  */
 const getUniquePlaylistId = (playlists) => {
-  if (!playlists.length) {
+  if (!(playlists && playlists.length)) {
     return 0;
   }
 
-  const playlistIds = playlists.map(playlist => playlist.id);
+  const playlistIds = playlists.map(playlist => playlist.playlistId);
   const maxSceneId = Math.max(...playlistIds);
   return maxSceneId + 1;
 };

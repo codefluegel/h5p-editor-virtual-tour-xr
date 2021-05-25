@@ -3,11 +3,15 @@ import PropTypes from 'prop-types';
 import Scene, {SceneTypes} from "./Scene/Scene";
 import SceneControlBar from "./ControlBar/SceneControlBar";
 import SceneEditor, {SceneEditingType} from "./EditingDialog/SceneEditor";
+import Playlist, {PlaylistTypes} from "./Playlist/Playlist";
+import PlaylistControlBar from "./ControlBar/PlaylistControlBar";
+import PlaylistEditor, {PlaylistEditingType} from "./EditingDialog/PlaylistEditor";
 import InteractionsBar from "./InteractionsBar/InteractionsBar";
 import './Main.scss';
 import InteractionEditor, {InteractionEditingType} from "./EditingDialog/InteractionEditor";
 import {H5PContext} from "../context/H5PContext";
 import {deleteScene, getSceneFromId, setScenePositionFromCamera, updateScene} from "../h5phelpers/sceneParams";
+import {deletePlaylist, getPlaylistFromId, updatePlaylist} from "../h5phelpers/playlistParams";
 import {isGoToScene, updatePosition} from "../h5phelpers/libraryParams";
 import {showConfirmationDialog} from "../h5phelpers/h5pComponents";
 import {addBehavioralListeners} from "../h5phelpers/editorForms";
@@ -24,9 +28,12 @@ export default class Main extends React.Component {
       editingLibrary: null,
       editingInteraction: InteractionEditingType.NOT_EDITING,
       currentScene: this.props.initialScene,
+      currentPlaylist: null,
       startScene: this.props.initialScene,
       isSceneUpdated: false,
+      isPlaylistUpdated: false,
       isSceneSelectorExpanded: false,
+      isPlaylistSelectorExpanded: false,
       currentCameraPosition: null
     };
   }
@@ -46,6 +53,13 @@ export default class Main extends React.Component {
     });
   }
 
+  editPlaylist(playlistId = PlaylistEditingType.NEW_PLAYLIST) {
+    this.toggleExpandPlaylistSelector(false);
+    this.setState({
+      editingPlaylist: playlistId,
+    });
+  }
+
   updateCurrentScene(deletedSceneId) {
     const hasDeletedCurrentScene = deletedSceneId === this.state.currentScene;
     if (!hasDeletedCurrentScene) {
@@ -62,6 +76,24 @@ export default class Main extends React.Component {
 
     // No scenes left
     this.changeScene(SceneTypes.NO_SCENE);
+  }
+
+  updateCurrentPlaylist(deletedPlaylistId) {
+    const hasDeletedCurrentPlaylist = deletedPlaylistId === this.state.currentPlaylist;
+    if (!hasDeletedCurrentPlaylist) {
+      return;
+    }
+
+    const playlists = this.context.params.playlists;
+    if (playlists.length) {
+      // Find the first playlist that is not current playlist and jump to it
+      const newPlaylist = playlists[0];
+      this.changePlaylist(newPlaylist.playlistId);
+      return;
+    }
+
+    // No playlists left
+    this.changePlaylist(PlaylistTypes.NO_PLAYLIST);
   }
 
   updateStartScene(deletedSceneId) {
@@ -96,6 +128,21 @@ export default class Main extends React.Component {
     }, this.confirmedDeleteScene.bind(this, sceneId));
   }
 
+  deletePlaylist(playlistId) {
+    const isNewPlaylist = playlistId === PlaylistEditingType.NEW_PLAYLIST;
+    const deletePlaylistText = isNewPlaylist
+      ? this.context.t('deletePlaylistText')
+      : this.context.t('deletePlaylistTextWithObjects');
+
+    // Confirm deletion
+    showConfirmationDialog({
+      headerText: this.context.t('deletePlaylistTitle'),
+      dialogText: deletePlaylistText,
+      cancelText: this.context.t('cancel'),
+      confirmText: this.context.t('confirm'),
+    }, this.confirmedDeletePlaylist.bind(this, playlistId));
+  }
+
   confirmedDeleteScene(sceneId) {
     this.setState({
       editingScene: SceneEditingType.NOT_EDITING,
@@ -119,6 +166,28 @@ export default class Main extends React.Component {
     });
   }
 
+  confirmedDeletePlaylist(playlistId) {
+    this.setState({
+      editingPlaylist: PlaylistEditingType.NOT_EDITING,
+      isPlaylistSelectorExpanded: false,
+    });
+
+    // Playlist not added to params
+    const isNewPlaylist = playlistId === PlaylistEditingType.NEW_PLAYLIST;
+    if (isNewPlaylist) {
+      return;
+    }
+
+    const playlists = this.context.params.playlists;
+    const playlist = getPlaylistFromId(playlists, playlistId);
+    this.context.params.playlists = deletePlaylist(playlists, playlistId);
+
+    this.updateCurrentPlaylist(playlist.playlistId);
+    this.setState({
+      isPlaylistUpdated: false,
+    });
+  }
+
   doneEditingScene(params, editingScene = null, skipChangingScene = false) {
     const scenes = this.context.params.scenes;
     editingScene = editingScene || this.state.editingScene;
@@ -139,6 +208,25 @@ export default class Main extends React.Component {
         isSceneUpdated: false,
         currentScene: isChangingScene ? params.sceneId : prevState.currentScene,
         editingScene: SceneEditingType.NOT_EDITING,
+      };
+    });
+  }
+
+  doneEditingPlaylist(params, editingPlaylist = null, skipChangingPlaylist = false) {
+    const playlists = this.context.params.playlists;
+    editingPlaylist = editingPlaylist || this.state.editingPlaylist;
+    const isEditing = editingPlaylist !== PlaylistEditingType.NEW_PLAYLIST;
+
+    this.context.params.playlists = updatePlaylist(playlists, params, editingPlaylist);
+
+    // Set current playlist
+    const isChangingPlaylist = !(skipChangingPlaylist || isEditing);
+
+    this.setState((prevState) => {
+      return {
+        isPlaylistUpdated: false,
+        currentPlaylist: isChangingPlaylist ? params.playlistId : prevState.currentPlaylist,
+        editingPlaylist: PlaylistEditingType.NOT_EDITING,
       };
     });
   }
@@ -218,6 +306,14 @@ export default class Main extends React.Component {
       isSceneUpdated: false,
       currentScene: sceneId,
       isSceneSelectorExpanded: false,
+    });
+  }
+
+  changePlaylist(playlistId) {
+    this.setState({
+      isPlaylistUpdated: false,
+      currentPlaylist: playlistId,
+      isPlaylistSelectorExpanded: false,
     });
   }
 
@@ -352,8 +448,28 @@ export default class Main extends React.Component {
     });
   }
 
+  toggleExpandPlaylistSelector(forceState) {
+    // Disabled
+    if (this.state.currentPlaylist === null) {
+      return;
+    }
+
+    this.setState((prevState) => {
+      const isExpanded = forceState !== undefined
+        ? forceState
+        : !prevState.isPlaylistSelectorExpanded;
+      return {
+        isPlaylistSelectorExpanded: isExpanded,
+      };
+    });
+  }
+
   handleCloseSceneOverlay = () => {
     this.toggleExpandSceneSelector(false);
+  }
+
+  handleClosePlaylistOverlay = () => {
+    this.toggleExpandPlaylistSelector(false);
   }
 
   render() {
@@ -413,10 +529,21 @@ export default class Main extends React.Component {
           />
         }        
         
-        <PlaylistControlBar />
+        <PlaylistControlBar
+          currentPlaylist={this.state.currentPlaylist}
+          editPlaylist={this.editPlaylist.bind(this)}
+          deletePlaylist={this.deletePlaylist.bind(this)}
+          newPlaylist={this.editPlaylist.bind(this)}
+          changePlaylist={this.changePlaylist.bind(this)}
+          isPlaylistSelectorExpanded={this.state.isPlaylistSelectorExpanded}
+          toggleExpandPlaylistSelector={this.toggleExpandPlaylistSelector.bind(this)}
+        />
         {
           (this.state.editingPlaylist !== PlaylistEditingType.NOT_EDITING) &&
           <PlaylistEditor
+            removeAction={this.deletePlaylist.bind(this, this.state.editingPlaylist)}
+            doneAction={this.doneEditingPlaylist.bind(this)}
+            editingPlaylist={this.state.editingPlaylist}
           />
         }
       </div>

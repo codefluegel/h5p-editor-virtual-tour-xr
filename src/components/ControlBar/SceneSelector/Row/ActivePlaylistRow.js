@@ -28,7 +28,6 @@ const ActivePlaylistRow = (props) => {
 };
 
 ActivePlaylistRow.propTypes = {
-  playlist: PropTypes.object.isRequired,
   noPlaylistsTitle: PropTypes.string.isRequired,
   currentPlaylistLabel: PropTypes.string.isRequired
 };

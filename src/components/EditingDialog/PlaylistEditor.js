@@ -13,8 +13,8 @@ import {
 import { createPlaylistForm } from '../../h5phelpers/forms/playlistForm';
 
 export const PlaylistEditingType = {
-  NOT_EDITING: 0,
-  NEW_PLAYLIST: 1,
+  NOT_EDITING: null,
+  NEW_PLAYLIST: -1,
 }
 
 export default class PlaylistEditor extends React.Component {

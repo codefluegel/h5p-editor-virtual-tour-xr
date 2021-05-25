@@ -11,7 +11,7 @@ export default class PlaylistSelector extends React.Component {
   /**
    * 
    * @param {Object} props
-   * @param {number} props.currentPlaylistId
+   * @param {number} props.currentPlaylist
    * @param {() => void} props.toggleExpand
    * @param {boolean} props.isExpanded
    * @param {JSX.Element} props.children
@@ -29,9 +29,9 @@ export default class PlaylistSelector extends React.Component {
   render() {
     /** @type {Playlist[]} */
     const playlists = this.context.params.playlists;
-    const activePlaylist = playlists.find(playlist => {
-      return playlist.id === this.props.currentPlaylistId;
-    });
+    const activePlaylist = this.props.currentPlaylist ? playlists.find(playlist => {
+      return playlist.playlistiId === this.props.currentPlaylist;
+    }) : null;
 
     const playlistSelectorClasses = ['h5p-playlist-selector'];
     if (!activePlaylist) {
@@ -48,7 +48,7 @@ export default class PlaylistSelector extends React.Component {
           <div className='h5p-select-content'>
             <ActivePlaylistRow
               noPlaylistsTitle={this.context.t('noPlaylistsTitle')}
-              currentPlaylistLabel={this.context.t('currentPlaylistId')}
+              currentPlaylistLabel={this.context.t('currentPlaylist')}
               playlist={activePlaylist}
             />
           </div>
@@ -68,7 +68,7 @@ export default class PlaylistSelector extends React.Component {
 PlaylistSelector.contextType = H5PContext;
 
 PlaylistSelector.propTypes = {
-  currentPlaylistId: PropTypes.number,
+  currentPlaylist: PropTypes.number,
   isExpanded: PropTypes.bool,
   toggleExpand: PropTypes.func.isRequired,
   children: PropTypes.node,
