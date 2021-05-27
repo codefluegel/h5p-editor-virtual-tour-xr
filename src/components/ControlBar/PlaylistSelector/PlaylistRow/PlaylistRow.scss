@@ -52,32 +52,12 @@
     border-color: #e0dede;
   }
 
-  .thumbnail-wrapper {
-    display: flex;
-    position: relative;
-    width: 2.7em;
-    height: 2.1em;
-
-    &:before {
-      font-family: "360-image";
-      content: $staticScene;
-      position: absolute;
-      background: white;
-      left: 0.2em;
-      top: 0.1em;
-      transform: translate(-50%,-50%);
-      font-size: 0.9em;
-    }
-
-    .playlist-thumbnail {
-      width: 100%;
-      align-self: center;
-    }
-
-    .playlist-thumbnail.vertical {
-      height: 100%;
-      width: auto;
-    }
+  &:before {
+    font-family: "360-image";
+    content: $staticScene;
+    margin: 0 0.6em 0 0.25em;
+    font-size: 1.5em;
+    vertical-align: sub;
   }
 
   &.three-sixty .thumbnail-wrapper:before {

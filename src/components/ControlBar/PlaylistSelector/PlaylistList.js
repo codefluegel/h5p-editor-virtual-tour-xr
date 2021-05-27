@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import PlaylistRow from "./Row/PlaylistRow";
+import PlaylistRow from "./PlaylistRow/PlaylistRow";
 
 function PlaylistList(props) {
   let previousElementHasTopBorder = false;

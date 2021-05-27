@@ -1,6 +1,7 @@
 .h5p-new-playlist-button {
     display: inline-flex;
     padding: 0.5em 1em;
+    margin-top: 0.5em;
   
     font-size: 1em;
     color: #ffffff;
@@ -11,8 +12,9 @@
     cursor: pointer;
   }
   
-  .h5p-control-bar {
+  .h5p-control-bar-playlist {
     display: flex;
+    flex-direction: column;
     margin-top: 0.75em;
   
     .h5p-new-playlist-button {

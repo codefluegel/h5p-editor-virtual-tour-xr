@@ -13,6 +13,12 @@ export const getSceneField = (field) => {
   );
 };
 
+/**
+ * Get playlist field from Three Image semantics structure
+ *
+ * @param field
+ * @returns {Object}
+ */
 export const getPlaylistField = (field) => { 
   return H5PEditor.findSemanticsField(
     'playlists',

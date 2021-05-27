@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import Scene, {SceneTypes} from "./Scene/Scene";
 import SceneControlBar from "./ControlBar/SceneControlBar";
 import SceneEditor, {SceneEditingType} from "./EditingDialog/SceneEditor";
-import Playlist, {PlaylistTypes} from "./Playlist/Playlist";
 import PlaylistControlBar from "./ControlBar/PlaylistControlBar";
 import PlaylistEditor, {PlaylistEditingType} from "./EditingDialog/PlaylistEditor";
 import InteractionsBar from "./InteractionsBar/InteractionsBar";
@@ -31,9 +30,7 @@ export default class Main extends React.Component {
       currentPlaylist: null,
       startScene: this.props.initialScene,
       isSceneUpdated: false,
-      isPlaylistUpdated: false,
       isSceneSelectorExpanded: false,
-      isPlaylistSelectorExpanded: false,
       currentCameraPosition: null
     };
   }
@@ -54,7 +51,6 @@ export default class Main extends React.Component {
   }
 
   editPlaylist(playlistId = PlaylistEditingType.NEW_PLAYLIST) {
-    this.toggleExpandPlaylistSelector(false);
     this.setState({
       editingPlaylist: playlistId,
     });
@@ -76,24 +72,6 @@ export default class Main extends React.Component {
 
     // No scenes left
     this.changeScene(SceneTypes.NO_SCENE);
-  }
-
-  updateCurrentPlaylist(deletedPlaylistId) {
-    const hasDeletedCurrentPlaylist = deletedPlaylistId === this.state.currentPlaylist;
-    if (!hasDeletedCurrentPlaylist) {
-      return;
-    }
-
-    const playlists = this.context.params.playlists;
-    if (playlists.length) {
-      // Find the first playlist that is not current playlist and jump to it
-      const newPlaylist = playlists[0];
-      this.changePlaylist(newPlaylist.playlistId);
-      return;
-    }
-
-    // No playlists left
-    this.changePlaylist(PlaylistTypes.NO_PLAYLIST);
   }
 
   updateStartScene(deletedSceneId) {
@@ -166,10 +144,16 @@ export default class Main extends React.Component {
     });
   }
 
+  removePlaylist(playlists, playlistId) {
+    if (playlistId > -1) {
+      playlists.splice(playlistId, 1);
+    }
+    return playlists;
+  }
+
   confirmedDeletePlaylist(playlistId) {
     this.setState({
       editingPlaylist: PlaylistEditingType.NOT_EDITING,
-      isPlaylistSelectorExpanded: false,
     });
 
     // Playlist not added to params
@@ -179,13 +163,7 @@ export default class Main extends React.Component {
     }
 
     const playlists = this.context.params.playlists;
-    const playlist = getPlaylistFromId(playlists, playlistId);
-    this.context.params.playlists = deletePlaylist(playlists, playlistId);
-
-    this.updateCurrentPlaylist(playlist.playlistId);
-    this.setState({
-      isPlaylistUpdated: false,
-    });
+    this.context.params.playlists = this.removePlaylist(playlists, playlistId);
   }
 
   doneEditingScene(params, editingScene = null, skipChangingScene = false) {
@@ -224,7 +202,6 @@ export default class Main extends React.Component {
 
     this.setState((prevState) => {
       return {
-        isPlaylistUpdated: false,
         currentPlaylist: isChangingPlaylist ? params.playlistId : prevState.currentPlaylist,
         editingPlaylist: PlaylistEditingType.NOT_EDITING,
       };
@@ -306,14 +283,6 @@ export default class Main extends React.Component {
       isSceneUpdated: false,
       currentScene: sceneId,
       isSceneSelectorExpanded: false,
-    });
-  }
-
-  changePlaylist(playlistId) {
-    this.setState({
-      isPlaylistUpdated: false,
-      currentPlaylist: playlistId,
-      isPlaylistSelectorExpanded: false,
     });
   }
 
@@ -448,28 +417,8 @@ export default class Main extends React.Component {
     });
   }
 
-  toggleExpandPlaylistSelector(forceState) {
-    // Disabled
-    if (this.state.currentPlaylist === null) {
-      return;
-    }
-
-    this.setState((prevState) => {
-      const isExpanded = forceState !== undefined
-        ? forceState
-        : !prevState.isPlaylistSelectorExpanded;
-      return {
-        isPlaylistSelectorExpanded: isExpanded,
-      };
-    });
-  }
-
   handleCloseSceneOverlay = () => {
     this.toggleExpandSceneSelector(false);
-  }
-
-  handleClosePlaylistOverlay = () => {
-    this.toggleExpandPlaylistSelector(false);
   }
 
   render() {
@@ -530,13 +479,8 @@ export default class Main extends React.Component {
         }        
         
         <PlaylistControlBar
-          currentPlaylist={this.state.currentPlaylist}
           editPlaylist={this.editPlaylist.bind(this)}
-          deletePlaylist={this.deletePlaylist.bind(this)}
           newPlaylist={this.editPlaylist.bind(this)}
-          changePlaylist={this.changePlaylist.bind(this)}
-          isPlaylistSelectorExpanded={this.state.isPlaylistSelectorExpanded}
-          toggleExpandPlaylistSelector={this.toggleExpandPlaylistSelector.bind(this)}
         />
         {
           (this.state.editingPlaylist !== PlaylistEditingType.NOT_EDITING) &&

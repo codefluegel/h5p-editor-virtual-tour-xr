@@ -25,9 +25,8 @@ export const getPlaylistFromId = (playlists, playlistId) => {
  */
 export const updatePlaylist = (playlists, params, editingPlaylist = -1) => {
   if (editingPlaylist === PlaylistEditingType.NEW_PLAYLIST) {
-    var thisPlaylist = playlists ? playlists : [];
-    thisPlaylist.push(params);
-    return thisPlaylist;
+    playlists.push(params);
+    return playlists;
   }
 
   return playlists.map(playlist => {

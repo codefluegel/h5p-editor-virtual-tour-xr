@@ -14,6 +14,7 @@ import {
   sanitizeSceneForm,
   validateSceneForm
 } from "../../h5phelpers/forms/sceneForm";
+import ChoosePlaylistWrapper from "./ChoosePlaylist/ChoosePlaylistWrapper";
 
 export const SceneEditingType = {
   NOT_EDITING: null,
@@ -83,6 +84,14 @@ export default class SceneEditor extends React.Component {
     const isThreeSixtyScene = this.params.sceneType
       === SceneTypes.THREE_SIXTY_SCENE;
 
+    if (this.params.audioType === "playlist") {
+      this.params.playlist = this.playlist;
+    }
+
+    if (this.params.playlist && this.params.audioType === "audio") {
+      this.params.playlist = null;
+    }
+    
     sanitizeSceneForm(
       this.params,
       isThreeSixtyScene,
@@ -92,7 +101,29 @@ export default class SceneEditor extends React.Component {
     this.props.doneAction(this.params);
   }
 
+  setPlaylist(playlist) {
+    this.playlist = playlist;
+  }
+
+  selectedPlaylist(playlist) {
+    const playlistMarked = this.playlist && this.playlist === playlist;
+    const playlistAddedToScene = this.params.playlist && this.params.playlist === playlist;
+    // Unmark playlist if already marked or added to scene
+    this.playlist = playlistMarked || playlistAddedToScene ? null : playlist;
+  }
+
+  hasPlaylist() {
+    this.params = this.params ? this.params : this.getSceneParams();
+    if (this.params.playlist) {
+      return this.params.playlist;
+    }
+    return null;
+  }
+
   render() {
+    const showChoosePlaylist = true;
+    //const showChoosePlaylist = this.params.audioType === "playlist";
+
     return (
       <EditingDialog
         title={this.context.t('scene')}
@@ -103,6 +134,15 @@ export default class SceneEditor extends React.Component {
         removeLabel={this.context.t('remove')}
       >
         <div ref={this.semanticsRef}/>
+        {
+          showChoosePlaylist &&
+          <ChoosePlaylistWrapper
+            selectedPlaylist={this.selectedPlaylist.bind(this)}
+            markedPlaylist={this.hasPlaylist()}
+            params={this.params}
+            setPlaylist={this.setPlaylist.bind(this)}
+          />
+        }
       </EditingDialog>
     );
   }

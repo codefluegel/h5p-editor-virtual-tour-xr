@@ -6,11 +6,13 @@ import EditingDialog from "./EditingDialog";
 import {H5PContext} from "../../context/H5PContext";
 import './PlaylistEditor.scss';
 import {getPlaylistFromId} from "../../h5phelpers/playlistParams";
-import {showConfirmationDialog} from "../../h5phelpers/h5pComponents";
+import {getLibraryDataFromFields} from "../../h5phelpers/editorForms";
 import {
-  getDefaultPlaylistParams
-} from "../../h5phelpers/forms/playlistForm";
-import { createPlaylistForm } from '../../h5phelpers/forms/playlistForm';
+  createPlaylistForm,
+  getDefaultPlaylistParams,
+  validatePlaylistForm
+} from "../../h5phelpers/forms/PlaylistForm";
+import ChoosePlaylistWrapper from "./ChoosePlaylist/ChoosePlaylistWrapper";
 
 export const PlaylistEditingType = {
   NOT_EDITING: null,
@@ -22,6 +24,11 @@ export default class PlaylistEditor extends React.Component {
     super(props);
 
     this.semanticsRef = React.createRef();
+
+    this.state = {
+      library: null,
+      hasInputError: false,
+    }
   }
 
   getPlaylistParams() {
@@ -54,22 +61,33 @@ export default class PlaylistEditor extends React.Component {
   }
 
   handleDone() {
-    this.confirmDone();
-
-    showConfirmationDialog({
-      headerText: this.context.t('changePlaylistTitle'),
-      dialogText: this.context.t('changePlaylistBody'),
-      cancelText: this.context.t('cancel'),
-      confirmText: this.context.t('confirm'),
-    }, this.confirmDone.bind(this));
-
+    const isValid = validatePlaylistForm(this.children);
+    if (!isValid) {
+      return;
+    }
+    this.props.doneAction(this.params);
   }
 
   confirmDone() {
     this.props.doneAction(this.params);
   }
 
+  setPlaylist(playlist) {
+    this.playlist = playlist;
+  }
+
+  removeInputErrors() {
+    this.setState({
+      hasInputError: false,
+    });
+  }
+
   render() {
+    const semanticsClasses = ['semantics-wrapper'];
+    semanticsClasses.push('choose-playlist');
+
+    const showList = false;
+
     return (
       <EditingDialog
         title={this.context.t('playlist')}
@@ -79,7 +97,17 @@ export default class PlaylistEditor extends React.Component {
         doneLabel={this.context.t('done')}
         removeLabel={this.context.t('remove')}
       >
-        <div ref={this.semanticsRef}/>
+        <div className={semanticsClasses.join(' ')} ref={this.semanticsRef}/>
+        {
+          showList &&
+          <ChoosePlaylistWrapper
+            selectedPlaylist={this.removeInputErrors.bind(this)}
+            hasInputError={this.state.hasInputError}
+            currentScene={this.props.currentScene}
+            params={this.params}
+            setPlaylist={this.setPlaylist.bind(this)}
+          />
+        }
       </EditingDialog>
     );
   }

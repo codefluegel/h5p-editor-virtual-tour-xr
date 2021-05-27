@@ -40,9 +40,6 @@ export default class PlaylistRow extends Component {
   render() {
 
     const rowClasses = ['h5p-playlist-row'];
-    if (this.props.playlist.playlistType === PlaylistTypes.THREE_SIXTY_PLAYLIST) {
-      rowClasses.push('three-sixty');
-    }
 
     if (this.props.isMarkedPlaylist) {
       rowClasses.push('marked-playlist');
@@ -66,20 +63,11 @@ export default class PlaylistRow extends Component {
         className={rowClasses.join(' ')}
         onClick={this.onPlaylistClick.bind(this)}
       >
-        <div className='thumbnail-wrapper'>
-          <img
-            className={imageClasses.join(' ')}
-            src={getImageSource(this.props.playlist.playlistsrc.path)}
-            alt={this.props.playlist.playlistsrc.alt}
-            onLoad={this.onImageLoad.bind(this)}
-            ref={this.imageRef}
-          />
-        </div>
         <div className='playlist-wrapper'>
           <div
             className='h5p-playlist-name'
             onClick={this.onTitleClick.bind(this)}
-            dangerouslySetInnerHTML={ {__html: this.props.playlist.playlistname} }
+            dangerouslySetInnerHTML={ {__html: this.props.playlist.title} }
           ></div>
         </div>
         {this.props.children}
@@ -92,12 +80,15 @@ PlaylistRow.contextType = H5PContext;
 
 PlaylistRow.propTypes = {
   playlist: PropTypes.shape({
-    playlistType: PropTypes.oneOf(Object.values(PlaylistTypes)).isRequired,
-    playlistname: PropTypes.string.isRequired,
-    playlistsrc: PropTypes.shape({
-      path: PropTypes.string.isRequired,
-      alt: PropTypes.string
-    }).isRequired
+    //playlistType: PropTypes.oneOf(Object.values(PlaylistTypes)).isRequired,
+    title: PropTypes.string.isRequired,
+    audioTracks: PropTypes.arrayOf(PropTypes.shape({
+      path: PropTypes.string,
+    })),
+    //playlistsrc: PropTypes.shape({
+    //  path: PropTypes.string.isRequired,
+    //  alt: PropTypes.string
+    //}).isRequired
   }),
   isMarkedPlaylist: PropTypes.bool,
   isShowingCheck: PropTypes.bool,
