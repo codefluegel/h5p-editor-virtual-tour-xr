@@ -1,5 +1,3 @@
-// @ts-check
-
 import {getPlaylistField, isChildrenValid} from "../editorForms";
 
 /**

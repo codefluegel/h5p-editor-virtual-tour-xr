@@ -74,7 +74,7 @@ export default class ChoosePlaylistWrapper extends Component {
     return (
       <div className={classes.join(' ')}>
         <label className='h5peditor-label'>
-          {playlistLabel}:
+          {playlistLabel}
         </label>
         <div className='h5peditor-field-description'>
           {playlistDescription}

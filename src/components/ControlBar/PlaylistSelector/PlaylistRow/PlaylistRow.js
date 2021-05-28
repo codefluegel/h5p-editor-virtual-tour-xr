@@ -1,8 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
-import {PlaylistTypes} from "../../../Playlist/Playlist";
 import './PlaylistRow.scss';
-import {getImageSource} from "../../../../context/H5PContext";
 import {H5PContext} from "../../../../context/H5PContext";
 
 export default class PlaylistRow extends Component {
@@ -80,15 +78,10 @@ PlaylistRow.contextType = H5PContext;
 
 PlaylistRow.propTypes = {
   playlist: PropTypes.shape({
-    //playlistType: PropTypes.oneOf(Object.values(PlaylistTypes)).isRequired,
     title: PropTypes.string.isRequired,
     audioTracks: PropTypes.arrayOf(PropTypes.shape({
       path: PropTypes.string,
     })),
-    //playlistsrc: PropTypes.shape({
-    //  path: PropTypes.string.isRequired,
-    //  alt: PropTypes.string
-    //}).isRequired
   }),
   isMarkedPlaylist: PropTypes.bool,
   isShowingCheck: PropTypes.bool,

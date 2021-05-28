@@ -6,12 +6,11 @@ import EditingDialog from "./EditingDialog";
 import {H5PContext} from "../../context/H5PContext";
 import './PlaylistEditor.scss';
 import {getPlaylistFromId} from "../../h5phelpers/playlistParams";
-import {getLibraryDataFromFields} from "../../h5phelpers/editorForms";
 import {
   createPlaylistForm,
   getDefaultPlaylistParams,
   validatePlaylistForm
-} from "../../h5phelpers/forms/PlaylistForm";
+} from "../../h5phelpers/forms/playlistForm";
 import ChoosePlaylistWrapper from "./ChoosePlaylist/ChoosePlaylistWrapper";
 
 export const PlaylistEditingType = {
