@@ -12,7 +12,7 @@ import './Main.scss';
 import InteractionEditor, {InteractionEditingType} from "./EditingDialog/InteractionEditor";
 import {H5PContext} from "../context/H5PContext";
 import {deleteScene, getSceneFromId, setScenePositionFromCamera, updateScene} from "../h5phelpers/sceneParams";
-import {deletePlaylist, getPlaylistFromId, updatePlaylist} from "../h5phelpers/playlistParams";
+import {updatePlaylist} from "../h5phelpers/playlistParams";
 import {isGoToScene, updatePosition} from "../h5phelpers/libraryParams";
 import {showConfirmationDialog} from "../h5phelpers/h5pComponents";
 import {addBehavioralListeners} from "../h5phelpers/editorForms";
@@ -172,6 +172,14 @@ export default class Main extends React.Component {
 
     const playlists = this.context.params.playlists;
     this.context.params.playlists = this.removePlaylist(playlists, playlistId);
+
+    // Remove playlistId from scenes that are using this playlist
+    this.context.params.scenes.forEach(scene => {
+      if (scene.playlist === playlistId) {
+        scene.playlist = undefined;
+      }
+    });
+
     this.setState({
       isPlaylistsUpdated: false
     })
