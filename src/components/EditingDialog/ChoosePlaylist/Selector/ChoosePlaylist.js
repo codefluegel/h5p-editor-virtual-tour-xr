@@ -19,8 +19,6 @@ export default class ChoosePlaylist extends Component {
 
     const allowCreateNewPlaylist = false;
 
-    const pickAnExistingPlaylistLabel = this.props.isMainPage ? this.context.t('playlists') : this.context.t('pickAnExistingPlaylist')
-
     return (
       <div className={playlistClasses.join(' ')} >
         {
@@ -31,13 +29,16 @@ export default class ChoosePlaylist extends Component {
               markedPlaylist={this.props.markedPlaylist}
               setNextPlaylistId={this.props.setNextPlaylistId.bind(this)}
               selectAPlaylistErrorLabel={this.context.t('selectAPlaylistError')}
-              pickAnExistingPlaylistLabel={pickAnExistingPlaylistLabel}
             />
             {
                 allowCreateNewPlaylist &&
                 <div className='selector-separator'>{this.context.t('or')}</div>
             }
           </div>
+        }
+        {
+          !playlists &&
+          <div className='no-playlists'>{this.context.t('noPlaylistsAdded')}</div>
         }
         {
             allowCreateNewPlaylist &&

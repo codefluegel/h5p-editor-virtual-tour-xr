@@ -27,9 +27,9 @@ export default class Main extends React.Component {
       editingLibrary: null,
       editingInteraction: InteractionEditingType.NOT_EDITING,
       currentScene: this.props.initialScene,
-      currentPlaylist: null,
       startScene: this.props.initialScene,
       isSceneUpdated: false,
+      isPlaylistsUpdated: false,
       isSceneSelectorExpanded: false,
       currentCameraPosition: null
     };
@@ -39,6 +39,7 @@ export default class Main extends React.Component {
     addBehavioralListeners(this.context.parent, () => {
       this.setState({
         isSceneUpdated: false,
+        isPlaylistsUpdated: false,
       });
     });
   }
@@ -164,6 +165,9 @@ export default class Main extends React.Component {
 
     const playlists = this.context.params.playlists;
     this.context.params.playlists = this.removePlaylist(playlists, playlistId);
+    this.setState({
+      isPlaylistsUpdated: false
+    })
   }
 
   doneEditingScene(params, editingScene = null, skipChangingScene = false) {
@@ -191,7 +195,7 @@ export default class Main extends React.Component {
   }
 
   doneEditingPlaylist(params, editingPlaylist = null, skipChangingPlaylist = false) {
-    const playlists = this.context.params.playlists;
+    const playlists = this.context.params.playlists ? this.context.params.playlists : [];
     editingPlaylist = editingPlaylist || this.state.editingPlaylist;
     const isEditing = editingPlaylist !== PlaylistEditingType.NEW_PLAYLIST;
 
@@ -202,7 +206,7 @@ export default class Main extends React.Component {
 
     this.setState((prevState) => {
       return {
-        currentPlaylist: isChangingPlaylist ? params.playlistId : prevState.currentPlaylist,
+        isPlaylistsUpdated: false,
         editingPlaylist: PlaylistEditingType.NOT_EDITING,
       };
     });

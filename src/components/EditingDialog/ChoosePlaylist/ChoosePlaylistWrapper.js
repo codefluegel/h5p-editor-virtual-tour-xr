@@ -68,8 +68,17 @@ export default class ChoosePlaylistWrapper extends Component {
       classes.push('new-playlist');
     }
 
+    const playlistLabel = this.props.isMainPage ? this.context.t('addedPlaylists') : this.context.t('playlist');
+    const playlistDescription = this.props.isMainPage ? this.context.t('addedPlaylistsDescription') : this.context.t('playlistDescription');
+
     return (
       <div className={classes.join(' ')}>
+        <label className='h5peditor-label'>
+          {playlistLabel}:
+        </label>
+        <div className='h5peditor-field-description'>
+          {playlistDescription}
+        </div>
         {
           !this.state.isCreatingNewPlaylist &&
           <ChoosePlaylist
@@ -79,7 +88,6 @@ export default class ChoosePlaylistWrapper extends Component {
             hasInputError={this.props.hasInputError}
             newPlaylist={this.createNewPlaylist.bind(this)}
             setNextPlaylistId={this.setNextPlaylistId.bind(this)}
-            isMainPage={this.props.isMainPage}
           />
         }
         <div ref={this.newPlaylist} />

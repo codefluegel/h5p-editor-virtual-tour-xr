@@ -113,17 +113,16 @@ export default class SceneEditor extends React.Component {
   }
 
   hasPlaylist() {
-    this.params = this.params ? this.params : this.getSceneParams();
-    if (this.params.playlist) {
-      return this.params.playlist;
-    }
-    return null;
+    this.params = this.getSceneParams();
+    return this.params.playlist;
+  }
+
+  getAudioType() {
+    this.params = this.getSceneParams();
+    return this.params.audioType;
   }
 
   render() {
-    const showChoosePlaylist = true;
-    //const showChoosePlaylist = this.params.audioType === "playlist";
-
     return (
       <EditingDialog
         title={this.context.t('scene')}
@@ -135,7 +134,6 @@ export default class SceneEditor extends React.Component {
       >
         <div ref={this.semanticsRef}/>
         {
-          showChoosePlaylist &&
           <ChoosePlaylistWrapper
             selectedPlaylist={this.selectedPlaylist.bind(this)}
             markedPlaylist={this.hasPlaylist()}
