@@ -12,12 +12,22 @@ declare type Scene = {
 };
 
 declare type Interaction = {
+  id: string;
   interactionpos: string;
   action: {
     library: string;
     params: {
       nextSceneId?: number | string;
     };
+  };
+  label?: {
+    hotSpotSizeValues: string;
+    isHotspotTabbable: boolean;
+    labelPosition: string;
+    showAsHotspot: boolean;
+    showAsOpenSceneContent: boolean;
+    showHotspotOnHover: boolean;
+    showLabel: string;
   };
 };
 
