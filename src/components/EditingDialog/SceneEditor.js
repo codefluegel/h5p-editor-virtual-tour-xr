@@ -26,6 +26,10 @@ export default class SceneEditor extends React.Component {
     super(props);
 
     this.semanticsRef = React.createRef();
+
+    this.state = {
+      showPlaylists: false
+    }
   }
 
   getSceneParams() {
@@ -41,6 +45,11 @@ export default class SceneEditor extends React.Component {
 
   componentDidMount() {
     this.params = this.getSceneParams();
+
+    // Update playlist component
+    this.setState({
+      showPlaylists: this.params.audioType === "playlist"
+    })
 
     // Preserve parent's children
     this.parentChildren = this.context.parent.children;
@@ -84,11 +93,11 @@ export default class SceneEditor extends React.Component {
     const isThreeSixtyScene = this.params.sceneType
       === SceneTypes.THREE_SIXTY_SCENE;
 
-    if (this.params.audioType === "playlist") {
+    if (this.params.audioType === "playlist" && this.playlist != null) {
       this.params.playlist = this.playlist;
     }
 
-    if (this.params.playlist && this.params.audioType === "audio") {
+    if (this.params.playlist != null && this.params.audioType === "audio") {
       this.params.playlist = null;
     }
     
@@ -122,6 +131,24 @@ export default class SceneEditor extends React.Component {
     return this.params.audioType;
   }
 
+  checkSemantics() {
+    // Get updated value for Audio Type
+    var audioTypeIsPlaylist = this.semanticsRef.current.getElementsByClassName("playlist")[0].children[0].checked;
+
+    if (this.params) {
+      if (!this.state.showPlaylists && audioTypeIsPlaylist) {
+        this.setState({
+          showPlaylists: true
+        });
+      }
+      if (this.state.showPlaylists && !audioTypeIsPlaylist) {
+        this.setState({
+          showPlaylists: false
+        });
+      }
+    }
+  }
+
   render() {
     return (
       <EditingDialog
@@ -132,8 +159,9 @@ export default class SceneEditor extends React.Component {
         doneLabel={this.context.t('done')}
         removeLabel={this.context.t('remove')}
       >
-        <div ref={this.semanticsRef}/>
+        <div ref={this.semanticsRef} onClick={this.checkSemantics.bind(this)} />
         {
+          this.state.showPlaylists &&
           <ChoosePlaylistWrapper
             selectedPlaylist={this.selectedPlaylist.bind(this)}
             markedPlaylist={this.hasPlaylist()}

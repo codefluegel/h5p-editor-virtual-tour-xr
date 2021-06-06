@@ -138,6 +138,8 @@ export default class InteractionEditor extends React.Component {
       if (!isValidScene) {
         return;
       }
+      // Add playlist
+      this.scene.params.playlist = this.playlist;
     }
 
     this.params = sanitizeInteractionParams(this.params, interactionPosition);
@@ -181,6 +183,10 @@ export default class InteractionEditor extends React.Component {
     this.scene = scene;
   }
 
+  setChosenPlaylist(playlist) {
+    this.playlist = playlist;
+  }
+
   render() {
     let title = '';
     let className = '';
@@ -216,6 +222,7 @@ export default class InteractionEditor extends React.Component {
             currentScene={this.props.currentScene}
             params={this.params}
             setScene={this.setScene.bind(this)}
+            chosenPlaylist={this.setChosenPlaylist.bind(this)}
           />
         }
       </EditingDialog>

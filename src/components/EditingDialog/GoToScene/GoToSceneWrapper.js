@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import GoToScene from "./Selector/GoToScene";
 import {createSceneForm, getDefaultSceneParams} from "../../../h5phelpers/forms/sceneForm";
 import {H5PContext} from "../../../context/H5PContext";
+import ChoosePlaylistWrapper from "../ChoosePlaylist/ChoosePlaylistWrapper";
 
 export default class GoToSceneWrapper extends Component {
   constructor(props) {
@@ -13,6 +14,7 @@ export default class GoToSceneWrapper extends Component {
     this.state = {
       markedScene: parseInt(this.props.params.action.params.nextSceneId),
       isCreatingNewScene: false,
+      showPlaylists: false
     };
   }
 
@@ -45,6 +47,7 @@ export default class GoToSceneWrapper extends Component {
 
     this.setState({
       isCreatingNewScene: true,
+      showPlaylists: params.audioType === "playlist"
     });
   }
 
@@ -58,6 +61,37 @@ export default class GoToSceneWrapper extends Component {
     this.setState({
       markedScene: sceneId,
     });
+  }
+
+  setPlaylist(playlist) {
+    this.playlist = playlist;
+  }
+
+  selectedPlaylist(playlist) {
+    const playlistMarked = this.playlist !== null && this.playlist === playlist;
+    // Unmark playlist if already marked
+    this.playlist = playlistMarked ? null : playlist;
+
+    this.props.chosenPlaylist(this.playlist);
+  }
+
+  hasPlaylist() {
+    return null;
+  }
+
+  checkSemantics() {
+    var audioTypeIsPlaylist = this.newScene.current.getElementsByClassName("field-name-audio")[0].parentElement.classList.length === 2;
+
+    if (!this.state.showPlaylists && audioTypeIsPlaylist) {
+      this.setState({
+        showPlaylists: true
+      });
+    }
+    if (this.state.showPlaylists && !audioTypeIsPlaylist) {
+      this.setState({
+        showPlaylists: false
+      });
+    }
   }
 
   render() {
@@ -79,7 +113,16 @@ export default class GoToSceneWrapper extends Component {
             setNextSceneId={this.setNextSceneId.bind(this)}
           />
         }
-        <div ref={this.newScene} />
+        <div ref={this.newScene} onClick={this.checkSemantics.bind(this)} />
+        {
+          this.state.isCreatingNewScene && this.state.showPlaylists &&
+          <ChoosePlaylistWrapper
+            selectedPlaylist={this.selectedPlaylist.bind(this)}
+            markedPlaylist={this.hasPlaylist()}
+            params={this.params}
+            setPlaylist={this.setPlaylist.bind(this)}
+          />
+        }
       </div>
     );
   }
