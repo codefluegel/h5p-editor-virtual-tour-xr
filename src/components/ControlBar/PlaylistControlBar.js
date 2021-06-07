@@ -46,6 +46,8 @@ export default class PlaylistControlBar extends Component {
         </div>
         <div className="fields">
           <div className='h5p-control-bar-playlist'>
+            <div className='h5peditor-label'>{this.context.t('addedPlaylists')}</div>
+            <div className='h5peditor-field-description'>{this.context.t('addedPlaylistsDescription')}</div>
             {
               <ChoosePlaylistWrapper
                 selectedPlaylist={this.props.editPlaylist.bind(this)}

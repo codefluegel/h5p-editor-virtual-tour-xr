@@ -94,20 +94,47 @@ function PlaylistWidgetComponent({
     playlists.find((playlist) => playlist.playlistId === playlistId)
   );
 
-  const [playlistPickerOpen, setPlaylistPickerOpen] = React.useState(false);
 
   /**
    * @returns {Array<Playlist>}
    */
   function getPlaylists() {
     const threeImage = form.children[0];
-
-    return (threeImage.params && threeImage.params.playlists) || [];
+    if (threeImage.params && threeImage.params.playlists) {
+      return threeImage.params.playlists;
+    }
+    if (threeImage.parent && threeImage.parent.params && threeImage.parent.params.threeImage && threeImage.parent.params.threeImage.playlists) {
+      return threeImage.parent.params.threeImage.playlists;
+    }
+    if (threeImage.form && threeImage.form.parent && threeImage.form.parent.params 
+      && threeImage.form.parent.params.threeImage && threeImage.form.parent.params.threeImage.playlists) {
+      return threeImage.form.parent.params.threeImage.playlists;
+    }
+    if (threeImage.parent && threeImage.parent.parent && threeImage.parent.parent.params 
+      && threeImage.parent.parent.params.threeImage && threeImage.parent.parent.params.threeImage.playlists) {
+      return threeImage.parent.parent.params.threeImage.playlists;
+    }
+    return [];
   }
 
-  function togglePlaylistPicker() {
-    setPlaylistPickerOpen((isOpen) => !isOpen);
-    setPlaylists(getPlaylists());
+  /**
+   * @returns {Object} params
+   */
+  function getParams() {
+    const threeImage = form.children[0];
+    if (threeImage.params) {
+      return threeImage.params;
+    }
+    if (threeImage.form && threeImage.form.parent && threeImage.form.parent.params && threeImage.form.parent.params && threeImage.form.parent.params.threeImage) {
+      return threeImage.form.parent.params.threeImage;
+    }
+    if (threeImage.form && threeImage.form.parent && threeImage.form.parent.params && threeImage.form.parent.params) {
+      return threeImage.form.parent.params;
+    }
+    if (threeImage.parent && threeImage.parent.parent && threeImage.parent.parent.params && threeImage.parent.parent.params.threeImage) {
+      return threeImage.parent.parent.params.threeImage;
+    }
+    return null;
   }
 
   /**
@@ -118,7 +145,6 @@ function PlaylistWidgetComponent({
       (playlist) => playlist.playlistId === playlistId
     );
     setSelectedPlaylist(selectedPlaylist);
-    setPlaylistPickerOpen(false);
 
     setValue(playlistId);
   }
@@ -129,39 +155,12 @@ function PlaylistWidgetComponent({
       {description && (
         <span className="h5peditor-field-description">{description}</span>
       )}
-      <div
-        className="h5p-playlist-widget"
-        style={{
-          display: "flex",
-          flexWrap: "wrap",
-          justifyContent: "space-between",
-        }}
-      >
-        {selectedPlaylist ? (
-          <div>{selectedPlaylist.title}</div>
-        ) : (
-          <div>No playlist set</div>
-        )}
-        <button onClick={togglePlaylistPicker}>
-          {playlistPickerOpen
-            ? "Close playlist picker"
-            : "Open playlist picker"}
-        </button>
-        {/* <ul hidden={!playlistPickerOpen} style={{ width: "100%" }}>
-          {playlists.map((playlist) => (
-            <li key={playlist.playlistId}>
-              <button onClick={() => selectPlaylist(playlist)}>
-                {playlist.title}
-              </button>
-            </li>
-          ))}
-        </ul> */}
-        <ChoosePlaylistWrapper
-          playlists={playlists}
-          markedPlaylist={selectedPlaylist.playlistId}
-          setNextPlaylistId={selectPlaylist}
-        />
-      </div>
+      <ChoosePlaylistWrapper
+        playlists={playlists}
+        params={getParams()}
+        markedPlaylist={selectedPlaylist ? selectedPlaylist.playlistId : null}
+        selectedPlaylist={selectPlaylist}
+      />
     </>
   );
 }

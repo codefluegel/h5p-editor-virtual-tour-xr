@@ -12,7 +12,6 @@ export default class ChoosePlaylistWrapper extends Component {
 
     this.state = {
       markedPlaylist: this.props.markedPlaylist,
-      isCreatingNewPlaylist: false,
     };
   }
 
@@ -64,27 +63,14 @@ export default class ChoosePlaylistWrapper extends Component {
 
   render() {
     const classes = ['choose-playlist-wrapper'];
-    if (this.state.isCreatingNewPlaylist) {
-      classes.push('new-playlist');
-    }
-
-    const playlistLabel = this.props.isMainPage ? this.context.t('addedPlaylists') : this.context.t('playlist');
-    const playlistDescription = this.props.isMainPage ? this.context.t('addedPlaylistsDescription') : this.context.t('playlistDescription');
 
     return (
       <div className={classes.join(' ')}>
-        <label className='h5peditor-label'>
-          {playlistLabel}
-        </label>
-        <div className='h5peditor-field-description'>
-          {playlistDescription}
-        </div>
         {
-          !this.state.isCreatingNewPlaylist &&
           <ChoosePlaylist
             params={this.props.params}
+            playlists={this.props.playlists}
             markedPlaylist={this.state.markedPlaylist}
-            currentPlaylist={this.props.currentPlaylist}
             hasInputError={this.props.hasInputError}
             newPlaylist={this.createNewPlaylist.bind(this)}
             setNextPlaylistId={this.setNextPlaylistId.bind(this)}
@@ -101,7 +87,6 @@ ChoosePlaylistWrapper.contextType = H5PContext;
 ChoosePlaylistWrapper.propTypes = {
   params: PropTypes.object,
   nextPlaylistIdWidget: PropTypes.object,
-  currentPlaylist: PropTypes.number,
   hasInputError: PropTypes.bool,
   selectedPlaylist: PropTypes.func,
   setPlaylist: PropTypes.func,

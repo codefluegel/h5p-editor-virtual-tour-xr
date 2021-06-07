@@ -14,7 +14,6 @@ import {
   sanitizeSceneForm,
   validateSceneForm
 } from "../../h5phelpers/forms/sceneForm";
-import ChoosePlaylistWrapper from "./ChoosePlaylist/ChoosePlaylistWrapper";
 
 export const SceneEditingType = {
   NOT_EDITING: null,
@@ -26,10 +25,6 @@ export default class SceneEditor extends React.Component {
     super(props);
 
     this.semanticsRef = React.createRef();
-
-    this.state = {
-      showPlaylists: false
-    }
   }
 
   getSceneParams() {
@@ -45,11 +40,6 @@ export default class SceneEditor extends React.Component {
 
   componentDidMount() {
     this.params = this.getSceneParams();
-
-    // Update playlist component
-    this.setState({
-      showPlaylists: this.params.audioType === "playlist"
-    })
 
     // Preserve parent's children
     this.parentChildren = this.context.parent.children;
@@ -93,14 +83,6 @@ export default class SceneEditor extends React.Component {
     const isThreeSixtyScene = this.params.sceneType
       === SceneTypes.THREE_SIXTY_SCENE;
 
-    if (this.params.audioType === "playlist" && this.playlist != null) {
-      this.params.playlist = this.playlist;
-    }
-
-    if (this.params.playlist != null && this.params.audioType === "audio") {
-      this.params.playlist = null;
-    }
-    
     sanitizeSceneForm(
       this.params,
       isThreeSixtyScene,
@@ -108,45 +90,6 @@ export default class SceneEditor extends React.Component {
     );
 
     this.props.doneAction(this.params);
-  }
-
-  setPlaylist(playlist) {
-    this.playlist = playlist;
-  }
-
-  selectedPlaylist(playlist) {
-    const playlistMarked = this.playlist && this.playlist === playlist;
-    const playlistAddedToScene = this.params.playlist && this.params.playlist === playlist;
-    // Unmark playlist if already marked or added to scene
-    this.playlist = playlistMarked || playlistAddedToScene ? null : playlist;
-  }
-
-  hasPlaylist() {
-    this.params = this.getSceneParams();
-    return this.params.playlist;
-  }
-
-  getAudioType() {
-    this.params = this.getSceneParams();
-    return this.params.audioType;
-  }
-
-  checkSemantics() {
-    // Get updated value for Audio Type
-    var audioTypeIsPlaylist = this.semanticsRef.current.getElementsByClassName("playlist")[0].children[0].checked;
-
-    if (this.params) {
-      if (!this.state.showPlaylists && audioTypeIsPlaylist) {
-        this.setState({
-          showPlaylists: true
-        });
-      }
-      if (this.state.showPlaylists && !audioTypeIsPlaylist) {
-        this.setState({
-          showPlaylists: false
-        });
-      }
-    }
   }
 
   render() {
@@ -159,16 +102,7 @@ export default class SceneEditor extends React.Component {
         doneLabel={this.context.t('done')}
         removeLabel={this.context.t('remove')}
       >
-        <div ref={this.semanticsRef} onClick={this.checkSemantics.bind(this)} />
-        {
-          this.state.showPlaylists &&
-          <ChoosePlaylistWrapper
-            selectedPlaylist={this.selectedPlaylist.bind(this)}
-            markedPlaylist={this.hasPlaylist()}
-            params={this.params}
-            setPlaylist={this.setPlaylist.bind(this)}
-          />
-        }
+        <div ref={this.semanticsRef} />
       </EditingDialog>
     );
   }

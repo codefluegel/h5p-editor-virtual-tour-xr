@@ -138,8 +138,6 @@ export default class InteractionEditor extends React.Component {
       if (!isValidScene) {
         return;
       }
-      // Add playlist
-      this.scene.params.playlist = this.playlist;
     }
 
     this.params = sanitizeInteractionParams(this.params, interactionPosition);

@@ -83,9 +83,7 @@ export default class PlaylistEditor extends React.Component {
 
   render() {
     const semanticsClasses = ['semantics-wrapper'];
-    semanticsClasses.push('choose-playlist');
-
-    const showList = false;
+    semanticsClasses.push('choose-playlist-editor');
 
     return (
       <EditingDialog
@@ -97,16 +95,6 @@ export default class PlaylistEditor extends React.Component {
         removeLabel={this.context.t('remove')}
       >
         <div className={semanticsClasses.join(' ')} ref={this.semanticsRef}/>
-        {
-          showList &&
-          <ChoosePlaylistWrapper
-            selectedPlaylist={this.removeInputErrors.bind(this)}
-            hasInputError={this.state.hasInputError}
-            currentScene={this.props.currentScene}
-            params={this.params}
-            setPlaylist={this.setPlaylist.bind(this)}
-          />
-        }
       </EditingDialog>
     );
   }
