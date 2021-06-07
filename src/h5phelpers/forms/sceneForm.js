@@ -24,7 +24,6 @@ export const createSceneForm = (field, params, wrapper, parent) => {
     'sceneId',
     'cameraStartPosition',
     'interactions',
-    'playlist',
   ];
 
   const sceneFields = sceneField.field.fields.filter(sceneField => {

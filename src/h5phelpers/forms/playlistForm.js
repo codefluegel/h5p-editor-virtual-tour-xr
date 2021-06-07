@@ -10,13 +10,8 @@ import {getPlaylistField, isChildrenValid} from "../editorForms";
  */
 export const createPlaylistForm = (field, params, wrapper, parent) => {
   const playlistField = getPlaylistField(field);
-  const hiddenPlaylistFields = [
-    'playlistId',
-  ];
 
-  const playlistFields = playlistField.field.fields.filter(playlistField => {
-    return !hiddenPlaylistFields.includes(playlistField.name);
-  });
+  const playlistFields = playlistField.field.fields;
 
   H5PEditor.processSemanticsChunk(
     playlistFields,

@@ -2,6 +2,17 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import PlaylistRow from "./PlaylistRow/PlaylistRow";
 
+/**
+ * 
+ * @param {{
+ *   playlists: Array<Playlist>;
+ *   markedPlaylist: number;
+ *   isShowingCheck: boolean;
+ *   onTitleClick: (playlistId: number) => void;
+ *   onPlaylistClick: (playlistId: number) => void;
+ * }} props 
+ * @returns {JSX.Element}
+ */
 function PlaylistList(props) {
   let previousElementHasTopBorder = false;
 

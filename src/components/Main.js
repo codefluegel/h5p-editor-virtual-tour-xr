@@ -522,12 +522,7 @@ export default class Main extends React.Component {
             editingInteraction={this.state.editingInteraction}
             library={this.state.editingLibrary}
           />
-        }        
-        
-        <PlaylistControlBar
-          editPlaylist={this.editPlaylist.bind(this)}
-          newPlaylist={this.editPlaylist.bind(this)}
-        />
+        }
         {
           (this.state.editingPlaylist !== PlaylistEditingType.NOT_EDITING) &&
           <PlaylistEditor

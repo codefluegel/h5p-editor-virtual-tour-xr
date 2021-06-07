@@ -1,12 +1,19 @@
+
+declare type AudioTrack = {
+  path: string;
+  mime: string;
+  copyright: { license: string; }
+}
+
 declare type Playlist = {
+  audioTracks: Array<AudioTrack>;
   playlistId: number;
   title: string;
-  audioTracks: Object[];
-};
+}
 
 declare type Scene = {
   sceneId: number;
-  interactions: Interaction[];
+  interactions: Array<Interaction>;
   cameraStartPosition: string;
   sceneType: "360" | "static" | null;
 };

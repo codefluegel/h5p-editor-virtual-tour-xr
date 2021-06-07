@@ -17,7 +17,7 @@
     "@babel/plugin-transform-spread": "^7.2.2",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
-    "@types/react": "^16.7.0",
+    "@types/react": "16.8",
     "@types/react-dom": "^16.9.13",
     "babel-loader": "^8.0.5",
     "css-loader": "^2.1.0",
@@ -33,8 +33,8 @@
   "dependencies": {
     "@babel/polyfill": "^7.2.5",
     "prop-types": "^15.6.2",
-    "react": "^16.7.0",
-    "react-dom": "^16.7.0"
+    "react": "16.8",
+    "react-dom": "16.8"
   },
   "keywords": [],
   "author": "Joubel AS <contact@joubel.com> (https://joubel.com)",
