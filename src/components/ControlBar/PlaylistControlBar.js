@@ -20,7 +20,7 @@ export default class PlaylistControlBar extends Component {
     this.props = props;
 
     this.state = {
-      isExpanded: true
+      isExpanded: false
     };
   }
 
@@ -51,7 +51,9 @@ export default class PlaylistControlBar extends Component {
             {
               <ChoosePlaylistWrapper
                 selectedPlaylist={this.props.editPlaylist.bind(this)}
+                playlists={this.context.params.playlists}
                 params={this.context.params}
+                noPlaylistsTranslation={this.context.t('noPlaylistsAdded')}
                 isMainPage
               />
             }

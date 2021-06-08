@@ -94,6 +94,10 @@ function PlaylistWidgetComponent({
     playlists.find((playlist) => playlist.playlistId === playlistId)
   );
 
+  /** @type [Playlist, (playlist: Playlist) => void] */
+  const [prevSelectedPlaylist, setPrevPlaylist] = React.useState(
+    playlists.find((playlist) => playlist.playlistId === playlistId)
+  );
 
   /**
    * @returns {Array<Playlist>}
@@ -105,10 +109,6 @@ function PlaylistWidgetComponent({
     }
     if (threeImage.parent && threeImage.parent.params && threeImage.parent.params.threeImage && threeImage.parent.params.threeImage.playlists) {
       return threeImage.parent.params.threeImage.playlists;
-    }
-    if (threeImage.form && threeImage.form.parent && threeImage.form.parent.params 
-      && threeImage.form.parent.params.threeImage && threeImage.form.parent.params.threeImage.playlists) {
-      return threeImage.form.parent.params.threeImage.playlists;
     }
     if (threeImage.parent && threeImage.parent.parent && threeImage.parent.parent.params 
       && threeImage.parent.parent.params.threeImage && threeImage.parent.parent.params.threeImage.playlists) {
@@ -125,14 +125,23 @@ function PlaylistWidgetComponent({
     if (threeImage.params) {
       return threeImage.params;
     }
-    if (threeImage.form && threeImage.form.parent && threeImage.form.parent.params && threeImage.form.parent.params && threeImage.form.parent.params.threeImage) {
-      return threeImage.form.parent.params.threeImage;
-    }
-    if (threeImage.form && threeImage.form.parent && threeImage.form.parent.params && threeImage.form.parent.params) {
-      return threeImage.form.parent.params;
-    }
     if (threeImage.parent && threeImage.parent.parent && threeImage.parent.parent.params && threeImage.parent.parent.params.threeImage) {
       return threeImage.parent.parent.params.threeImage;
+    }
+    return null;
+  }
+
+  /**
+   * @returns {Object} l10n
+   */
+  function getTranslation() {
+    const threeImage = form.children[0];
+    // Uses translation when widget has no context
+    if (threeImage.parent && threeImage.parent.parent && threeImage.parent.parent.params && threeImage.parent.parent.params.l10n) {
+      return threeImage.parent.parent.params.l10n.noPlaylists;
+    }
+    if (threeImage.parent && threeImage.parent.params && threeImage.parent.params.l10n) {
+      return threeImage.parent.params.l10n.noPlaylists;
     }
     return null;
   }
@@ -144,9 +153,13 @@ function PlaylistWidgetComponent({
     const selectedPlaylist = playlists.find(
       (playlist) => playlist.playlistId === playlistId
     );
-    setSelectedPlaylist(selectedPlaylist);
+    const newMarkedPlaylist = selectedPlaylist !== prevSelectedPlaylist ? selectedPlaylist : null;
+    const newPlaylistId = selectedPlaylist !== prevSelectedPlaylist ? playlistId : undefined;
 
-    setValue(playlistId);
+    setSelectedPlaylist(newMarkedPlaylist);
+    setPrevPlaylist(newMarkedPlaylist);
+
+    setValue(newPlaylistId);
   }
 
   return (
@@ -158,6 +171,7 @@ function PlaylistWidgetComponent({
       <ChoosePlaylistWrapper
         playlists={playlists}
         params={getParams()}
+        noPlaylistsTranslation={getTranslation()}
         markedPlaylist={selectedPlaylist ? selectedPlaylist.playlistId : null}
         selectedPlaylist={selectPlaylist}
       />

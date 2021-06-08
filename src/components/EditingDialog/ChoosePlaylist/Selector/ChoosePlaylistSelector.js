@@ -19,7 +19,7 @@ ChoosePlaylistSelector.propTypes = {
   playlists: PropTypes.arrayOf(PropTypes.object).isRequired,
   markedPlaylist: PropTypes.number,
   setNextPlaylistId: PropTypes.func.isRequired,
-  selectAPlaylistErrorLabel: PropTypes.string.isRequired
+  selectAPlaylistErrorLabel: PropTypes.string
 };
 
 export default ChoosePlaylistSelector;

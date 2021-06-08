@@ -12,7 +12,7 @@ export default class ChoosePlaylist extends Component {
       playlistClasses.push('has-error');
     }
 
-    const playlists = this.props.params ? this.props.params.playlists : this.props.playlists;
+    const playlists = this.props.playlists;
 
     return (
       <div className={playlistClasses.join(' ')} >
@@ -23,13 +23,12 @@ export default class ChoosePlaylist extends Component {
               playlists={playlists}
               markedPlaylist={this.props.markedPlaylist}
               setNextPlaylistId={this.props.setNextPlaylistId.bind(this)}
-              selectAPlaylistErrorLabel={this.context.t('selectAPlaylistError')}
             />
           </div>
         }
         {
-          !playlists || playlists.length === 0 &&
-          <div className='no-playlists'>{this.context.t('noPlaylistsAdded')}</div>
+          (!playlists || playlists.length === 0) &&
+          <div className='no-playlists'>{this.props.noPlaylistsTranslation}</div>
         }
       </div>
     );

@@ -74,6 +74,7 @@ export default class ChoosePlaylistWrapper extends Component {
             hasInputError={this.props.hasInputError}
             newPlaylist={this.createNewPlaylist.bind(this)}
             setNextPlaylistId={this.setNextPlaylistId.bind(this)}
+            noPlaylistsTranslation={this.props.noPlaylistsTranslation}
           />
         }
         <div ref={this.newPlaylist} />
