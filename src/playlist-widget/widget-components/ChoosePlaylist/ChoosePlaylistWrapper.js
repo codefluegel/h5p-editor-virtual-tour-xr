@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import ChoosePlaylist from "./Selector/ChoosePlaylist";
-import {createPlaylistForm} from "../../../h5phelpers/forms/playlistForm";
 import {H5PContext} from "../../../context/H5PContext";
 
 export default class ChoosePlaylistWrapper extends Component {
@@ -11,49 +10,18 @@ export default class ChoosePlaylistWrapper extends Component {
     this.newPlaylist = React.createRef();
 
     this.state = {
-      markedPlaylist: this.props.markedPlaylist,
+      markedPlaylist: this.props.markedPlaylist
     };
-  }
-
-  createNewPlaylist() {
-    // Process semantics for new playlist
-    const playlists = this.context.params.playlists;
-    const params = getPlaylistParams();
-
-    // Preserve parent's children
-    this.parentChildren = this.context.parent.children;
-
-    createPlaylistForm(
-      this.context.field,
-      params,
-      this.newPlaylist.current,
-      this.context.parent
-    );
-
-    // Capture own children and restore parent
-    this.playlistChildren = this.context.parent.children;
-    this.context.parent.children = this.parentChildren;
-
-
-    this.setNextPlaylistId(params.playlistId);
-
-    this.props.setPlaylist({
-      children: this.playlistChildren,
-      params: params,
-    });
-
-    this.setState({
-      isCreatingNewPlaylist: true,
-    });
   }
 
   setNextPlaylistId(playlistId) {
     this.props.selectedPlaylist(playlistId);
-
+    
     var newMarkedPlaylist = playlistId === this.state.markedPlaylist ? null : playlistId;
 
     if (this.props.isMainPage) {
-        newMarkedPlaylist = null;
+      this.props.editPlaylist(playlistId);
+      newMarkedPlaylist = null;
     }
 
     this.setState({
@@ -72,12 +40,12 @@ export default class ChoosePlaylistWrapper extends Component {
             playlists={this.props.playlists}
             markedPlaylist={this.state.markedPlaylist}
             hasInputError={this.props.hasInputError}
-            newPlaylist={this.createNewPlaylist.bind(this)}
             setNextPlaylistId={this.setNextPlaylistId.bind(this)}
             noPlaylistsTranslation={this.props.noPlaylistsTranslation}
+            translate={this.props.translate}
+            allowAdd={this.props.isMainPage}
           />
         }
-        <div ref={this.newPlaylist} />
       </div>
     );
   }
@@ -90,5 +58,4 @@ ChoosePlaylistWrapper.propTypes = {
   nextPlaylistIdWidget: PropTypes.object,
   hasInputError: PropTypes.bool,
   selectedPlaylist: PropTypes.func,
-  setPlaylist: PropTypes.func,
 };

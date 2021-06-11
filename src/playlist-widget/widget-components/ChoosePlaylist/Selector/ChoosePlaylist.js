@@ -41,5 +41,4 @@ ChoosePlaylist.propTypes = {
   markedPlaylist: PropTypes.number,
   hasInputError: PropTypes.bool,
   setNextPlaylistId: PropTypes.func,
-  newPlaylist: PropTypes.func.isRequired,
 };

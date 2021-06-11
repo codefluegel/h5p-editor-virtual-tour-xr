@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import PlaylistList from "../../../ControlBar/PlaylistSelector/PlaylistList";
+import PlaylistList from "./List/PlaylistList";
 import './ChoosePlaylistSelector.scss';
 
 const ChoosePlaylistSelector = (props) => (

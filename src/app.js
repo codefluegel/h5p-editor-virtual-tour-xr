@@ -3,7 +3,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import Main from "./components/Main";
 import {H5PContext} from './context/H5PContext';
-import "./playlist-widget";
+import "./playlist-widget/widget";
 
 H5PEditor.widgets.threeImage = H5PEditor.ThreeImage = (function () {
 

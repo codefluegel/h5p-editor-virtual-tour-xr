@@ -1,6 +1,6 @@
 // @ts-check
 
-import { PlaylistEditingType } from '../components/EditingDialog/PlaylistEditor';
+import { PlaylistEditingType } from '../playlist-widget/widget-components/PlaylistEditor';
 
 /**
  * Get playlist from id

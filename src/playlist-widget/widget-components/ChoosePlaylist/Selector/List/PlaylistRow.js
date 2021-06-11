@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import './PlaylistRow.scss';
-import {H5PContext} from "../../../../context/H5PContext";
+import {H5PContext} from "../../../../../context/H5PContext";
 
 export default class PlaylistRow extends Component {
   constructor(props) {

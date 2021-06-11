@@ -5,14 +5,11 @@ import PropTypes from 'prop-types';
 import Scene, {SceneTypes} from "./Scene/Scene";
 import SceneControlBar from "./ControlBar/SceneControlBar";
 import SceneEditor, {SceneEditingType} from "./EditingDialog/SceneEditor";
-import PlaylistControlBar from "./ControlBar/PlaylistControlBar";
-import PlaylistEditor, {PlaylistEditingType} from "./EditingDialog/PlaylistEditor";
 import InteractionsBar from "./InteractionsBar/InteractionsBar";
 import './Main.scss';
 import InteractionEditor, {InteractionEditingType} from "./EditingDialog/InteractionEditor";
 import {H5PContext} from "../context/H5PContext";
 import {deleteScene, getSceneFromId, setScenePositionFromCamera, updateScene} from "../h5phelpers/sceneParams";
-import {updatePlaylist} from "../h5phelpers/playlistParams";
 import {getInteractionFromElement, isGoToScene, updatePosition} from "../h5phelpers/libraryParams";
 import {showConfirmationDialog} from "../h5phelpers/h5pComponents";
 import {addBehavioralListeners} from "../h5phelpers/editorForms";
@@ -20,13 +17,11 @@ import {addBehavioralListeners} from "../h5phelpers/editorForms";
 /** 
  *  @typedef State 
  *  @property {number} editingScene
- *  @property {number} editingPlaylist;
  *  @property {Library} editingLibrary;
  *  @property {number} editingInteraction;
  *  @property {number} currentScene;
  *  @property {number} startScene;
  *  @property {boolean} isSceneUpdated;
- *  @property {boolean} isPlaylistsUpdated;
  *  @property {boolean} isSceneSelectorExpanded;
  *  @property {string} currentCameraPosition;
  */
@@ -45,13 +40,11 @@ export default class Main extends React.Component {
     /** @type {State} */
     this.state = {
       editingScene: SceneEditingType.NOT_EDITING,
-      editingPlaylist: PlaylistEditingType.NOT_EDITING,
       editingLibrary: null,
       editingInteraction: InteractionEditingType.NOT_EDITING,
       currentScene: this.props.initialScene,
       startScene: this.props.initialScene,
       isSceneUpdated: false,
-      isPlaylistsUpdated: false,
       isSceneSelectorExpanded: false,
       currentCameraPosition: null
     };
@@ -61,7 +54,6 @@ export default class Main extends React.Component {
     addBehavioralListeners(this.context.parent, () => {
       this.setState({
         isSceneUpdated: false,
-        isPlaylistsUpdated: false,
       });
     });
   }
@@ -70,12 +62,6 @@ export default class Main extends React.Component {
     this.toggleExpandSceneSelector(false);
     this.setState({
       editingScene: sceneId,
-    });
-  }
-
-  editPlaylist(playlistId = PlaylistEditingType.NEW_PLAYLIST) {
-    this.setState({
-      editingPlaylist: playlistId,
     });
   }
 
@@ -129,21 +115,6 @@ export default class Main extends React.Component {
     }, this.confirmedDeleteScene.bind(this, sceneId));
   }
 
-  deletePlaylist(playlistId) {
-    const isNewPlaylist = playlistId === PlaylistEditingType.NEW_PLAYLIST;
-    const deletePlaylistText = isNewPlaylist
-      ? this.context.t('deletePlaylistText')
-      : this.context.t('deletePlaylistTextWithObjects');
-
-    // Confirm deletion
-    showConfirmationDialog({
-      headerText: this.context.t('deletePlaylistTitle'),
-      dialogText: deletePlaylistText,
-      cancelText: this.context.t('cancel'),
-      confirmText: this.context.t('confirm'),
-    }, this.confirmedDeletePlaylist.bind(this, playlistId));
-  }
-
   confirmedDeleteScene(sceneId) {
     this.setState({
       editingScene: SceneEditingType.NOT_EDITING,
@@ -167,39 +138,6 @@ export default class Main extends React.Component {
     });
   }
 
-  removePlaylist(playlists, playlistId) {
-    if (playlistId > -1) {
-      playlists.splice(playlistId, 1);
-    }
-    return playlists;
-  }
-
-  confirmedDeletePlaylist(playlistId) {
-    this.setState({
-      editingPlaylist: PlaylistEditingType.NOT_EDITING,
-    });
-
-    // Playlist not added to params
-    const isNewPlaylist = playlistId === PlaylistEditingType.NEW_PLAYLIST;
-    if (isNewPlaylist) {
-      return;
-    }
-
-    const playlists = this.context.params.playlists;
-    this.context.params.playlists = this.removePlaylist(playlists, playlistId);
-
-    // Remove playlistId from scenes that are using this playlist
-    this.context.params.scenes.forEach(scene => {
-      if (scene.playlist === playlistId) {
-        scene.playlist = undefined;
-      }
-    });
-
-    this.setState({
-      isPlaylistsUpdated: false
-    })
-  }
-
   doneEditingScene(params, editingScene = null, skipChangingScene = false) {
     const scenes = this.context.params.scenes;
     editingScene = editingScene || this.state.editingScene;
@@ -220,24 +158,6 @@ export default class Main extends React.Component {
         isSceneUpdated: false,
         currentScene: isChangingScene ? params.sceneId : prevState.currentScene,
         editingScene: SceneEditingType.NOT_EDITING,
-      };
-    });
-  }
-
-  doneEditingPlaylist(params, editingPlaylist = null, skipChangingPlaylist = false) {
-    const playlists = this.context.params.playlists ? this.context.params.playlists : [];
-    editingPlaylist = editingPlaylist || this.state.editingPlaylist;
-    const isEditing = editingPlaylist !== PlaylistEditingType.NEW_PLAYLIST;
-
-    this.context.params.playlists = updatePlaylist(playlists, params, editingPlaylist);
-
-    // Set current playlist
-    const isChangingPlaylist = !(skipChangingPlaylist || isEditing);
-
-    this.setState((prevState) => {
-      return {
-        isPlaylistsUpdated: false,
-        editingPlaylist: PlaylistEditingType.NOT_EDITING,
       };
     });
   }
@@ -521,18 +441,6 @@ export default class Main extends React.Component {
             currentScene={this.state.currentScene}
             editingInteraction={this.state.editingInteraction}
             library={this.state.editingLibrary}
-          />
-        }
-        <PlaylistControlBar
-          editPlaylist={this.editPlaylist.bind(this)}
-          newPlaylist={this.editPlaylist.bind(this)}
-        />
-        {
-          (this.state.editingPlaylist !== PlaylistEditingType.NOT_EDITING) &&
-          <PlaylistEditor
-            removeAction={this.deletePlaylist.bind(this, this.state.editingPlaylist)}
-            doneAction={this.doneEditingPlaylist.bind(this)}
-            editingPlaylist={this.state.editingPlaylist}
           />
         }
       </div>

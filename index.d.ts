@@ -16,6 +16,7 @@ declare type Scene = {
   interactions: Array<Interaction>;
   cameraStartPosition: string;
   sceneType: "360" | "static" | null;
+  playlist: Playlist;
 };
 
 declare type Interaction = {
@@ -55,3 +56,4 @@ declare type ScenePreview = {
 }
 
 declare const H5P: any;
+declare const H5PEditor: any;

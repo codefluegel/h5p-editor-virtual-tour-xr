@@ -2,7 +2,7 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import EditingDialog from "./EditingDialog";
+import EditingDialog from "../../components/EditingDialog/EditingDialog";
 import {H5PContext} from "../../context/H5PContext";
 import './PlaylistEditor.scss';
 import {getPlaylistFromId} from "../../h5phelpers/playlistParams";
@@ -11,7 +11,6 @@ import {
   getDefaultPlaylistParams,
   validatePlaylistForm
 } from "../../h5phelpers/forms/playlistForm";
-import ChoosePlaylistWrapper from "./ChoosePlaylist/ChoosePlaylistWrapper";
 
 export const PlaylistEditingType = {
   NOT_EDITING: null,
@@ -31,7 +30,7 @@ export default class PlaylistEditor extends React.Component {
   }
 
   getPlaylistParams() {
-    const playlists = this.context.params.playlists;
+    const playlists = this.props.playlists;
 
     // New playlist
     if (this.props.editingPlaylist === PlaylistEditingType.NEW_PLAYLIST) {
@@ -44,19 +43,21 @@ export default class PlaylistEditor extends React.Component {
   componentDidMount() {
     this.params = this.getPlaylistParams();
 
+    var contextParent = this.props.context.parent;
+    
     // Preserve parent's children
-    this.parentChildren = this.context.parent.children;
+    this.parentChildren = contextParent && contextParent.children;
 
     createPlaylistForm(
-      this.context.field,
+      this.props.context.field,
       this.params,
       this.semanticsRef.current,
-      this.context.parent
+      contextParent
     );
 
     // Capture own children and restore parent
-    this.children = this.context.parent.children;
-    this.context.parent.children = this.parentChildren;
+    this.children = this.props.context.parent.children;
+    this.props.context.parent.children = this.parentChildren;
   }
 
   handleDone() {
@@ -71,10 +72,6 @@ export default class PlaylistEditor extends React.Component {
     this.props.doneAction(this.params);
   }
 
-  setPlaylist(playlist) {
-    this.playlist = playlist;
-  }
-
   removeInputErrors() {
     this.setState({
       hasInputError: false,
@@ -87,12 +84,12 @@ export default class PlaylistEditor extends React.Component {
 
     return (
       <EditingDialog
-        title={this.context.t('playlist')}
+        title={this.props.translate('playlist')}
         titleClasses={['playlist']}
         removeAction={this.props.removeAction}
         doneAction={this.handleDone.bind(this)}
-        doneLabel={this.context.t('done')}
-        removeLabel={this.context.t('remove')}
+        doneLabel={this.props.translate('done')}
+        removeLabel={this.props.translate('remove')}
       >
         <div className={semanticsClasses.join(' ')} ref={this.semanticsRef}/>
       </EditingDialog>
