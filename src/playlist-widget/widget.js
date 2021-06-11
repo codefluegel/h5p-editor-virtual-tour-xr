@@ -1,5 +1,5 @@
 // @ts-check
-import React, { useEffect } from "react";
+import React from "react";
 import ReactDOM from "react-dom";
 import './widget.scss';
 import ChoosePlaylistWrapper from './widget-components/ChoosePlaylist/ChoosePlaylistWrapper';
@@ -91,8 +91,8 @@ class PlaylistWidgetComponent2 extends React.Component {
       playlists,
       selectedPlaylist: playlists.find((playlist) => playlist.playlistId === this.props.playlistId),
       prevSelectedPlaylist: playlists.find((playlist) => playlist.playlistId === this.props.playlistId),
-      isPlaylistsUpdated: this.getPlaylistUpdated(),
-      editingPlaylist: this.getEditingPlaylist(),
+      isPlaylistsUpdated: false,
+      editingPlaylist: PlaylistEditingType.NOT_EDITING,
     }
   }
 
@@ -101,18 +101,13 @@ class PlaylistWidgetComponent2 extends React.Component {
       this.setState({
         playlists: event.detail.updatedPlaylists,
       });
-    })    
-  }
-
-  getPlaylistUpdated(newValue) {
-    return newValue ? newValue : false;
-  }
-
-
-  getEditingPlaylist(newValue) {
-    return newValue ? newValue : PlaylistEditingType.NOT_EDITING;
+    })   
   }
   
+  /**
+   * Event that updates the array of playlists when triggered.
+   * @param {Array<Playlist>} updatedPlaylists 
+   */
   triggerUpdatedEvent(updatedPlaylists) {
     const event = new CustomEvent("updatedPlaylists", {detail: {updatedPlaylists}});
     window.dispatchEvent(event);
@@ -120,7 +115,6 @@ class PlaylistWidgetComponent2 extends React.Component {
 
   /**
      * Help fetch the correct translations.
-     *
      * @param {string[]} args
      * @return {string}
      */
@@ -129,40 +123,43 @@ class PlaylistWidgetComponent2 extends React.Component {
     return H5PEditor.t.apply(window, translations);
   }
 
-  getThreeImage() {
-    if (this.props.form && this.props.form.children && this.props.form.children[0] && this.props.form.children[0].form && this.props.form.children[0].form.children && this.props.form.children[0].form.children.length > 0) {
-      return this.props.form.children[0].form;
-    }
-    if (this.props.form && this.props.form.children && this.props.form.children[0] && this.props.form.children[0].children && this.props.form.children[0].children.length > 0) {
-      return this.props.form.children[0];
+  /**
+   * Help fetch the current context.
+   * @returns {object} context
+   */
+  getContext() {
+    if (this.props.form && this.props.form.children && this.props.form.children[0] && this.props.form.children[0].form 
+      && this.props.form.children[0].form.children && this.props.form.children[0].form.children.length > 0) {
+        return this.props.form.children[0].form;
     }
     return this.props.form;
   }
    
   /**
+   * Help fetch the current array of playlists.
    * @returns {Array<Playlist>}
    */
   getPlaylists() {
     const threeImage = this.props.form.children[0];
+
     if (threeImage && threeImage.params && threeImage.params.playlists) {
       return threeImage.params.playlists;
     }
-    else if (threeImage && threeImage.parent && threeImage.parent.params && threeImage.parent.params.threeImage && threeImage.parent.params.threeImage.playlists) {
-      return threeImage.parent.params.threeImage.playlists;
+    else if (threeImage && threeImage.parent && threeImage.parent.params && threeImage.parent.params.threeImage 
+      && threeImage.parent.params.threeImage.playlists) {
+        return threeImage.parent.params.threeImage.playlists;
     }
     else if (threeImage && threeImage.parent && threeImage.parent.parent && threeImage.parent.parent.params 
       && threeImage.parent.parent.params.threeImage && threeImage.parent.parent.params.threeImage.playlists) {
-      return threeImage.parent.parent.params.threeImage.playlists;
+        return threeImage.parent.parent.params.threeImage.playlists;
     }
-    else if (threeImage && threeImage.form && threeImage.form.parent && threeImage.form.parent.params && threeImage.form.parent.params.threeImage 
-      && threeImage.form.parent.params.threeImage.playlists ) {
-      return threeImage.form.parent.params.threeImage.playlists;
+    else if (threeImage && threeImage.form && threeImage.form.parent && threeImage.form.parent.params 
+      && threeImage.form.parent.params.threeImage && threeImage.form.parent.params.threeImage.playlists ) {
+        return threeImage.form.parent.params.threeImage.playlists;
     }
-    else if (this.props.form && this.props.form.parent && this.props.form.parent.params && this.props.form.parent.params.threeImage && this.props.form.parent.params.threeImage.playlists) {
-      return this.props.form.parent.params.threeImage.playlists;
-    }
-    else if (this.props.form && this.props.form.params && this.props.form.params.threeImage && this.props.form.params.threeImage.playlists) {
-      return this.props.form.params.threeImage.playlists;
+    else if (this.props.form && this.props.form.parent && this.props.form.parent.params 
+      && this.props.form.parent.params.threeImage && this.props.form.parent.params.threeImage.playlists) {
+        return this.props.form.parent.params.threeImage.playlists;
     }
     return [];
   }
@@ -170,87 +167,60 @@ class PlaylistWidgetComponent2 extends React.Component {
   /**
    * @returns {Array<Scene>}
    */
-   getScenes() {
+  getScenes() {
     const threeImage = this.props.form.children[0];
 
-    if (threeImage && threeImage.params && threeImage.params.scenes) {
-      return threeImage.params.scenes;
-    }
-    else if (threeImage && threeImage.parent && threeImage.parent.params && threeImage.parent.params.threeImage && threeImage.parent.params.threeImage.scenes) {
-      return threeImage.parent.params.threeImage.scenes;
-    }
-    else if (threeImage && threeImage.parent && threeImage.parent.parent && threeImage.parent.parent.params 
-      && threeImage.parent.parent.params.threeImage && threeImage.parent.parent.params.threeImage.scenes) {
-      return threeImage.parent.parent.params.threeImage.scenes;
-    }
-    else if (threeImage && threeImage.form && threeImage.form.parent && threeImage.form.parent.params && threeImage.form.parent.params.threeImage 
-      && threeImage.form.parent.params.threeImage.scenes ) {
-      return threeImage.form.parent.params.threeImage.scenes;
-    }
-    else if (this.props.form && this.props.form.parent && this.props.form.parent.params && this.props.form.parent.params.threeImage && this.props.form.parent.params.threeImage.scenes) {
-      return this.props.form.parent.params.threeImage.scenes;
-    }
-    else if (this.props.form && this.props.form.params && this.props.form.params.threeImage && this.props.form.params.threeImage.playlists) {
-      return this.props.form.params.threeImage.scenes;
+    if (threeImage && threeImage.form && threeImage.form.parent && threeImage.form.parent.params 
+      && threeImage.form.parent.params.threeImage && threeImage.form.parent.params.threeImage.scenes ) {
+        return threeImage.form.parent.params.threeImage.scenes;
     }
     return [];
+  }
+
+  removePlaylistFromGlobal(playlistId) {
+    const threeImage = this.props.form;
+
+    if (threeImage && threeImage.parent && threeImage.parent.params && threeImage.parent.params.behaviour
+       && threeImage.parent.params.behaviour.playlist === playlistId) {
+        threeImage.parent.params.behaviour.playlist = undefined;
+    }
   }
 
   updatePlaylists(newPlaylists) {
     const threeImage = this.props.form.children[0];
 
-    if (threeImage && threeImage.params && threeImage.params.playlists) {
-      threeImage.params.playlists = newPlaylists;
-    }
-    else if (threeImage && threeImage.parent && threeImage.parent.params && threeImage.parent.params.threeImage && threeImage.parent.params.threeImage.playlists) {
-      threeImage.parent.params.threeImage.playlists = newPlaylists;
-    }
-    else if (threeImage && threeImage.parent && threeImage.parent.parent && threeImage.parent.parent.params 
-      && threeImage.parent.parent.params.threeImage && threeImage.parent.parent.params.threeImage.playlists) {
-      threeImage.parent.parent.params.threeImage.playlists = newPlaylists;
-    }
-    else if (threeImage && threeImage.form && threeImage.form.parent && threeImage.form.parent.params && threeImage.form.parent.params.threeImage 
+    if (threeImage && threeImage.form && threeImage.form.parent && threeImage.form.parent.params && threeImage.form.parent.params.threeImage 
       && threeImage.form.parent.params.threeImage.playlists ) {
-      threeImage.form.parent.params.threeImage.playlists = newPlaylists;
+        threeImage.form.parent.params.threeImage.playlists = newPlaylists;
     }
-    else if (this.props.form && this.props.form.parent && this.props.form.parent.params && this.props.form.parent.params.threeImage && this.props.form.parent.params.threeImage.playlists) {
-      this.props.form.parent.params.threeImage.playlists = newPlaylists;
-    }
-    else if (this.props.form && this.props.form.params && this.props.form.params.threeImage && this.props.form.params.threeImage.playlists) {
-      this.props.form.params.threeImage.playlists = newPlaylists;
+    else if (this.props.form && this.props.form.parent && this.props.form.parent.params && this.props.form.parent.params.threeImage) {
+        this.props.form.parent.params.threeImage.playlists = newPlaylists;
     }
   }
 
   /**
+   * Help fecth the current params.
    * @returns {Object} params
    */
-   getParams() {
+  getParams() {
     const threeImage = this.props.form.children[0];
+
     if (threeImage && threeImage.params) {
       return threeImage.params;
     }
-    if (threeImage && threeImage.parent && threeImage.parent.parent && threeImage.parent.parent.params && threeImage.parent.parent.params.threeImage) {
-      return threeImage.parent.parent.params.threeImage;
+    if (threeImage && threeImage.parent && threeImage.parent.parent 
+      && threeImage.parent.parent.params && threeImage.parent.parent.params.threeImage) {
+        return threeImage.parent.parent.params.threeImage;
     }
-    if (threeImage && threeImage.form && threeImage.form.parent && threeImage.form.parent.params && threeImage.form.parent.params.threeImage 
-      && threeImage.form.parent.params.threeImage ) {
-      return threeImage.form.parent.params.threeImage;
-    }
-    return null;
-  }
-
-  /**
-   * @returns {Object} l10n
-   */
-  getTranslation() {
-    const noPlaylistsText = this.translate('noPlaylistsAdded');
-    if (noPlaylistsText) {
-      return noPlaylistsText;
+    if (threeImage && threeImage.form && threeImage.form.parent && threeImage.form.parent.params 
+      && threeImage.form.parent.params.threeImage && threeImage.form.parent.params.threeImage ) {
+        return threeImage.form.parent.params.threeImage;
     }
     return null;
   }
 
   /**
+   * Sets the selected playlist.
    * @param {number} playlistId
    */
   selectPlaylist(playlistId) {
@@ -268,11 +238,12 @@ class PlaylistWidgetComponent2 extends React.Component {
     this.props.setValue(newPlaylistId);
   }
 
-  deletePlaylist(playlistId) {
-    const isNewPlaylist = playlistId === PlaylistEditingType.NEW_PLAYLIST;
-    this.confirmedDeletePlaylist(playlistId);
-  }
-
+  /**
+   * Actually removes the given playlistId from the playlists array.
+   * @param {Array<Playlist>} playlists 
+   * @param {number} playlistId 
+   * @returns {Array<Playlist>} playlists
+   */
   removePlaylist(playlists, playlistId) {
     if (playlistId > -1) {
       playlists.splice(playlistId, 1);
@@ -280,7 +251,12 @@ class PlaylistWidgetComponent2 extends React.Component {
     return playlists;
   }
 
-  confirmedDeletePlaylist(playlistId) {
+  /**
+   * Helps remove the given playlistId from the playlists array.
+   * @param {number} playlistId 
+   * @returns if playlist not added
+   */
+  deletePlaylist(playlistId) {
     this.setState({
       editingPlaylist: PlaylistEditingType.NOT_EDITING
     })
@@ -294,7 +270,9 @@ class PlaylistWidgetComponent2 extends React.Component {
     const playlists = this.getPlaylists();
     const newPlaylists = this.removePlaylist(playlists, playlistId);
     this.updatePlaylists(newPlaylists);
+    this.removePlaylistFromGlobal(playlistId);
     this.triggerUpdatedEvent(newPlaylists);
+    
 
     // Remove playlistId from scenes that are using this playlist
     this.getScenes().forEach(scene => {
@@ -309,16 +287,22 @@ class PlaylistWidgetComponent2 extends React.Component {
     });
   }
 
+  /**
+   * Sets the chosen playlist as editingPlaylist.
+   * @param {number} playlistId 
+   */
   editPlaylist(playlistId = PlaylistEditingType.NEW_PLAYLIST) {
     this.setState({editingPlaylist: playlistId});
   }
 
+  /**
+   * Updates the playlists array and states afte editing playlist.
+   * @param {*} params 
+   * @param {*} thisEditingPlaylist 
+   */
   doneEditingPlaylist(params, thisEditingPlaylist = null) {
     const playlists = this.getPlaylists();
-    thisEditingPlaylist = this.state.editingPlaylist || this.getEditingPlaylist();
-    if (thisEditingPlaylist === null && params.playlistId === playlists.length) {
-      thisEditingPlaylist = -1;
-    }
+    thisEditingPlaylist = this.state.editingPlaylist;
 
     const newPlaylists = updatePlaylist(playlists, params, thisEditingPlaylist);
     this.updatePlaylists(newPlaylists);
@@ -342,13 +326,13 @@ class PlaylistWidgetComponent2 extends React.Component {
         <ChoosePlaylistWrapper
           playlists={this.state.playlists}
           params={this.getParams()}
-          noPlaylistsTranslation={this.getTranslation()}
+          noPlaylistsTranslation={this.translate('noPlaylistsAdded')}
           markedPlaylist={this.state.selectedPlaylist ? this.state.selectedPlaylist.playlistId : null}
           selectedPlaylist={this.selectPlaylist.bind(this)}
           editPlaylist={this.editPlaylist.bind(this)}
-          isMainPage={this.props.canEdit}
+          canEdit={this.props.canEdit}
           translate={this.translate}
-          context={this.getThreeImage()}
+          context={this.getContext()}
           editingPlaylist={this.state.editingPlaylist}
           doneAction={this.doneEditingPlaylist.bind(this)}
         />
@@ -368,7 +352,7 @@ class PlaylistWidgetComponent2 extends React.Component {
             removeAction={() => this.deletePlaylist(this.state.editingPlaylist)}
             doneAction={this.doneEditingPlaylist.bind(this)}
             editingPlaylist={this.state.editingPlaylist}
-            context={this.getThreeImage()}
+            context={this.getContext()}
             playlists={this.state.playlists}
           />
         }

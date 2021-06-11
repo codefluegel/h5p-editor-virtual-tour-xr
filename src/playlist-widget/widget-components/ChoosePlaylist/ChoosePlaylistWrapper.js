@@ -10,7 +10,7 @@ export default class ChoosePlaylistWrapper extends Component {
     this.newPlaylist = React.createRef();
 
     this.state = {
-      markedPlaylist: this.props.markedPlaylist
+      markedPlaylist: !this.props.canEdit ? this.props.markedPlaylist : null
     };
   }
 
@@ -19,7 +19,7 @@ export default class ChoosePlaylistWrapper extends Component {
     
     var newMarkedPlaylist = playlistId === this.state.markedPlaylist ? null : playlistId;
 
-    if (this.props.isMainPage) {
+    if (this.props.canEdit) {
       this.props.editPlaylist(playlistId);
       newMarkedPlaylist = null;
     }
@@ -43,7 +43,6 @@ export default class ChoosePlaylistWrapper extends Component {
             setNextPlaylistId={this.setNextPlaylistId.bind(this)}
             noPlaylistsTranslation={this.props.noPlaylistsTranslation}
             translate={this.props.translate}
-            allowAdd={this.props.isMainPage}
           />
         }
       </div>
