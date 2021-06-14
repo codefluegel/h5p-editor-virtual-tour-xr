@@ -1,10 +1,13 @@
 // @ts-check
+
 import React from "react";
 import ReactDOM from "react-dom";
-import './widget.scss';
-import ChoosePlaylistWrapper from './widget-components/ChoosePlaylist/ChoosePlaylistWrapper';
-import PlaylistEditor, {PlaylistEditingType} from "./widget-components/PlaylistEditor";
-import {updatePlaylist} from "../h5phelpers/playlistParams";
+import { updatePlaylist } from "../h5phelpers/playlistParams";
+import ChoosePlaylistWrapper from "./widget-components/ChoosePlaylist/ChoosePlaylistWrapper";
+import PlaylistEditor, {
+  PlaylistEditingType,
+} from "./widget-components/PlaylistEditor";
+import "./widget.scss";
 
 /** @typedef {any} jQuery */
 
@@ -47,9 +50,9 @@ H5PEditor.widgets.playlist = class PlaylistWidget {
   /**
    * @param {jQuery} $wrapper
    */
-  appendTo($wrapper) {    
+  appendTo($wrapper) {
     ReactDOM.render(
-      <PlaylistWidgetComponent2
+      <PlaylistWidgetComponent
         form={this.form}
         setValue={(/** @type {number} */ value) => {
           this.value = value;
@@ -71,10 +74,10 @@ H5PEditor.widgets.playlist = class PlaylistWidget {
   remove() {}
 };
 
-class PlaylistWidgetComponent2 extends React.Component {
+class PlaylistWidgetComponent extends React.Component {
   /**
- * @param {{
- *   form: Form;
+   * @param {{
+   *   form: Form;
    *   setValue: (value: number) => void;
    *   playlistId: number;
    *   label: string;
@@ -89,42 +92,61 @@ class PlaylistWidgetComponent2 extends React.Component {
     const playlists = this.getPlaylists();
     this.state = {
       playlists,
-      selectedPlaylist: playlists.find((playlist) => playlist.playlistId === this.props.playlistId),
-      prevSelectedPlaylist: playlists.find((playlist) => playlist.playlistId === this.props.playlistId),
+      selectedPlaylist: playlists.find(
+        (playlist) => playlist.playlistId === this.props.playlistId
+      ),
+      prevSelectedPlaylist: playlists.find(
+        (playlist) => playlist.playlistId === this.props.playlistId
+      ),
       isPlaylistsUpdated: false,
       editingPlaylist: PlaylistEditingType.NOT_EDITING,
-    }
+    };
   }
 
   componentDidMount() {
-    window.addEventListener("updatedPlaylists", (/** @type {CustomEvent} */ event) => {
-      const selectedPlaylistStillExists = this.state.selectedPlaylist && event.detail.updatedPlaylists.find((playlist) => playlist.playlistId ===  this.state.selectedPlaylist.playlistId);
-      this.setState({
-        playlists: event.detail.updatedPlaylists,
-      });
-      if (!selectedPlaylistStillExists) {
-        this.selectPlaylist(null);
+    window.addEventListener(
+      "h5pPlaylistsUpdated",
+      (/** @type {CustomEvent<Array<Playlist>>} */ event) => {
+        const updatedPlaylists = event.detail;
+
+        const selectedPlaylistStillExists =
+          this.state.selectedPlaylist &&
+          updatedPlaylists.find(
+            (playlist) =>
+              playlist.playlistId === this.state.selectedPlaylist.playlistId
+          );
+
+        this.setState({
+          playlists: updatedPlaylists,
+        });
+
+        if (!selectedPlaylistStillExists) {
+          this.selectPlaylist(null);
+        }
       }
-      console.log("tømt?", this.props.playlistId);
-    })   
+    );
   }
-  
+
   /**
    * Event that updates the array of playlists when triggered.
-   * @param {Array<Playlist>} updatedPlaylists 
+   * @param {Array<Playlist>} updatedPlaylists
    */
   triggerUpdatedEvent(updatedPlaylists) {
-    const event = new CustomEvent("updatedPlaylists", {detail: {updatedPlaylists}});
+    /** @type {CustomEvent<Array<Playlist>>} */
+    const event = new CustomEvent("h5pPlaylistsUpdated", {
+      detail: updatedPlaylists,
+    });
+
     window.dispatchEvent(event);
   }
 
   /**
-     * Help fetch the correct translations.
-     * @param {string[]} args
-     * @return {string}
-     */
+   * Help fetch the correct translations.
+   * @param {string[]} args
+   * @return {string}
+   */
   translate(...args) {
-    const translations = ['H5PEditor.ThreeImage', ...args];
+    const translations = ["H5PEditor.ThreeImage", ...args];
     return H5PEditor.t.apply(window, translations);
   }
 
@@ -133,13 +155,19 @@ class PlaylistWidgetComponent2 extends React.Component {
    * @returns {object} context
    */
   getContext() {
-    if (this.props.form && this.props.form.children && this.props.form.children[0] && this.props.form.children[0].form 
-      && this.props.form.children[0].form.children && this.props.form.children[0].form.children.length > 0) {
-        return this.props.form.children[0].form;
+    if (
+      this.props.form &&
+      this.props.form.children &&
+      this.props.form.children[0] &&
+      this.props.form.children[0].form &&
+      this.props.form.children[0].form.children &&
+      this.props.form.children[0].form.children.length > 0
+    ) {
+      return this.props.form.children[0].form;
     }
     return this.props.form;
   }
-   
+
   /**
    * Help fetch the current array of playlists.
    * @returns {Array<Playlist>}
@@ -149,23 +177,42 @@ class PlaylistWidgetComponent2 extends React.Component {
 
     if (threeImage && threeImage.params && threeImage.params.playlists) {
       return threeImage.params.playlists;
+    } else if (
+      threeImage &&
+      threeImage.parent &&
+      threeImage.parent.params &&
+      threeImage.parent.params.threeImage &&
+      threeImage.parent.params.threeImage.playlists
+    ) {
+      return threeImage.parent.params.threeImage.playlists;
+    } else if (
+      threeImage &&
+      threeImage.parent &&
+      threeImage.parent.parent &&
+      threeImage.parent.parent.params &&
+      threeImage.parent.parent.params.threeImage &&
+      threeImage.parent.parent.params.threeImage.playlists
+    ) {
+      return threeImage.parent.parent.params.threeImage.playlists;
+    } else if (
+      threeImage &&
+      threeImage.form &&
+      threeImage.form.parent &&
+      threeImage.form.parent.params &&
+      threeImage.form.parent.params.threeImage &&
+      threeImage.form.parent.params.threeImage.playlists
+    ) {
+      return threeImage.form.parent.params.threeImage.playlists;
+    } else if (
+      this.props.form &&
+      this.props.form.parent &&
+      this.props.form.parent.params &&
+      this.props.form.parent.params.threeImage &&
+      this.props.form.parent.params.threeImage.playlists
+    ) {
+      return this.props.form.parent.params.threeImage.playlists;
     }
-    else if (threeImage && threeImage.parent && threeImage.parent.params && threeImage.parent.params.threeImage 
-      && threeImage.parent.params.threeImage.playlists) {
-        return threeImage.parent.params.threeImage.playlists;
-    }
-    else if (threeImage && threeImage.parent && threeImage.parent.parent && threeImage.parent.parent.params 
-      && threeImage.parent.parent.params.threeImage && threeImage.parent.parent.params.threeImage.playlists) {
-        return threeImage.parent.parent.params.threeImage.playlists;
-    }
-    else if (threeImage && threeImage.form && threeImage.form.parent && threeImage.form.parent.params 
-      && threeImage.form.parent.params.threeImage && threeImage.form.parent.params.threeImage.playlists ) {
-        return threeImage.form.parent.params.threeImage.playlists;
-    }
-    else if (this.props.form && this.props.form.parent && this.props.form.parent.params 
-      && this.props.form.parent.params.threeImage && this.props.form.parent.params.threeImage.playlists) {
-        return this.props.form.parent.params.threeImage.playlists;
-    }
+
     return [];
   }
 
@@ -175,31 +222,50 @@ class PlaylistWidgetComponent2 extends React.Component {
   getScenes() {
     const threeImage = this.props.form.children[0];
 
-    if (threeImage && threeImage.form && threeImage.form.parent && threeImage.form.parent.params 
-      && threeImage.form.parent.params.threeImage && threeImage.form.parent.params.threeImage.scenes ) {
-        return threeImage.form.parent.params.threeImage.scenes;
+    if (
+      threeImage &&
+      threeImage.form &&
+      threeImage.form.parent &&
+      threeImage.form.parent.params &&
+      threeImage.form.parent.params.threeImage &&
+      threeImage.form.parent.params.threeImage.scenes
+    ) {
+      return threeImage.form.parent.params.threeImage.scenes;
     }
     return [];
   }
 
+  /**
+   * @param {string} playlistId
+   */
   removePlaylistFromGlobal(playlistId) {
     const threeImage = this.props.form;
 
-    if (threeImage && threeImage.parent && threeImage.parent.params && threeImage.parent.params.behaviour
-       && threeImage.parent.params.behaviour.playlist === playlistId) {
-        threeImage.parent.params.behaviour.playlist = undefined;
+    if (
+      threeImage &&
+      threeImage.parent &&
+      threeImage.parent.params &&
+      threeImage.parent.params.behaviour &&
+      threeImage.parent.params.behaviour.playlist === playlistId
+    ) {
+      threeImage.parent.params.behaviour.playlist = undefined;
     }
   }
 
+  /**
+   * @param {Array<Playlist>} newPlaylists
+   */
   updatePlaylists(newPlaylists) {
     const threeImage = this.props.form.children[0];
 
-    if (threeImage && threeImage.form && threeImage.form.parent && threeImage.form.parent.params && threeImage.form.parent.params.threeImage 
-      && threeImage.form.parent.params.threeImage.playlists ) {
-        threeImage.form.parent.params.threeImage.playlists = newPlaylists;
-    }
-    else if (this.props.form && this.props.form.parent && this.props.form.parent.params && this.props.form.parent.params.threeImage) {
-        this.props.form.parent.params.threeImage.playlists = newPlaylists;
+    if (
+      threeImage &&
+      threeImage.form &&
+      threeImage.form.parent &&
+      threeImage.form.parent.params &&
+      threeImage.form.parent.params.threeImage
+    ) {
+      threeImage.form.parent.params.threeImage.playlists = newPlaylists;
     }
   }
 
@@ -213,45 +279,65 @@ class PlaylistWidgetComponent2 extends React.Component {
     if (threeImage && threeImage.params) {
       return threeImage.params;
     }
-    if (threeImage && threeImage.parent && threeImage.parent.parent 
-      && threeImage.parent.parent.params && threeImage.parent.parent.params.threeImage) {
-        return threeImage.parent.parent.params.threeImage;
+
+    if (
+      threeImage &&
+      threeImage.parent &&
+      threeImage.parent.parent &&
+      threeImage.parent.parent.params &&
+      threeImage.parent.parent.params.threeImage
+    ) {
+      return threeImage.parent.parent.params.threeImage;
     }
-    if (threeImage && threeImage.form && threeImage.form.parent && threeImage.form.parent.params 
-      && threeImage.form.parent.params.threeImage && threeImage.form.parent.params.threeImage ) {
-        return threeImage.form.parent.params.threeImage;
+
+    if (
+      threeImage &&
+      threeImage.form &&
+      threeImage.form.parent &&
+      threeImage.form.parent.params &&
+      threeImage.form.parent.params.threeImage
+    ) {
+      return threeImage.form.parent.params.threeImage;
     }
+
     return null;
   }
 
   /**
    * Sets the selected playlist.
-   * @param {number} playlistId
+   * @param {string} playlistId
    */
   selectPlaylist(playlistId) {
     const selectedPlaylist = this.state.playlists.find(
       (playlist) => playlist.playlistId === playlistId
     );
-    const newMarkedPlaylist = selectedPlaylist !== this.state.prevSelectedPlaylist ? selectedPlaylist : null;
-    const newPlaylistId = selectedPlaylist !== this.state.prevSelectedPlaylist ? playlistId : undefined;
+
+    const newMarkedPlaylist =
+      selectedPlaylist !== this.state.prevSelectedPlaylist
+        ? selectedPlaylist
+        : null;
+    const newPlaylistId =
+      selectedPlaylist !== this.state.prevSelectedPlaylist
+        ? playlistId
+        : undefined;
 
     this.setState({
       selectedPlaylist: newMarkedPlaylist,
       prevSelectedPlaylist: newMarkedPlaylist,
-    })
-    
+    });
+
     this.props.setValue(newPlaylistId);
   }
 
   /**
    * Actually removes the given playlistId from the playlists array.
-   * @param {Array<Playlist>} playlists 
-   * @param {Playlist} selectedPlaylist 
+   * @param {Array<Playlist>} playlists
+   * @param {Playlist} selectedPlaylist
    * @returns {Array<Playlist>} playlists
    */
   removePlaylist(playlists, selectedPlaylist) {
     const index = playlists.indexOf(selectedPlaylist);
-    if (selectedPlaylist !== null && selectedPlaylist.playlistId > -1) {
+    if (selectedPlaylist != null && selectedPlaylist.playlistId !== "") {
       playlists.splice(index, 1);
     }
     return playlists;
@@ -259,13 +345,13 @@ class PlaylistWidgetComponent2 extends React.Component {
 
   /**
    * Helps remove the given playlistId from the playlists array.
-   * @param {number} playlistId 
+   * @param {string} playlistId
    * @returns if playlist not added
    */
   deletePlaylist(playlistId) {
     this.setState({
-      editingPlaylist: PlaylistEditingType.NOT_EDITING
-    })
+      editingPlaylist: PlaylistEditingType.NOT_EDITING,
+    });
 
     // Playlist not added to params
     const isNewPlaylist = playlistId === PlaylistEditingType.NEW_PLAYLIST;
@@ -274,15 +360,17 @@ class PlaylistWidgetComponent2 extends React.Component {
     }
 
     const playlists = this.getPlaylists();
-    const newPlaylists = this.removePlaylist(playlists, this.state.selectedPlaylist);
+    const newPlaylists = this.removePlaylist(
+      playlists,
+      this.state.selectedPlaylist
+    );
     this.updatePlaylists(newPlaylists);
     this.removePlaylistFromGlobal(playlistId);
     this.triggerUpdatedEvent(newPlaylists);
-    
 
     // Remove playlistId from scenes that are using this playlist
-    this.getScenes().forEach(scene => {
-      if (scene.playlist === playlistId) {
+    this.getScenes().forEach((scene) => {
+      if (scene.playlist && scene.playlist.playlistId === playlistId) {
         scene.playlist = undefined;
       }
     });
@@ -295,16 +383,16 @@ class PlaylistWidgetComponent2 extends React.Component {
 
   /**
    * Sets the chosen playlist as editingPlaylist.
-   * @param {number} playlistId 
+   * @param {string} playlistId
    */
   editPlaylist(playlistId = PlaylistEditingType.NEW_PLAYLIST) {
-    this.setState({editingPlaylist: playlistId});
+    this.setState({ editingPlaylist: playlistId });
   }
 
   /**
    * Updates the playlists array and states afte editing playlist.
-   * @param {*} params 
-   * @param {*} thisEditingPlaylist 
+   * @param {*} params
+   * @param {string} thisEditingPlaylist
    */
   doneEditingPlaylist(params, thisEditingPlaylist = null) {
     const playlists = this.getPlaylists();
@@ -319,22 +407,29 @@ class PlaylistWidgetComponent2 extends React.Component {
       playlistUpdated: false,
       editingPlaylist: PlaylistEditingType.NOT_EDITING,
       selectedPlaylist: null,
-    })
+    });
   }
 
   render() {
-    console.log("updated", this.state.selectedPlaylist);
     return (
       <>
-        {this.props.label && <span className="h5peditor-label">{this.props.label}</span>}
+        {this.props.label && (
+          <span className="h5peditor-label">{this.props.label}</span>
+        )}
         {this.props.description && (
-          <span className="h5peditor-field-description">{this.props.description}</span>
+          <span className="h5peditor-field-description">
+            {this.props.description}
+          </span>
         )}
         <ChoosePlaylistWrapper
           playlists={this.state.playlists}
           params={this.getParams()}
-          noPlaylistsTranslation={this.translate('noPlaylistsAdded')}
-          markedPlaylist={this.state.selectedPlaylist ? this.state.selectedPlaylist.playlistId : null}
+          noPlaylistsTranslation={this.translate("noPlaylistsAdded")}
+          markedPlaylist={
+            this.state.selectedPlaylist
+              ? this.state.selectedPlaylist.playlistId
+              : null
+          }
           selectedPlaylist={this.selectPlaylist.bind(this)}
           editPlaylist={this.editPlaylist.bind(this)}
           canEdit={this.props.canEdit}
@@ -343,26 +438,31 @@ class PlaylistWidgetComponent2 extends React.Component {
           editingPlaylist={this.state.editingPlaylist}
           doneAction={this.doneEditingPlaylist.bind(this)}
         />
-        {
-          this.props.canEdit && 
-          <div className='buttons-wrapper'>
+        {this.props.canEdit && (
+          <div className="buttons-wrapper">
             <button
-              className='h5p-new-playlist-button'
-              onClick={() => this.editPlaylist(PlaylistEditingType.NEW_PLAYLIST)}
-            >+ {this.translate('newPlaylist')}</button>
+              className="h5p-new-playlist-button"
+              onClick={() =>
+                this.editPlaylist(PlaylistEditingType.NEW_PLAYLIST)
+              }
+            >
+              + {this.translate("newPlaylist")}
+            </button>
           </div>
-        }
-        {
-          (this.state.editingPlaylist !== PlaylistEditingType.NOT_EDITING) && this.props.canEdit &&
-          <PlaylistEditor
-            translate={this.translate}
-            removeAction={() => this.deletePlaylist(this.state.editingPlaylist)}
-            doneAction={this.doneEditingPlaylist.bind(this)}
-            editingPlaylist={this.state.editingPlaylist}
-            context={this.getContext()}
-            playlists={this.state.playlists}
-          />
-        }
+        )}
+        {this.state.editingPlaylist !== PlaylistEditingType.NOT_EDITING &&
+          this.props.canEdit && (
+            <PlaylistEditor
+              translate={this.translate}
+              removeAction={() =>
+                this.deletePlaylist(this.state.editingPlaylist)
+              }
+              doneAction={this.doneEditingPlaylist.bind(this)}
+              editingPlaylist={this.state.editingPlaylist}
+              context={this.getContext()}
+              playlists={this.state.playlists}
+            />
+          )}
       </>
     );
   }

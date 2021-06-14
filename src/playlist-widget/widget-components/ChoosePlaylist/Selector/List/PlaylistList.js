@@ -1,15 +1,16 @@
+// @ts-check
+
 import PropTypes from 'prop-types';
 import React from 'react';
 import PlaylistRow from "./PlaylistRow";
 
 /**
- * 
  * @param {{
  *   playlists: Array<Playlist>;
- *   markedPlaylist: number;
+ *   markedPlaylist: string;
  *   isShowingCheck: boolean;
- *   onTitleClick: (playlistId: number) => void;
- *   onPlaylistClick: (playlistId: number) => void;
+ *   onTitleClick: (playlistId: string) => void;
+ *   onPlaylistClick: (playlistId: string) => void;
  * }} props 
  * @returns {JSX.Element}
  */
@@ -41,7 +42,7 @@ function PlaylistList(props) {
               }}
             >
               {
-                props.playlist && props.playlist.playlistId
+                playlist && playlist.playlistId
               }
             </PlaylistRow>
           );
@@ -53,9 +54,9 @@ function PlaylistList(props) {
 
 PlaylistList.propTypes = {
   playlists: PropTypes.arrayOf(PropTypes.shape({
-    playlistId: PropTypes.number,
+    playlistId: PropTypes.string,
   })),
-  markedPlaylist: PropTypes.number,
+  markedPlaylist: PropTypes.string,
   isShowingCheck: PropTypes.bool,
   onTitleClick: PropTypes.func,
   onPlaylistClick: PropTypes.func,

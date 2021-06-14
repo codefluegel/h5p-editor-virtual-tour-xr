@@ -14,7 +14,7 @@ import {
 
 export const PlaylistEditingType = {
   NOT_EDITING: null,
-  NEW_PLAYLIST: -1,
+  NEW_PLAYLIST: "",
 }
 
 export default class PlaylistEditor extends React.Component {
@@ -34,7 +34,7 @@ export default class PlaylistEditor extends React.Component {
 
     // New playlist
     if (this.props.editingPlaylist === PlaylistEditingType.NEW_PLAYLIST) {
-      return getDefaultPlaylistParams(playlists);
+      return getDefaultPlaylistParams();
     }
 
     return getPlaylistFromId(playlists, this.props.editingPlaylist);
@@ -100,7 +100,7 @@ export default class PlaylistEditor extends React.Component {
 PlaylistEditor.contextType = H5PContext;
 
 PlaylistEditor.propTypes = {
-  editingPlaylist: PropTypes.number.isRequired,
+  editingPlaylist: PropTypes.string.isRequired,
   doneAction: PropTypes.func.isRequired,
   removeAction: PropTypes.func.isRequired,
 };

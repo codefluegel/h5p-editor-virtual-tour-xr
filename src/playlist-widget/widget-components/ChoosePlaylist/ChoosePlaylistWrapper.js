@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
-import PropTypes from 'prop-types';
+import React, { Component } from "react";
+import PropTypes from "prop-types";
 import ChoosePlaylist from "./Selector/ChoosePlaylist";
-import {H5PContext} from "../../../context/H5PContext";
+import { H5PContext } from "../../../context/H5PContext";
 
 export default class ChoosePlaylistWrapper extends Component {
   constructor(props) {
@@ -10,15 +10,15 @@ export default class ChoosePlaylistWrapper extends Component {
     this.newPlaylist = React.createRef();
 
     this.state = {
-      markedPlaylist: !this.props.canEdit ? this.props.markedPlaylist : null
+      markedPlaylist: !this.props.canEdit ? this.props.markedPlaylist : null,
     };
   }
 
   setNextPlaylistId(playlistId) {
-    console.log("her??");
     this.props.selectedPlaylist(playlistId);
-    
-    var newMarkedPlaylist = playlistId === this.state.markedPlaylist ? null : playlistId;
+
+    var newMarkedPlaylist =
+      playlistId === this.state.markedPlaylist ? null : playlistId;
 
     if (this.props.canEdit) {
       this.props.editPlaylist(playlistId);
@@ -31,11 +31,9 @@ export default class ChoosePlaylistWrapper extends Component {
   }
 
   render() {
-    const classes = ['choose-playlist-wrapper'];
-    console.log("props", this.props.markedPlaylist);
-    console.log("state", this.state.markedPlaylist);
+    const classes = ["choose-playlist-wrapper"];
     return (
-      <div className={classes.join(' ')}>
+      <div className={classes.join(" ")}>
         {
           <ChoosePlaylist
             params={this.props.params}

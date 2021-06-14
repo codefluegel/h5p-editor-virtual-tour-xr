@@ -35,14 +35,11 @@ export const createPlaylistForm = (field, params, wrapper, parent) => {
 /**
  * Get initial parameters for an empty playlist
  *
- * @param {Playlist[]} playlists
  * @returns {Playlist}
  */
-export const getDefaultPlaylistParams = (playlists) => {
-  return {
-    playlistId: getUniquePlaylistId(playlists),
-  };
-};
+export const getDefaultPlaylistParams = () => ({
+  playlistId: getUniquePlaylistId(),
+});
 
 /**
  * Grabs a unique ID that is higher than the highest ID in our playlists collection
@@ -50,12 +47,4 @@ export const getDefaultPlaylistParams = (playlists) => {
  * @param {Playlist[]} playlists
  * @returns {number}
  */
-const getUniquePlaylistId = (playlists) => {
-  if (!(playlists && playlists.length)) {
-    return 0;
-  }
-
-  const playlistIds = playlists.map(playlist => playlist.playlistId);
-  const maxSceneId = Math.max(...playlistIds);
-  return H5P.createUUID();
-};
+const getUniquePlaylistId = () => H5P.createUUID();

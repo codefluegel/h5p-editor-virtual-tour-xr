@@ -17,7 +17,7 @@ const ChoosePlaylistSelector = (props) => (
 
 ChoosePlaylistSelector.propTypes = {
   playlists: PropTypes.arrayOf(PropTypes.object).isRequired,
-  markedPlaylist: PropTypes.number,
+  markedPlaylist: PropTypes.string,
   setNextPlaylistId: PropTypes.func.isRequired,
   selectAPlaylistErrorLabel: PropTypes.string
 };

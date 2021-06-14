@@ -7,7 +7,7 @@ declare type AudioTrack = {
 
 declare type Playlist = {
   audioTracks: Array<AudioTrack>;
-  playlistId: number;
+  playlistId: string;
   title: string;
 }
 

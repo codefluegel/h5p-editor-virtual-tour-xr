@@ -38,7 +38,7 @@ export default class ChoosePlaylist extends Component {
 ChoosePlaylist.contextType = H5PContext;
 
 ChoosePlaylist.propTypes = {
-  markedPlaylist: PropTypes.number,
+  markedPlaylist: PropTypes.string,
   hasInputError: PropTypes.bool,
   setNextPlaylistId: PropTypes.func,
 };

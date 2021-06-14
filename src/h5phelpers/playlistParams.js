@@ -6,7 +6,7 @@ import { PlaylistEditingType } from '../playlist-widget/widget-components/Playli
  * Get playlist from id
  *
  * @param {Playlist[]} playlists
- * @param {number} playlistId
+ * @param {string} playlistId
  * @returns {Playlist}
  */
 export const getPlaylistFromId = (playlists, playlistId) => {
@@ -20,10 +20,10 @@ export const getPlaylistFromId = (playlists, playlistId) => {
  *
  * @param {Playlist[]} playlists
  * @param {Playlist} params
- * @param {number} editingPlaylist
+ * @param {string} editingPlaylist
  * @returns {Playlist[]}
  */
-export const updatePlaylist = (playlists, params, editingPlaylist = -1) => {
+export const updatePlaylist = (playlists, params, editingPlaylist = "") => {
   if (editingPlaylist === PlaylistEditingType.NEW_PLAYLIST) {
     playlists.push(params);
     return playlists;
