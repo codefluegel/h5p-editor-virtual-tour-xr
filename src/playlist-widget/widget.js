@@ -98,9 +98,14 @@ class PlaylistWidgetComponent2 extends React.Component {
 
   componentDidMount() {
     window.addEventListener("updatedPlaylists", (/** @type {CustomEvent} */ event) => {
+      const selectedPlaylistStillExists = this.state.selectedPlaylist && event.detail.updatedPlaylists.find((playlist) => playlist.playlistId ===  this.state.selectedPlaylist.playlistId);
       this.setState({
         playlists: event.detail.updatedPlaylists,
       });
+      if (!selectedPlaylistStillExists) {
+        this.selectPlaylist(null);
+      }
+      console.log("tømt?", this.props.playlistId);
     })   
   }
   
@@ -318,6 +323,7 @@ class PlaylistWidgetComponent2 extends React.Component {
   }
 
   render() {
+    console.log("updated", this.state.selectedPlaylist);
     return (
       <>
         {this.props.label && <span className="h5peditor-label">{this.props.label}</span>}

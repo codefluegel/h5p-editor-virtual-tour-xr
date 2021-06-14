@@ -57,5 +57,5 @@ const getUniquePlaylistId = (playlists) => {
 
   const playlistIds = playlists.map(playlist => playlist.playlistId);
   const maxSceneId = Math.max(...playlistIds);
-  return maxSceneId + 1;
+  return H5P.createUUID();
 };

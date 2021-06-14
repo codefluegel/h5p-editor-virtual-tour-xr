@@ -15,6 +15,7 @@ export default class ChoosePlaylistWrapper extends Component {
   }
 
   setNextPlaylistId(playlistId) {
+    console.log("her??");
     this.props.selectedPlaylist(playlistId);
     
     var newMarkedPlaylist = playlistId === this.state.markedPlaylist ? null : playlistId;
@@ -31,7 +32,8 @@ export default class ChoosePlaylistWrapper extends Component {
 
   render() {
     const classes = ['choose-playlist-wrapper'];
-
+    console.log("props", this.props.markedPlaylist);
+    console.log("state", this.state.markedPlaylist);
     return (
       <div className={classes.join(' ')}>
         {
