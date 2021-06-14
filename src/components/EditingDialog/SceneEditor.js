@@ -62,6 +62,10 @@ export default class SceneEditor extends React.Component {
       return;
     }
 
+    if (this.params.playlist && this.params.audioType === "audio") {
+      this.params.playlist = null;
+    }
+
     const isThreeSixtyScene = this.params.sceneType
       === SceneTypes.THREE_SIXTY_SCENE;
 

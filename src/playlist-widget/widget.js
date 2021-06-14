@@ -370,7 +370,7 @@ class PlaylistWidgetComponent extends React.Component {
 
     // Remove playlistId from scenes that are using this playlist
     this.getScenes().forEach((scene) => {
-      if (scene.playlist && scene.playlist.playlistId === playlistId) {
+      if (scene.playlist === playlistId) {
         scene.playlist = undefined;
       }
     });
