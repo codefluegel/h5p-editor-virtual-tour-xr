@@ -40,11 +40,7 @@ function PlaylistList(props) {
                 props.onPlaylistClick
                 && props.onPlaylistClick(playlist.playlistId);
               }}
-            >
-              {
-                playlist && playlist.playlistId
-              }
-            </PlaylistRow>
+            />
           );
         })
       }
