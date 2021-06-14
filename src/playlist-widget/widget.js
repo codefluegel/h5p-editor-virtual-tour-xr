@@ -241,12 +241,13 @@ class PlaylistWidgetComponent2 extends React.Component {
   /**
    * Actually removes the given playlistId from the playlists array.
    * @param {Array<Playlist>} playlists 
-   * @param {number} playlistId 
+   * @param {Playlist} selectedPlaylist 
    * @returns {Array<Playlist>} playlists
    */
-  removePlaylist(playlists, playlistId) {
-    if (playlistId > -1) {
-      playlists.splice(playlistId, 1);
+  removePlaylist(playlists, selectedPlaylist) {
+    const index = playlists.indexOf(selectedPlaylist);
+    if (selectedPlaylist !== null && selectedPlaylist.playlistId > -1) {
+      playlists.splice(index, 1);
     }
     return playlists;
   }
@@ -268,7 +269,7 @@ class PlaylistWidgetComponent2 extends React.Component {
     }
 
     const playlists = this.getPlaylists();
-    const newPlaylists = this.removePlaylist(playlists, playlistId);
+    const newPlaylists = this.removePlaylist(playlists, this.state.selectedPlaylist);
     this.updatePlaylists(newPlaylists);
     this.removePlaylistFromGlobal(playlistId);
     this.triggerUpdatedEvent(newPlaylists);
