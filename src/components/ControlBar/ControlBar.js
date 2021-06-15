@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import PropTypes from 'prop-types';
 import {SceneEditingType} from "../EditingDialog/SceneEditor";
-import './SceneControlBar.scss';
+import './ControlBar.scss';
 import {H5PContext} from "../../context/H5PContext";
 import {SceneTypes} from "../Scene/Scene";
 import {getSceneFromId} from "../../h5phelpers/sceneParams";
@@ -9,7 +9,7 @@ import SceneList from "./SceneSelector/SceneList";
 import SceneSelectorSubmenu from "./SceneSelector/Row/Submenu/SceneSelectorSubmenu";
 import SceneSelector from "./SceneSelector/SceneSelector";
 
-export default class SceneControlBar extends Component {
+export default class ControlBar extends Component {
   render() {
     const scenes = this.context.params.scenes;
     const scene = getSceneFromId(scenes, this.props.currentScene);
@@ -68,9 +68,9 @@ export default class SceneControlBar extends Component {
   }
 }
 
-SceneControlBar.contextType = H5PContext;
+ControlBar.contextType = H5PContext;
 
-SceneControlBar.propTypes = {
+ControlBar.propTypes = {
   currentScene: PropTypes.number,
   startScene: PropTypes.number,
   isSceneSelectorExpanded: PropTypes.bool.isRequired,

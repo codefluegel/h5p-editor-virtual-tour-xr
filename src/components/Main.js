@@ -3,7 +3,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import Scene, {SceneTypes} from "./Scene/Scene";
-import SceneControlBar from "./ControlBar/SceneControlBar";
+import ControlBar from "./ControlBar/ControlBar";
 import SceneEditor, {SceneEditingType} from "./EditingDialog/SceneEditor";
 import InteractionsBar from "./InteractionsBar/InteractionsBar";
 import './Main.scss';
@@ -410,7 +410,7 @@ export default class Main extends React.Component {
             onCloseOverlay={ this.handleCloseSceneOverlay }
           />
         </div>
-        <SceneControlBar
+        <ControlBar
           currentScene={this.state.currentScene}
           editScene={this.editScene.bind(this)}
           deleteScene={this.deleteScene.bind(this)}
