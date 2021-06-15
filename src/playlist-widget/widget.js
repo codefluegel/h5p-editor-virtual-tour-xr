@@ -156,10 +156,10 @@ class PlaylistWidgetComponent extends React.Component {
    */
   getContext() {
     if (
-      this.props.form?.children &&
-      this.props.form?.children[0]?.form?.children?.length > 0
+      this.props.form?.parent?.children &&
+      this.props.form?.parent?.children[0]
     ) {
-      return this.props.form.children[0].form;
+      return this.props.form?.parent?.children[0];
     }
     return this.props.form;
   }
