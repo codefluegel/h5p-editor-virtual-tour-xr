@@ -31,19 +31,8 @@
     "deleteSceneTitle": "Deleting scene",
     "deleteSceneText": "Are you sure you wish to delete this scene?",
     "deleteSceneTextWithObjects": "Deleting this scene will also delete all interactions within the scene and any navigational hotspots pointing to this scene. Are you sure you wish to delete this scene?",
-    "playlists": "Playlists",
     "noPlaylistsAdded": "No playlists added",
-    "addedPlaylists": "Added playlists",
-    "addedPlaylistsDescription": "Make playlists that's available for all scenes by default.",
     "playlist": "Playlist",
-    "playlistDescription": "Here you can pick an existing playlist as audio.",
-    "newPlaylist": "New playlist",
-    "choosePlaylist": "Choose playlist",
-    "selectAPlaylistError": "Please select a playlist",
-    "createAPlaylist": "Create a new playlist",
-    "createPlaylistError": "Pleace create a playlist to proceed",
-    "deletePlaylistTitle": "Deleting playlist",
-    "deletePlaylistText": "Are you sure you wish to delte this playlist?",
-    "deletePlaylistTextWithObjects": "Deleting this playlist will also affect the scenes that are using this playlist. Are you sure you wish to delete this playlist?"
+    "newPlaylist": "New playlist"
   }
 }

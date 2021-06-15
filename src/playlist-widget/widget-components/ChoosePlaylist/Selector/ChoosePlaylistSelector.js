@@ -5,7 +5,6 @@ import './ChoosePlaylistSelector.scss';
 
 const ChoosePlaylistSelector = (props) => (
   <div className='choose-playlist-selector'>
-    <div className='error-message'>{props.selectAPlaylistErrorLabel}</div>
     <PlaylistList
       playlists={props.playlists}
       markedPlaylist={props.markedPlaylist}
@@ -18,8 +17,7 @@ const ChoosePlaylistSelector = (props) => (
 ChoosePlaylistSelector.propTypes = {
   playlists: PropTypes.arrayOf(PropTypes.object).isRequired,
   markedPlaylist: PropTypes.string,
-  setNextPlaylistId: PropTypes.func.isRequired,
-  selectAPlaylistErrorLabel: PropTypes.string
+  setNextPlaylistId: PropTypes.func.isRequired
 };
 
 export default ChoosePlaylistSelector;
