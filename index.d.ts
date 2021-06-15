@@ -15,7 +15,7 @@ declare type Scene = {
   sceneId: number;
   interactions: Array<Interaction>;
   cameraStartPosition: string;
-  sceneType: "360" | "static" | null;
+  sceneType: "360" | "panorama" | "static" | null;
   playlist: string;
 };
 

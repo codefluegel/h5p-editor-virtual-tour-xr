@@ -66,8 +66,8 @@ export default class SceneEditor extends React.Component {
       this.params.playlist = null;
     }
 
-    const isThreeSixtyScene = this.params.sceneType
-      === SceneTypes.THREE_SIXTY_SCENE;
+    const { sceneType } = this.params;
+    const isThreeSixtyScene = sceneType === SceneTypes.THREE_SIXTY_SCENE || sceneType === SceneTypes.PANORAMA_SCENE;
 
     if (isInteractionsValid(this.params, isThreeSixtyScene)) {
       this.confirmDone();
@@ -83,9 +83,9 @@ export default class SceneEditor extends React.Component {
 
   }
 
-  confirmDone() {
-    const isThreeSixtyScene = this.params.sceneType
-      === SceneTypes.THREE_SIXTY_SCENE;
+  confirmDone() {      
+    const { sceneType } = this.params;
+    const isThreeSixtyScene = sceneType === SceneTypes.THREE_SIXTY_SCENE || sceneType === SceneTypes.PANORAMA_SCENE;
 
     sanitizeSceneForm(
       this.params,
