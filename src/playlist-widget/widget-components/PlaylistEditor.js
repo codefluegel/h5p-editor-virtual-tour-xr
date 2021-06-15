@@ -65,6 +65,9 @@ export default class PlaylistEditor extends React.Component {
     if (!isValid) {
       return;
     }
+    if (!this.params.audioTracks) {
+      return;
+    }
     this.props.doneAction(this.params);
   }
 
