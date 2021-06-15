@@ -156,12 +156,8 @@ class PlaylistWidgetComponent extends React.Component {
    */
   getContext() {
     if (
-      this.props.form &&
-      this.props.form.children &&
-      this.props.form.children[0] &&
-      this.props.form.children[0].form &&
-      this.props.form.children[0].form.children &&
-      this.props.form.children[0].form.children.length > 0
+      this.props.form?.children &&
+      this.props.form?.children[0]?.form?.children?.length > 0
     ) {
       return this.props.form.children[0].form;
     }
@@ -175,41 +171,19 @@ class PlaylistWidgetComponent extends React.Component {
   getPlaylists() {
     const threeImage = this.props.form.children[0];
 
-    if (threeImage && threeImage.params && threeImage.params.playlists) {
+    if (threeImage?.params?.playlists) {
       return threeImage.params.playlists;
-    } else if (
-      threeImage &&
-      threeImage.parent &&
-      threeImage.parent.params &&
-      threeImage.parent.params.threeImage &&
-      threeImage.parent.params.threeImage.playlists
-    ) {
+    } 
+    else if (threeImage?.parent?.params?.threeImage?.playlists) {
       return threeImage.parent.params.threeImage.playlists;
-    } else if (
-      threeImage &&
-      threeImage.parent &&
-      threeImage.parent.parent &&
-      threeImage.parent.parent.params &&
-      threeImage.parent.parent.params.threeImage &&
-      threeImage.parent.parent.params.threeImage.playlists
-    ) {
+    } 
+    else if (threeImage?.parent?.parent?.params?.threeImage?.playlists) {
       return threeImage.parent.parent.params.threeImage.playlists;
-    } else if (
-      threeImage &&
-      threeImage.form &&
-      threeImage.form.parent &&
-      threeImage.form.parent.params &&
-      threeImage.form.parent.params.threeImage &&
-      threeImage.form.parent.params.threeImage.playlists
-    ) {
+    } 
+    else if (threeImage?.form?.parent?.params?.threeImage?.playlists) {
       return threeImage.form.parent.params.threeImage.playlists;
-    } else if (
-      this.props.form &&
-      this.props.form.parent &&
-      this.props.form.parent.params &&
-      this.props.form.parent.params.threeImage &&
-      this.props.form.parent.params.threeImage.playlists
-    ) {
+    } 
+    else if (this.props.form?.parent?.params?.threeImage?.playlists) {
       return this.props.form.parent.params.threeImage.playlists;
     }
 
@@ -222,14 +196,7 @@ class PlaylistWidgetComponent extends React.Component {
   getScenes() {
     const threeImage = this.props.form.children[0];
 
-    if (
-      threeImage &&
-      threeImage.form &&
-      threeImage.form.parent &&
-      threeImage.form.parent.params &&
-      threeImage.form.parent.params.threeImage &&
-      threeImage.form.parent.params.threeImage.scenes
-    ) {
+    if (threeImage?.form?.parent?.params?.threeImage?.scenes) {
       return threeImage.form.parent.params.threeImage.scenes;
     }
     return [];
@@ -241,13 +208,7 @@ class PlaylistWidgetComponent extends React.Component {
   removePlaylistFromGlobal(playlistId) {
     const threeImage = this.props.form;
 
-    if (
-      threeImage &&
-      threeImage.parent &&
-      threeImage.parent.params &&
-      threeImage.parent.params.behaviour &&
-      threeImage.parent.params.behaviour.playlist === playlistId
-    ) {
+    if (threeImage?.parent?.params?.behaviour?.playlist === playlistId) {
       threeImage.parent.params.behaviour.playlist = undefined;
     }
   }
@@ -258,13 +219,7 @@ class PlaylistWidgetComponent extends React.Component {
   updatePlaylists(newPlaylists) {
     const threeImage = this.props.form.children[0];
 
-    if (
-      threeImage &&
-      threeImage.form &&
-      threeImage.form.parent &&
-      threeImage.form.parent.params &&
-      threeImage.form.parent.params.threeImage
-    ) {
+    if (threeImage?.form?.parent?.params?.threeImage) {
       threeImage.form.parent.params.threeImage.playlists = newPlaylists;
     }
   }
@@ -276,27 +231,15 @@ class PlaylistWidgetComponent extends React.Component {
   getParams() {
     const threeImage = this.props.form.children[0];
 
-    if (threeImage && threeImage.params) {
+    if (threeImage?.params) {
       return threeImage.params;
     }
 
-    if (
-      threeImage &&
-      threeImage.parent &&
-      threeImage.parent.parent &&
-      threeImage.parent.parent.params &&
-      threeImage.parent.parent.params.threeImage
-    ) {
+    if (threeImage?.parent?.parent?.params?.threeImage) {
       return threeImage.parent.parent.params.threeImage;
     }
 
-    if (
-      threeImage &&
-      threeImage.form &&
-      threeImage.form.parent &&
-      threeImage.form.parent.params &&
-      threeImage.form.parent.params.threeImage
-    ) {
+    if (threeImage?.form?.parent?.params?.threeImage) {
       return threeImage.form.parent.params.threeImage;
     }
 
@@ -360,9 +303,12 @@ class PlaylistWidgetComponent extends React.Component {
     }
 
     const playlists = this.getPlaylists();
+    const playlistToRemove = playlists.find(playlist => {
+      return playlist.playlistId === playlistId
+    });
     const newPlaylists = this.removePlaylist(
       playlists,
-      this.state.selectedPlaylist
+      playlistToRemove
     );
     this.updatePlaylists(newPlaylists);
     this.removePlaylistFromGlobal(playlistId);
