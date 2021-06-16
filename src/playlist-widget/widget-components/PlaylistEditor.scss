@@ -1,0 +1,21 @@
+@import '../../styles/icons';
+
+.h5p-editing-dialog-header {
+  .title.playlist:before {
+    font-family: "H5pFontIcons";
+    content: $playlist;
+  }
+}
+.choose-playlist-editor {
+  margin: 1em 0 12em;
+}
+
+.field-name-audioPlaylistsGroup {
+  .h5p-editing-overlay {
+    min-height: 481px;
+  }
+  .h5p-editing-dialog {
+    top: 2em;
+    max-height: calc(100% - 4em);
+  }
+}

@@ -1,8 +1,22 @@
+
+declare type AudioTrack = {
+  path: string;
+  mime: string;
+  copyright: { license: string; }
+}
+
+declare type Playlist = {
+  audioTracks: Array<AudioTrack>;
+  playlistId: string;
+  title: string;
+}
+
 declare type Scene = {
   sceneId: number;
-  interactions: Interaction[];
+  interactions: Array<Interaction>;
   cameraStartPosition: string;
   sceneType: "360" | "panorama" | "static" | null;
+  playlist: string;
 };
 
 declare type Interaction = {
@@ -42,3 +56,4 @@ declare type ScenePreview = {
 }
 
 declare const H5P: any;
+declare const H5PEditor: any;

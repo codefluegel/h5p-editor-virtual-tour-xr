@@ -62,6 +62,10 @@ export default class SceneEditor extends React.Component {
       return;
     }
 
+    if (this.params.playlist && this.params.audioType === "audio") {
+      this.params.playlist = null;
+    }
+
     const { sceneType } = this.params;
     const isThreeSixtyScene = sceneType === SceneTypes.THREE_SIXTY_SCENE || sceneType === SceneTypes.PANORAMA_SCENE;
 
@@ -102,7 +106,7 @@ export default class SceneEditor extends React.Component {
         doneLabel={this.context.t('done')}
         removeLabel={this.context.t('remove')}
       >
-        <div ref={this.semanticsRef}/>
+        <div ref={this.semanticsRef} />
       </EditingDialog>
     );
   }
