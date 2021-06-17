@@ -45,6 +45,13 @@ declare type CameraPosition = {
 };
 
 declare type Library = {
+  majorVersion: number;
+  minorVersion: number;
+  name: string;
+  restricted: boolean;
+  runnable: number;
+  title: string;
+  tutorialUrl: string | null;
   uberName: string;
 }
 
