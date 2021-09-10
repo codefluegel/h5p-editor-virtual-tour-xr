@@ -1,12 +1,14 @@
+// @ts-check
+
 import React from 'react';
-import {getInteractionsField} from "../h5phelpers/editorForms";
+import { getInteractionsField } from '../h5phelpers/editorForms';
 
 /**
  * Get loaded libraries that are available of the ones defined by action
  * in semantics
  *
  * @param {Object} field The field for Three Image
- * @returns {Promise} Returns with libraries
+ * @returns {Promise<Array<Library>>} Returns with libraries
  */
 export const getLibraries = async (field) => {
   const actionField = H5PEditor.findSemanticsField(
@@ -14,10 +16,10 @@ export const getLibraries = async (field) => {
     getInteractionsField(field)
   );
 
-  return new Promise(resolve => {
+  return new Promise((resolve) => {
     H5PEditor.LibraryListCache.getLibraries(
       actionField.options,
-      (libraries) => {
+      (/** @type {Array<Library>} */ libraries) => {
         resolve(libraries);
       }
     );

@@ -1,8 +1,9 @@
-import "@babel/polyfill";
+import 'core-js/stable';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import Main from "./components/Main";
 import {H5PContext} from './context/H5PContext';
+import "./playlist-widget/widget";
 
 H5PEditor.widgets.NDLAthreeImage = H5PEditor.NDLAThreeImage = (function () {
 
@@ -19,15 +20,12 @@ H5PEditor.widgets.NDLAthreeImage = H5PEditor.NDLAThreeImage = (function () {
     /**
      * Help fetch the correct translations.
      *
-     * @params {...args}
+     * @param {string[]} args
      * @return {string}
      */
-    this.t = function t() {
-      const args = ['H5PEditor.NDLAThreeImage'];
-      for (let i = 0; i < arguments.length; i++) {
-        args.push(arguments[i]);
-      }
-      return H5PEditor.t.apply(window, args);
+    this.t = function t(...args) {
+      const translations = ['H5PEditor.NDLAThreeImage', ...args];
+      return H5PEditor.t.apply(window, translations);
     };
 
     this.appendTo = function ($container) {

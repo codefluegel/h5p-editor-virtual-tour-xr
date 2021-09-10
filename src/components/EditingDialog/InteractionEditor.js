@@ -1,3 +1,5 @@
+// @ts-check
+
 import React from 'react';
 import PropTypes from 'prop-types';
 import EditingDialog from "./EditingDialog";
@@ -21,6 +23,15 @@ export const InteractionEditingType = {
 };
 
 export default class InteractionEditor extends React.Component {
+  /**
+   * @param {Object} props
+   * @param {number} props.currentScene
+   * @param {Library} props.library
+   * @param {ScenePreview} props.scenePreview
+   * @param {number} props.editingInteraction
+   * @param {(params: Object, editingScene?: number, skipChangingScene?: boolean) => void} props.doneAction
+   * @param {() => void} props.removeAction
+   */
   constructor(props) {
     super(props);
     this.semanticsRef = React.createRef();
@@ -30,8 +41,14 @@ export default class InteractionEditor extends React.Component {
       isInitialized: false,
       hasInputError: false,
     };
+
+    this.props = props;
   }
 
+  /**
+   * @param {number} interactionIndex 
+   * @returns {Interaction}
+   */
   getInteractionParams(interactionIndex = null) {
     const isNewScene = interactionIndex === InteractionEditingType.NEW_INTERACTION;
 
@@ -143,12 +160,12 @@ export default class InteractionEditor extends React.Component {
       return false;
     }
 
-    const isThreeSixtyScene = this.scene.params.sceneType
-      === SceneTypes.THREE_SIXTY_SCENE;
+    const { sceneType } = this.scene.params;
+    const is3dScene = sceneType === SceneTypes.THREE_SIXTY_SCENE || sceneType === SceneTypes.PANORAMA_SCENE;
 
     sanitizeSceneForm(
       this.scene.params,
-      isThreeSixtyScene,
+      is3dScene,
       this.scene.params.cameraStartPosition
     );
     return true;
@@ -162,6 +179,10 @@ export default class InteractionEditor extends React.Component {
 
   setScene(scene) {
     this.scene = scene;
+  }
+
+  setChosenPlaylist(playlist) {
+    this.playlist = playlist;
   }
 
   render() {
@@ -199,6 +220,7 @@ export default class InteractionEditor extends React.Component {
             currentScene={this.props.currentScene}
             params={this.params}
             setScene={this.setScene.bind(this)}
+            chosenPlaylist={this.setChosenPlaylist.bind(this)}
           />
         }
       </EditingDialog>

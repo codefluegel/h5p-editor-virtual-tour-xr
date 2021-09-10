@@ -30,6 +30,9 @@
     "deleteInteractionText": "Bist du sicher, dass diese Szene gelöscht werden soll?",
     "deleteSceneTitle": "Lösche Szene",
     "deleteSceneText": "Bist du sicher, dass du diese Szene löschen möchtest?",
-    "deleteSceneTextWithObjects": "Wenn diese Szene gelöscht wird, werden auch alle Interaktionen in der Szene gelöscht. Dasselbe gilt für Hotspots, die auf die Szene zeigen. Bist du sicher, dass du diese Szene löschen möchtest?"
+    "deleteSceneTextWithObjects": "Wenn diese Szene gelöscht wird, werden auch alle Interaktionen in der Szene gelöscht. Dasselbe gilt für Hotspots, die auf die Szene zeigen. Bist du sicher, dass du diese Szene löschen möchtest?",
+    "noPlaylistsAdded": "No playlists added",
+    "playlist": "Playlist",
+    "newPlaylist": "New playlist"
   }
 }

@@ -30,6 +30,9 @@
     "deleteInteractionText": "Ziur zaude interakzio hau ezabatu nahi duzula?",
     "deleteSceneTitle": "Eszena ezabatzen",
     "deleteSceneText": "Ziur zaude eszena hau ezabatu nahi duzula?",
-    "deleteSceneTextWithObjects": "Eszena hau ezabatzeak bertako interakzio guztiak eta eszena honetara zuzendutako nabigazio-puntuak ere ezabatuko ditu. Ziur zaude eszena hau ezabatu nahi duzula?"
+    "deleteSceneTextWithObjects": "Eszena hau ezabatzeak bertako interakzio guztiak eta eszena honetara zuzendutako nabigazio-puntuak ere ezabatuko ditu. Ziur zaude eszena hau ezabatu nahi duzula?",
+    "noPlaylistsAdded": "No playlists added",
+    "playlist": "Playlist",
+    "newPlaylist": "New playlist"
   }
 }
