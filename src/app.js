@@ -5,7 +5,7 @@ import Main from "./components/Main";
 import {H5PContext} from './context/H5PContext';
 import "./playlist-widget/widget";
 
-H5PEditor.widgets.threeImage = H5PEditor.ThreeImage = (function () {
+H5PEditor.widgets.NDLAthreeImage = H5PEditor.NDLAThreeImage = (function () {
 
   function ThreeImage(parent, field, params, setValue) {
     this.params = params || {};
@@ -24,7 +24,7 @@ H5PEditor.widgets.threeImage = H5PEditor.ThreeImage = (function () {
      * @return {string}
      */
     this.t = function t(...args) {
-      const translations = ['H5PEditor.ThreeImage', ...args];
+      const translations = ['H5PEditor.NDLAThreeImage', ...args];
       return H5PEditor.t.apply(window, translations);
     };
 
