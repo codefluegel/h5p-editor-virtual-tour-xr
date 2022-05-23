@@ -146,7 +146,7 @@ class PlaylistWidgetComponent extends React.Component {
    * @return {string}
    */
   translate(...args) {
-    const translations = ["H5PEditor.ThreeImage", ...args];
+    const translations = ["H5PEditor.NDLAThreeImage", ...args];
     return H5PEditor.t.apply(window, translations);
   }
 
