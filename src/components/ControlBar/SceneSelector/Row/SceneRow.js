@@ -72,8 +72,8 @@ export default class SceneRow extends Component {
         <div className='thumbnail-wrapper'>
           <img
             className={imageClasses.join(' ')}
-            src={getImageSource(this.props.scene.scenesrc.path)}
-            alt={this.props.scene.scenesrc.alt}
+            src={this.props.scene.scenesrc !== undefined?getImageSource(this.props.scene.scenesrc.path):''}
+            alt={this.props.scene.scenesrc !== undefined?this.props.scene.scenesrc.alt:''}
             onLoad={this.onImageLoad.bind(this)}
             ref={this.imageRef}
           />
