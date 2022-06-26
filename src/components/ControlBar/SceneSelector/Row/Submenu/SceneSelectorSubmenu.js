@@ -37,6 +37,12 @@ const SceneSelectorSubmenu = (props) => {
         <div className='tooltip'>{props.editLabel}</div>
       </button>
       <button
+        className='clone'
+        onClick={ handleClick('onClone') }
+      >
+        <div className='tooltip'>{props.cloneLabel}</div>
+      </button>
+      <button
         className='delete'
         onClick={ handleClick('onDelete') }
       >
@@ -51,10 +57,12 @@ SceneSelectorSubmenu.propTypes = {
   setStartScene: PropTypes.func.isRequired,
   onJump: PropTypes.func.isRequired,
   onEdit: PropTypes.func.isRequired,
+  onClone: PropTypes.func.isRequired,
   onDelete: PropTypes.func.isRequired,
   setStartingSceneLabel: PropTypes.string.isRequired,
   goToSceneLabel: PropTypes.string.isRequired,
   editLabel: PropTypes.string.isRequired,
+  cloneLabel: PropTypes.string.isRequired,
   deleteLabel: PropTypes.string.isRequired
 };
 

@@ -34,10 +34,12 @@ export default class ControlBar extends Component {
                 setStartScene={this.props.setStartScene.bind(this, sceneId)}
                 onJump={this.props.changeScene.bind(this, sceneId)}
                 onEdit={this.props.editScene.bind(this, sceneId)}
+                onClone={this.props.cloneScene.bind(this, sceneId)}
                 onDelete={this.props.deleteScene.bind(this, sceneId)}
                 setStartingSceneLabel={this.context.t('setStartingScene')}
                 goToSceneLabel={this.context.t('goToScene')}
                 editLabel={this.context.t('edit')}
+                cloneLabel={this.context.t('clone')}
                 deleteLabel={this.context.t('delete')}
               />
             )}
@@ -80,5 +82,6 @@ ControlBar.propTypes = {
   changeScene: PropTypes.func.isRequired,
   setStartScene: PropTypes.func.isRequired,
   editScene: PropTypes.func.isRequired,
+  cloneScene: PropTypes.func.isRequired,
   deleteScene: PropTypes.func.isRequired,
 };

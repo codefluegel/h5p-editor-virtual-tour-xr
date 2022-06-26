@@ -8,6 +8,8 @@
     "remove": "Kendu",
     "done": "Eginda",
     "edit": "Editatu",
+    "clone": "Clone",
+    "copy": "copy",
     "delete": "Ezabatu",
     "or": "edo",
     "scene": "Eszena",
@@ -31,6 +33,9 @@
     "deleteSceneTitle": "Eszena ezabatzen",
     "deleteSceneText": "Ziur zaude eszena hau ezabatu nahi duzula?",
     "deleteSceneTextWithObjects": "Eszena hau ezabatzeak bertako interakzio guztiak eta eszena honetara zuzendutako nabigazio-puntuak ere ezabatuko ditu. Ziur zaude eszena hau ezabatu nahi duzula?",
+    "cloneSceneTitle": "Cloning scene",
+    "cloneSceneText": "Are you sure you wish to clone this scene?",
+    "cloneSceneTextWithObjects": "Cloning this scene will also clone all interactions within the scene and any navigational hotspots pointing to this scene. Are you sure you wish to clone this scene?",
     "noPlaylistsAdded": "No playlists added",
     "playlist": "Playlist",
     "newPlaylist": "New playlist"

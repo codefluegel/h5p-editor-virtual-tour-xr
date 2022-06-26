@@ -99,6 +99,45 @@ export default class Main extends React.Component {
     // No scenes left
     this.setStartScene(startScene);
   }
+  
+  cloneScene(sceneId) {
+    const isNewScene = sceneId === SceneEditingType.NEW_SCENE;
+    const deleteSceneText = isNewScene
+      ? this.context.t('cloneSceneText')
+      : this.context.t('cloneSceneTextWithObjects');
+
+    // Confirm deletion
+    showConfirmationDialog({
+      headerText: this.context.t('cloneSceneTitle'),
+      dialogText: deleteSceneText,
+      cancelText: this.context.t('cancel'),
+      confirmText: this.context.t('confirm'),
+    }, this.confirmedCloneScene.bind(this, sceneId));
+  }
+
+  confirmedCloneScene(sceneId) {
+    const scenes = this.context.params.scenes;
+    const scene = getSceneFromId(scenes, sceneId);
+    const newScene = JSON.parse(JSON.stringify(scene));;
+
+    newScene.sceneId = 0;
+    newScene.scenename = newScene.scenename + ' (' + this.context.t('copy') + ')';
+
+    for (let i = 0; i < scenes.length; i++) {
+      if (parseInt(scenes[i].sceneId) > Math.floor(newScene.sceneId)) {
+        newScene.sceneId = scenes[i].sceneId+1;
+      }
+    }
+
+    scenes.push(newScene);
+
+    this.updateCurrentScene(scene.sceneId);
+    this.updateStartScene(scene.sceneId);
+    this.setState({
+      isSceneUpdated: false,
+    });
+
+  }
 
   deleteScene(sceneId) {
     const isNewScene = sceneId === SceneEditingType.NEW_SCENE;
@@ -413,6 +452,7 @@ export default class Main extends React.Component {
         <ControlBar
           currentScene={this.state.currentScene}
           editScene={this.editScene.bind(this)}
+          cloneScene={this.cloneScene.bind(this)}
           deleteScene={this.deleteScene.bind(this)}
           newScene={this.editScene.bind(this)}
           changeScene={this.changeScene.bind(this)}

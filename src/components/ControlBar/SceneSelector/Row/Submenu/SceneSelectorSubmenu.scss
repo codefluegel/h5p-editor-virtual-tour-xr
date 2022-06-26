@@ -62,6 +62,10 @@
     content: $edit;
   }
 
+  .clone:before {
+    content: $clone;
+  }
+
   .delete:before {
     content: $delete;
     color: #d63129;
