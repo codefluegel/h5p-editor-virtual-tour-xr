@@ -124,7 +124,7 @@ export default class Main extends React.Component {
     newScene.scenename = newScene.scenename + ' (' + this.context.t('copy') + ')';
 
     for (let i = 0; i < scenes.length; i++) {
-      if (parseInt(scenes[i].sceneId) > Math.floor(newScene.sceneId)) {
+      if (parseInt(scenes[i].sceneId) >= Math.floor(newScene.sceneId)) {
         newScene.sceneId = scenes[i].sceneId+1;
       }
     }
