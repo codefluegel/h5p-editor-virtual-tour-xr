@@ -35,7 +35,7 @@
     "deleteSceneTextWithObjects": "Odstraněním této scény odstraníte také všechny interakce ve scéně a jakékoli navigační body směřující na tuto scénu. Opravdu chcete tuto scénu smazat?",
     "cloneSceneTitle": "Cloning scene",
     "cloneSceneText": "Are you sure you wish to clone this scene?",
-    "cloneSceneTextWithObjects": "Cloning this scene will also clone all interactions within the scene and any navigational hotspots pointing to this scene. Are you sure you wish to clone this scene?",
+    "cloneSceneTextWithObjects": "Cloning this scene will also clone all interactions within the scene. Are you sure you wish to clone this scene?",
     "noPlaylistsAdded": "No playlists added",
     "playlist": "Playlist",
     "newPlaylist": "New playlist"
