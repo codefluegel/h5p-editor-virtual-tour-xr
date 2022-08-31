@@ -35,7 +35,7 @@
     "deleteSceneTextWithObjects": "Sletting av denne scenen vil også slette alle interaksjoner i scenen og eventuelle navigasjonshotspots som peker til denne scenen. Er du sikker på at du vil slette denne scenen?",
     "cloneSceneTitle": "Klon scene",
     "cloneSceneText": "Er du sikker på at du ønsker å klone denne scenen?",
-    "cloneSceneTextWithObjects": "Kloning av denne scenen vil føre til at alle interaksjoner i scenen og eventuelle navigasjonshotspots som peker til denne scenen også vil klones. Er du sikker på at du vil klone denne scenen?",
+    "cloneSceneTextWithObjects": "Kloning av denne scenen vil føre til at alle interaksjoner i scenen også vil klones. Er du sikker på at du vil klone denne scenen?",
     "noPlaylistsAdded": "Ingen spillelister er lagt til",
     "playlist": "Spilleliste",
     "newPlaylist": "Ny spilleliste"
