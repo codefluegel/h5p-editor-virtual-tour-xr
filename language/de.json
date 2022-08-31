@@ -35,7 +35,7 @@
     "deleteSceneTextWithObjects": "Wenn diese Szene gelöscht wird, werden auch alle Interaktionen in der Szene gelöscht. Dasselbe gilt für Hotspots, die auf die Szene zeigen. Bist du sicher, dass du diese Szene löschen möchtest?",
     "cloneSceneTitle": "Cloning scene",
     "cloneSceneText": "Are you sure you wish to clone this scene?",
-    "cloneSceneTextWithObjects": "Cloning this scene will also clone all interactions within the scene and any navigational hotspots pointing to this scene. Are you sure you wish to clone this scene?",
+    "cloneSceneTextWithObjects": "Cloning this scene will also clone all interactions within the scene. Are you sure you wish to clone this scene?",
     "noPlaylistsAdded": "No playlists added",
     "playlist": "Playlist",
     "newPlaylist": "New playlist"
