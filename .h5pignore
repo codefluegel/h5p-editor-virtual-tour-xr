@@ -10,3 +10,4 @@ README.md
 TODOs.md
 webpack.config.js
 tsconfig.json
+index.d.ts
