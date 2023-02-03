@@ -1,14 +1,14 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {H5PContext} from "../../../../context/H5PContext";
+import { H5PContext } from '../../../../context/H5PContext';
 import './GoToScene.scss';
-import GoToSceneSelector from "./GoToSceneSelector";
+import GoToSceneSelector from './GoToSceneSelector';
 
 export default class GoToScene extends Component {
 
   render() {
     // Filter out current scene
-    const scenes = this.context.params.scenes.filter(scene => {
+    const scenes = this.context.params.scenes.filter((scene) => {
       return scene.sceneId !== this.props.currentScene;
     });
 

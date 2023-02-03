@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import GoToScene from "./Selector/GoToScene";
-import {createSceneForm, getDefaultSceneParams} from "../../../h5phelpers/forms/sceneForm";
-import {H5PContext} from "../../../context/H5PContext";
+import GoToScene from './Selector/GoToScene';
+import { createSceneForm, getDefaultSceneParams } from '../../../h5phelpers/forms/sceneForm';
+import { H5PContext } from '../../../context/H5PContext';
 
 export default class GoToSceneWrapper extends Component {
   constructor(props) {

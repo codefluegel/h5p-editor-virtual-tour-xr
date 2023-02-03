@@ -1,7 +1,7 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import ChoosePlaylist from "./Selector/ChoosePlaylist";
-import { H5PContext } from "../../../context/H5PContext";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import ChoosePlaylist from './Selector/ChoosePlaylist';
+import { H5PContext } from '../../../context/H5PContext';
 
 export default class ChoosePlaylistWrapper extends Component {
   constructor(props) {
@@ -31,9 +31,9 @@ export default class ChoosePlaylistWrapper extends Component {
   }
 
   render() {
-    const classes = ["choose-playlist-wrapper"];
+    const classes = ['choose-playlist-wrapper'];
     return (
-      <div className={classes.join(" ")}>
+      <div className={classes.join(' ')}>
         {
           <ChoosePlaylist
             params={this.props.params}

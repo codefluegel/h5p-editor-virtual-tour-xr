@@ -2,20 +2,20 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import EditingDialog from "./EditingDialog";
-import {H5PContext} from '../../context/H5PContext';
+import EditingDialog from './EditingDialog';
+import { H5PContext } from '../../context/H5PContext';
 import './InteractionEditor.scss';
-import {SceneTypes} from "../Scene/Scene";
-import {getDefaultLibraryParams, isGoToScene} from "../../h5phelpers/libraryParams";
-import {getSceneFromId} from "../../h5phelpers/sceneParams";
-import {getLibraryDataFromFields} from "../../h5phelpers/editorForms";
+import { SceneTypes } from '../Scene/Scene';
+import { getDefaultLibraryParams, isGoToScene } from '../../h5phelpers/libraryParams';
+import { getSceneFromId } from '../../h5phelpers/sceneParams';
+import { getLibraryDataFromFields } from '../../h5phelpers/editorForms';
 import {
   createInteractionForm,
   sanitizeInteractionParams,
   validateInteractionForm
-} from "../../h5phelpers/forms/interactionForm";
-import GoToSceneWrapper from "./GoToScene/GoToSceneWrapper";
-import {sanitizeSceneForm, validateSceneForm} from "../../h5phelpers/forms/sceneForm";
+} from '../../h5phelpers/forms/interactionForm';
+import GoToSceneWrapper from './GoToScene/GoToSceneWrapper';
+import { sanitizeSceneForm, validateSceneForm } from '../../h5phelpers/forms/sceneForm';
 
 export const InteractionEditingType = {
   NOT_EDITING: null,

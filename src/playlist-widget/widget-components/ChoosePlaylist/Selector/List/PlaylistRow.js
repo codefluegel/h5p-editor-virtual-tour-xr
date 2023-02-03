@@ -1,7 +1,7 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import './PlaylistRow.scss';
-import {H5PContext} from "../../../../../context/H5PContext";
+import { H5PContext } from '../../../../../context/H5PContext';
 
 export default class PlaylistRow extends Component {
   constructor(props) {
@@ -65,7 +65,7 @@ export default class PlaylistRow extends Component {
           <div
             className='h5p-playlist-name'
             onClick={this.onTitleClick.bind(this)}
-            dangerouslySetInnerHTML={ {__html: this.props.playlist.title} }
+            dangerouslySetInnerHTML={ { __html: this.props.playlist.title } }
           ></div>
         </div>
         {this.props.children}

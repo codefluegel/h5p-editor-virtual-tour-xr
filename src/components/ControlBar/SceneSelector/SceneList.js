@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import React from 'react';
-import SceneRow from "./Row/SceneRow";
+import SceneRow from './Row/SceneRow';
 
 function SceneList(props) {
   let previousElementHasTopBorder = false;
@@ -8,7 +8,7 @@ function SceneList(props) {
   return (
     <div className='h5p-scene-list'>
       {
-        props.scenes.map(scene => {
+        props.scenes.map((scene) => {
           const isStartScene = scene.sceneId === props.startScene;
           const isMarkedScene = scene.sceneId === props.markedScene;
           let isAfterActiveScene = previousElementHasTopBorder;

@@ -1,4 +1,4 @@
-import {getPlaylistField, isChildrenValid} from "../editorForms";
+import { getPlaylistField, isChildrenValid } from '../editorForms';
 
 /**
  * Creates playlist form and appends it to wrapper
@@ -27,10 +27,18 @@ export const createPlaylistForm = (field, params, wrapper, parent) => {
  * @param children
  * @returns {boolean} True if valid
  */
- export const validatePlaylistForm = (children) => {
+export const validatePlaylistForm = (children) => {
   H5PEditor.Html.removeWysiwyg();
   return isChildrenValid(children);
 };
+
+/**
+ * Grabs a unique ID that is higher than the highest ID in our playlists collection.
+ *
+ * @param {Playlist[]} playlists
+ * @returns {number}
+ */
+const getUniquePlaylistId = () => H5P.createUUID();
 
 /**
  * Get initial parameters for an empty playlist
@@ -40,11 +48,3 @@ export const createPlaylistForm = (field, params, wrapper, parent) => {
 export const getDefaultPlaylistParams = () => ({
   playlistId: getUniquePlaylistId(),
 });
-
-/**
- * Grabs a unique ID that is higher than the highest ID in our playlists collection
- *
- * @param {Playlist[]} playlists
- * @returns {number}
- */
-const getUniquePlaylistId = () => H5P.createUUID();
