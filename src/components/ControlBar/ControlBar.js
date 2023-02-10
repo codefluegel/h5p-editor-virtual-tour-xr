@@ -1,19 +1,22 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {SceneEditingType} from "../EditingDialog/SceneEditor";
+import { SceneEditingType } from '../EditingDialog/SceneEditor';
 import './ControlBar.scss';
-import {H5PContext} from "../../context/H5PContext";
-import {SceneTypes} from "../Scene/Scene";
-import {getSceneFromId} from "../../h5phelpers/sceneParams";
-import SceneList from "./SceneSelector/SceneList";
-import SceneSelectorSubmenu from "./SceneSelector/Row/Submenu/SceneSelectorSubmenu";
-import SceneSelector from "./SceneSelector/SceneSelector";
+import { H5PContext } from '../../context/H5PContext';
+import { SceneTypes } from '../Scene/Scene';
+import { getSceneFromId } from '../../h5phelpers/sceneParams';
+import SceneList from './SceneSelector/SceneList';
+import SceneSelectorSubmenu from './SceneSelector/Row/Submenu/SceneSelectorSubmenu';
+import SceneSelector from './SceneSelector/SceneSelector';
 
 export default class ControlBar extends Component {
   render() {
     const scenes = this.context.params.scenes;
     const scene = getSceneFromId(scenes, this.props.currentScene);
-    const is360Scene = scene && (scene.sceneType === SceneTypes.THREE_SIXTY_SCENE || scene.sceneType === SceneTypes.PANORAMA_SCENE);
+    const is360Scene = scene && (
+      scene.sceneType === SceneTypes.THREE_SIXTY_SCENE ||
+      scene.sceneType === SceneTypes.PANORAMA_SCENE
+    );
 
     return (
       <div className='h5p-control-bar'>

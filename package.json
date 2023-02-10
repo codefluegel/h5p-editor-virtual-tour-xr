@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "cross-env NODE_ENV='production' webpack",
     "watch": "cross-env NODE_ENV='development' webpack --watch",
-    "validate-types": "tsc --noEmit"
+    "validate-types": "tsc --noEmit",
+    "lint": "eslint './src/**/*.js'"
   },
   "devDependencies": {
     "@babel/cli": "7.19.3",
@@ -23,7 +24,8 @@
     "babel-loader": "^9.1.0",
     "cross-env": "^7.0.3",
     "css-loader": "^6.7.1",
-    "eslint": "^8.27.0",
+    "eslint": "^8.28.0",
+    "eslint-config-ndla-h5p": "github:NDLANO/eslint-config-ndla-h5p",
     "eslint-plugin-react": "^7.31.10",
     "mini-css-extract-plugin": "^2.6.1",
     "sass": "^1.56.0",

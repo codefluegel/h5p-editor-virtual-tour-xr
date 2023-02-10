@@ -1,6 +1,6 @@
 // @ts-check
 
-import {getSceneFromId} from "./sceneParams";
+import { getSceneFromId } from './sceneParams';
 
 export const Libraries = {
   GoToScene: {
@@ -35,8 +35,8 @@ export const getInteractionFromElement = (element, scenes, sceneId) => {
   const interactionId = element.dataset.interactionId;
 
   const scene = getSceneFromId(scenes, sceneId);
-  return scene.interactions.find(interaction => interaction.id === interactionId);
-}
+  return scene.interactions.find((interaction) => interaction.id === interactionId);
+};
 
 /**
  * Updates position of interaction

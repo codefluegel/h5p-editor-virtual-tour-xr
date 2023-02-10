@@ -1,4 +1,4 @@
-import {getLibraries} from "../context/H5PContext";
+import { getLibraries } from '../context/H5PContext';
 
 /**
  * Get scenes field from Three Image semantics structure
@@ -51,7 +51,7 @@ export const getInteractionsField = (field) => {
  */
 export const getLibraryDataFromFields = async (field, library) => {
   const libraries = await getLibraries(field);
-  return libraries.find(lib => {
+  return libraries.find((lib) => {
     return lib.uberName === library;
   });
 };
@@ -67,7 +67,7 @@ export const isChildrenValid = (children) => {
 
   // validate() should always run for all children because it adds
   // styling to children that fails to validate
-  children.forEach(child => {
+  children.forEach((child) => {
 
     // Special validation for scene image, since having a required image
     // is not supported by core yet
@@ -92,15 +92,15 @@ export const isChildrenValid = (children) => {
 };
 
 const addBehavioralChangeListeners = (parent, callback) => {
-  const behaviour = parent.children.find(child => {
+  const behaviour = parent.children.find((child) => {
     return child.field.name === 'behaviour';
   });
 
-  const sceneRendering = behaviour.children.find(child => {
+  const sceneRendering = behaviour.children.find((child) => {
     return child.field.name === 'sceneRenderingQuality';
   });
 
-  const label = behaviour.children.find(child => {
+  const label = behaviour.children.find((child) => {
     return child.field.name === 'label';
   });
 

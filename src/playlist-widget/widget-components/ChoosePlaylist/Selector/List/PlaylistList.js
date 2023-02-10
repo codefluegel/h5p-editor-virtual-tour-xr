@@ -2,7 +2,7 @@
 
 import PropTypes from 'prop-types';
 import React from 'react';
-import PlaylistRow from "./PlaylistRow";
+import PlaylistRow from './PlaylistRow';
 
 /**
  * @param {{
@@ -20,7 +20,7 @@ function PlaylistList(props) {
   return (
     <div className='h5p-playlist-list'>
       {
-        props.playlists.map(playlist => {
+        props.playlists.map((playlist) => {
           const isMarkedPlaylist = playlist.playlistId === props.markedPlaylist;
           let isAfterActivePlaylist = previousElementHasTopBorder;
           previousElementHasTopBorder = isMarkedPlaylist;

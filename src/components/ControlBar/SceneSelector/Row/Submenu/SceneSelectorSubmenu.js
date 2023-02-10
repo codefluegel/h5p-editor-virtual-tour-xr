@@ -12,8 +12,8 @@ const SceneSelectorSubmenu = (props) => {
     return (e) => {
       e.stopPropagation();
       props[type]();
-    }
-  }
+    };
+  };
 
   return (
     <div className='scene-selector-submenu'>

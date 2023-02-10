@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {H5PContext} from "../../../context/H5PContext";
+import { H5PContext } from '../../../context/H5PContext';
 import './SceneSelector.scss';
-import ActiveSceneRow from "./Row/ActiveSceneRow";
-import ExpandedSceneSelector from "./ExpandedSceneSelector";
+import ActiveSceneRow from './Row/ActiveSceneRow';
+import ExpandedSceneSelector from './ExpandedSceneSelector';
 
 export default class SceneSelector extends React.Component {
   constructor(props) {
@@ -16,7 +16,7 @@ export default class SceneSelector extends React.Component {
 
   render() {
     const scenes = this.context.params.scenes;
-    const activeScene = scenes.find(scene => {
+    const activeScene = scenes.find((scene) => {
       return scene.sceneId === this.props.currentScene;
     });
 

@@ -10,7 +10,7 @@ import { PlaylistEditingType } from '../playlist-widget/widget-components/Playli
  * @returns {Playlist}
  */
 export const getPlaylistFromId = (playlists, playlistId) => {
-  return playlists.find(playlist => {
+  return playlists.find((playlist) => {
     return playlist.playlistId === playlistId;
   });
 };
@@ -23,13 +23,13 @@ export const getPlaylistFromId = (playlists, playlistId) => {
  * @param {string} editingPlaylist
  * @returns {Playlist[]}
  */
-export const updatePlaylist = (playlists, params, editingPlaylist = "") => {
+export const updatePlaylist = (playlists, params, editingPlaylist = '') => {
   if (editingPlaylist === PlaylistEditingType.NEW_PLAYLIST) {
     playlists.push(params);
     return playlists;
   }
 
-  return playlists.map(playlist => {
+  return playlists.map((playlist) => {
     if (playlist.playlistId === editingPlaylist) {
       playlist = params;
     }

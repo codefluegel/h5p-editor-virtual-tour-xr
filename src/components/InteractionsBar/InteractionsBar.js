@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './InteractionsBar.scss';
-import {getLibraries, H5PContext} from "../../context/H5PContext";
+import { getLibraries, H5PContext } from '../../context/H5PContext';
 
 export default class InteractionsBar extends React.Component {
   constructor(props) {
@@ -33,7 +33,7 @@ export default class InteractionsBar extends React.Component {
     return (
       <div className='h5p-interactions-bar'>
         {
-          this.state.libraries.map(library => {
+          this.state.libraries.map((library) => {
             const className = library.name
               .toLowerCase()
               .replace('.', '-');

@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
-import {SceneTypes} from "../components/Scene/Scene";
-import {InteractionEditingType} from "../components/EditingDialog/InteractionEditor";
+import { SceneTypes } from '../components/Scene/Scene';
+import { InteractionEditingType } from '../components/EditingDialog/InteractionEditor';
 
 export const sceneType = PropTypes.shape({
   sceneType: PropTypes.oneOf(Object.values(SceneTypes)).isRequired,

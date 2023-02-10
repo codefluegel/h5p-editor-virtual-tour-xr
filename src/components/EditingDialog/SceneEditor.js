@@ -1,19 +1,19 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import {editingSceneType} from "../../types/types";
-import EditingDialog from "./EditingDialog";
-import {H5PContext} from "../../context/H5PContext";
-import {SceneTypes} from "../Scene/Scene";
+import { editingSceneType } from '../../types/types';
+import EditingDialog from './EditingDialog';
+import { H5PContext } from '../../context/H5PContext';
+import { SceneTypes } from '../Scene/Scene';
 import './SceneEditor.scss';
-import {getSceneFromId} from "../../h5phelpers/sceneParams";
-import {createSceneForm} from "../../h5phelpers/forms/sceneForm";
-import {showConfirmationDialog} from "../../h5phelpers/h5pComponents";
+import { getSceneFromId } from '../../h5phelpers/sceneParams';
+import { createSceneForm } from '../../h5phelpers/forms/sceneForm';
+import { showConfirmationDialog } from '../../h5phelpers/h5pComponents';
 import {
   getDefaultSceneParams,
   isInteractionsValid,
   sanitizeSceneForm,
   validateSceneForm
-} from "../../h5phelpers/forms/sceneForm";
+} from '../../h5phelpers/forms/sceneForm';
 
 export const SceneEditingType = {
   NOT_EDITING: null,
@@ -62,7 +62,7 @@ export default class SceneEditor extends React.Component {
       return;
     }
 
-    if (this.params.playlist && this.params.audioType === "audio") {
+    if (this.params.playlist && this.params.audioType === 'audio') {
       this.params.playlist = null;
     }
 

@@ -1,9 +1,9 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {SceneTypes} from "../../../Scene/Scene";
+import { SceneTypes } from '../../../Scene/Scene';
 import './SceneRow.scss';
-import {getImageSource} from "../../../../context/H5PContext";
-import {H5PContext} from "../../../../context/H5PContext";
+import { getImageSource } from '../../../../context/H5PContext';
+import { H5PContext } from '../../../../context/H5PContext';
 
 export default class SceneRow extends Component {
   constructor(props) {
@@ -72,8 +72,8 @@ export default class SceneRow extends Component {
         <div className='thumbnail-wrapper'>
           <img
             className={imageClasses.join(' ')}
-            src={this.props.scene.scenesrc !== undefined?getImageSource(this.props.scene.scenesrc.path):''}
-            alt={this.props.scene.scenesrc !== undefined?this.props.scene.scenesrc.alt:''}
+            src={this.props.scene.scenesrc !== undefined ? getImageSource(this.props.scene.scenesrc.path) : ''}
+            alt={this.props.scene.scenesrc !== undefined ? this.props.scene.scenesrc.alt : ''}
             onLoad={this.onImageLoad.bind(this)}
             ref={this.imageRef}
           />
@@ -82,7 +82,7 @@ export default class SceneRow extends Component {
           <div
             className='h5p-scene-name'
             onClick={this.onTitleClick.bind(this)}
-            dangerouslySetInnerHTML={ {__html: this.props.scene.scenename} }
+            dangerouslySetInnerHTML={ { __html: this.props.scene.scenename } }
           ></div>
           {
             this.props.isStartScene &&

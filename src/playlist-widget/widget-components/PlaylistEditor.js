@@ -2,20 +2,20 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import EditingDialog from "../../components/EditingDialog/EditingDialog";
-import {H5PContext} from "../../context/H5PContext";
+import EditingDialog from '../../components/EditingDialog/EditingDialog';
+import { H5PContext } from '../../context/H5PContext';
 import './PlaylistEditor.scss';
-import {getPlaylistFromId} from "../../h5phelpers/playlistParams";
+import { getPlaylistFromId } from '../../h5phelpers/playlistParams';
 import {
   createPlaylistForm,
   getDefaultPlaylistParams,
   validatePlaylistForm
-} from "../../h5phelpers/forms/playlistForm";
+} from '../../h5phelpers/forms/playlistForm';
 
 export const PlaylistEditingType = {
   NOT_EDITING: null,
-  NEW_PLAYLIST: "",
-}
+  NEW_PLAYLIST: '',
+};
 
 export default class PlaylistEditor extends React.Component {
   constructor(props) {
@@ -26,7 +26,7 @@ export default class PlaylistEditor extends React.Component {
     this.state = {
       library: null,
       hasInputError: false,
-    }
+    };
   }
 
   getPlaylistParams() {

@@ -2,17 +2,17 @@
 
 import React from 'react';
 import PropTypes from 'prop-types';
-import Scene, {SceneTypes} from "./Scene/Scene";
-import ControlBar from "./ControlBar/ControlBar";
-import SceneEditor, {SceneEditingType} from "./EditingDialog/SceneEditor";
-import InteractionsBar from "./InteractionsBar/InteractionsBar";
+import Scene, { SceneTypes } from './Scene/Scene';
+import ControlBar from './ControlBar/ControlBar';
+import SceneEditor, { SceneEditingType } from './EditingDialog/SceneEditor';
+import InteractionsBar from './InteractionsBar/InteractionsBar';
 import './Main.scss';
-import InteractionEditor, {InteractionEditingType} from "./EditingDialog/InteractionEditor";
-import {H5PContext} from "../context/H5PContext";
-import {deleteScene, getSceneFromId, setScenePositionFromCamera, updateScene} from "../h5phelpers/sceneParams";
-import {getInteractionFromElement, isGoToScene, updatePosition} from "../h5phelpers/libraryParams";
-import {showConfirmationDialog} from "../h5phelpers/h5pComponents";
-import {addBehavioralListeners} from "../h5phelpers/editorForms";
+import InteractionEditor, { InteractionEditingType } from './EditingDialog/InteractionEditor';
+import { H5PContext } from '../context/H5PContext';
+import { deleteScene, getSceneFromId, setScenePositionFromCamera, updateScene } from '../h5phelpers/sceneParams';
+import { getInteractionFromElement, isGoToScene, updatePosition } from '../h5phelpers/libraryParams';
+import { showConfirmationDialog } from '../h5phelpers/h5pComponents';
+import { addBehavioralListeners } from '../h5phelpers/editorForms';
 
 /** 
  *  @typedef State 
@@ -118,14 +118,14 @@ export default class Main extends React.Component {
   confirmedCloneScene(sceneId) {
     const scenes = this.context.params.scenes;
     const scene = getSceneFromId(scenes, sceneId);
-    const newScene = JSON.parse(JSON.stringify(scene));;
+    const newScene = JSON.parse(JSON.stringify(scene));
 
     newScene.sceneId = 0;
     newScene.scenename = newScene.scenename + ' (' + this.context.t('copy') + ')';
 
     for (let i = 0; i < scenes.length; i++) {
       if (parseInt(scenes[i].sceneId) >= Math.floor(newScene.sceneId)) {
-        newScene.sceneId = scenes[i].sceneId+1;
+        newScene.sceneId = scenes[i].sceneId + 1;
       }
     }
 
@@ -312,7 +312,7 @@ export default class Main extends React.Component {
     this.setState({
       currentCameraPosition: camera.yaw + ',' + camera.pitch,
     });
-  }
+  };
 
   getInteractionFromIndex(index) {
     const scenes = this.context.params.scenes;
@@ -376,30 +376,30 @@ export default class Main extends React.Component {
        *  }
        * }} event
        */
-      event => {
-      if (!event.data) {
-        return;
-      }
+      (event) => {
+        if (!event.data) {
+          return;
+        }
       
-      const isElementMovement = Boolean(event.data.target);
-      if (isElementMovement) {
-        const interaction = getInteractionFromElement(
-          event.data.target, 
-          this.context.params.scenes,
-          this.state.currentScene
-        );
+        const isElementMovement = Boolean(event.data.target);
+        if (isElementMovement) {
+          const interaction = getInteractionFromElement(
+            event.data.target, 
+            this.context.params.scenes,
+            this.state.currentScene
+          );
 
-        updatePosition(interaction, event.data);
-      }
-      else {
+          updatePosition(interaction, event.data);
+        }
+        else {
         // The event was triggered by camera movement
-        this.setState({
-          currentCameraPosition: `${event.data.yaw},${event.data.pitch}`,
-        });
-      }
-    });
+          this.setState({
+            currentCameraPosition: `${event.data.yaw},${event.data.pitch}`,
+          });
+        }
+      });
 
-    this.scenePreview.on('changedScene', e => {
+    this.scenePreview.on('changedScene', (e) => {
       this.setState({
         currentScene: e.data,
       });
@@ -424,7 +424,7 @@ export default class Main extends React.Component {
 
   handleCloseSceneOverlay = () => {
     this.toggleExpandSceneSelector(false);
-  }
+  };
 
   render() {
     const hasScenes = this.context.params.scenes.length > 0;

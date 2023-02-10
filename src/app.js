@@ -1,9 +1,9 @@
 import 'core-js/stable';
 import React from 'react';
 import ReactDOM from 'react-dom';
-import Main from "./components/Main";
-import {H5PContext} from './context/H5PContext';
-import "./playlist-widget/widget";
+import Main from './components/Main';
+import { H5PContext } from './context/H5PContext';
+import './playlist-widget/widget';
 
 H5PEditor.widgets.NDLAthreeImage = H5PEditor.NDLAThreeImage = (function () {
 

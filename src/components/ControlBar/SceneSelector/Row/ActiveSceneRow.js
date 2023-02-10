@@ -1,7 +1,7 @@
 import React from 'react';
-import {sceneType} from "../../../../types/types";
+import { sceneType } from '../../../../types/types';
 import './ActiveSceneRow.scss';
-import {SceneTypes} from "../../../Scene/Scene";
+import { SceneTypes } from '../../../Scene/Scene';
 import PropTypes from 'prop-types';
 
 
@@ -13,7 +13,7 @@ const ActiveSceneRow = (props) => {
   }
   const rowClasses = ['active-scene'];
   const { sceneType } = props.scene;
-  const is3dScene = sceneType === SceneTypes.THREE_SIXTY_SCENE || sceneType === SceneTypes.PANORAMA_SCENE
+  const is3dScene = sceneType === SceneTypes.THREE_SIXTY_SCENE || sceneType === SceneTypes.PANORAMA_SCENE;
   if (is3dScene) {
     rowClasses.push('three-sixty');
   }
@@ -21,7 +21,7 @@ const ActiveSceneRow = (props) => {
   return (
     <div className={rowClasses.join(' ')}>
       <div className='h5p-scene-denotation'>{props.currentSceneLabel}:</div>
-      <div className='h5p-scene-name' dangerouslySetInnerHTML={ {__html: props.scene.scenename} }></div>
+      <div className='h5p-scene-name' dangerouslySetInnerHTML={ { __html: props.scene.scenename } }></div>
     </div>
   );
 };

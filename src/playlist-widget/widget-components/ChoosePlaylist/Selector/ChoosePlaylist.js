@@ -1,8 +1,8 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {H5PContext} from "../../../../context/H5PContext";
+import { H5PContext } from '../../../../context/H5PContext';
 import './ChoosePlaylist.scss';
-import ChoosePlaylistSelector from "./ChoosePlaylistSelector";
+import ChoosePlaylistSelector from './ChoosePlaylistSelector';
 
 export default class ChoosePlaylist extends Component {
 

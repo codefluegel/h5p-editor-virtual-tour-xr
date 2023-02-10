@@ -1,7 +1,7 @@
 // @ts-check
 
-import {SceneEditingType} from "../components/EditingDialog/SceneEditor";
-import {isGoToScene} from "./libraryParams";
+import { SceneEditingType } from '../components/EditingDialog/SceneEditor';
+import { isGoToScene } from './libraryParams';
 
 /**
  * Get scene from id
@@ -11,7 +11,7 @@ import {isGoToScene} from "./libraryParams";
  * @returns {Scene}
  */
 export const getSceneFromId = (scenes, sceneId) => {
-  return scenes.find(scene => scene.sceneId === sceneId);
+  return scenes.find((scene) => scene.sceneId === sceneId);
 };
 
 /**
@@ -24,13 +24,13 @@ export const getSceneFromId = (scenes, sceneId) => {
  */
 export const deleteScene = (scenes, sceneId) => {
   // Filter out the scene
-  const sceneRemoved = scenes.filter(scene =>  scene.sceneId !== sceneId);
+  const sceneRemoved = scenes.filter((scene) =>  scene.sceneId !== sceneId);
 
   // Filter out any interactions pointing to the scene
-  return sceneRemoved.map(scene => {
+  return sceneRemoved.map((scene) => {
     const interactions = scene.interactions;
     if (interactions) {
-      scene.interactions = interactions.filter(interaction => {
+      scene.interactions = interactions.filter((interaction) => {
         if (!isGoToScene(interaction)) {
           return true;
         }
@@ -49,7 +49,7 @@ export const deleteScene = (scenes, sceneId) => {
  *
  * @param {Scene[]} scenes
  * @param {Scene} params
- * @param {number | null} editingScene
+ * @param {number|null} editingScene
  * @returns {Scene[]}
  */
 export const updateScene = (scenes, params, editingScene = -1) => {
@@ -58,7 +58,7 @@ export const updateScene = (scenes, params, editingScene = -1) => {
     return scenes;
   }
 
-  return scenes.map(scene => {
+  return scenes.map((scene) => {
     if (scene.sceneId === editingScene) {
       // Replace scene
       scene = params;

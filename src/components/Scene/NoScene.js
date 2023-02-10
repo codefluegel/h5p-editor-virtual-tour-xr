@@ -1,6 +1,6 @@
 import React from 'react';
 import './NoScene.scss';
-import { H5PContext } from "../../context/H5PContext";
+import { H5PContext } from '../../context/H5PContext';
 
 export default class NoScene extends React.Component {
   render() {

@@ -1,4 +1,4 @@
-import {getSceneField, isChildrenValid} from "../editorForms";
+import { getSceneField, isChildrenValid } from '../editorForms';
 
 const DefaultInteractionValues = {
   threeSixty: {
@@ -26,7 +26,7 @@ export const createSceneForm = (field, params, wrapper, parent) => {
     'interactions',
   ];
 
-  const sceneFields = sceneField.field.fields.filter(sceneField => {
+  const sceneFields = sceneField.field.fields.filter((sceneField) => {
     return !hiddenSceneFields.includes(sceneField.name);
   });
 
@@ -36,6 +36,18 @@ export const createSceneForm = (field, params, wrapper, parent) => {
     wrapper,
     parent,
   );
+};
+
+/**
+ * Gets a random position within a percentage spread around the center
+ * position
+ *
+ * @param center
+ * @param spread
+ * @returns {number}
+ */
+const spreadByValue = (center, spread) => {
+  return center - (spread / 2) + (Math.random() * spread);
 };
 
 /**
@@ -50,60 +62,6 @@ export const validateSceneForm = (children) => {
 };
 
 /**
- * Sets default values for scene parameters that are not initially set by
- * the user when creating a scene.
- *
- * @param params
- * @param isThreeSixty
- * @param cameraPos
- */
-export const sanitizeSceneForm = (params, isThreeSixty, cameraPos) => {
-  if (!params.cameraStartPosition) {
-    params.cameraStartPosition = [
-      -(Math.PI * (2/3)),
-      0
-    ].join(',');
-  }
-
-  if (!params.interactions) {
-    params.interactions = [];
-  }
-
-  params.interactions.forEach(interaction => {
-    sanitizeInteractionPositions(interaction, isThreeSixty, cameraPos);
-  });
-};
-
-/**
- * Check if all interactions has valid positions
- *
- * @param params
- * @param isThreeSixty
- * @returns {boolean}
- */
-export const isInteractionsValid = (params, isThreeSixty) => {
-  if (!params.interactions) {
-    return true;
-  }
-
-  return params.interactions.every(interaction => {
-    return isInteractionPositionValid(interaction, isThreeSixty);
-  });
-};
-
-/**
- * Get initial parameters for an empty scene
- *
- * @param scenes
- * @returns {{sceneId: (number|*)}}
- */
-export const getDefaultSceneParams = (scenes) => {
-  return {
-    sceneId: getUniqueSceneId(scenes),
-  };
-};
-
-/**
  * Checks if a single interaction has a valid position given scene type
  *
  * @param interaction
@@ -112,24 +70,10 @@ export const getDefaultSceneParams = (scenes) => {
  */
 const isInteractionPositionValid = (interaction, isThreeSixty) => {
   const position = interaction.interactionpos.split(',');
-  return position.every(pos => {
+  return position.every((pos) => {
     const hasThreeSixtyPos = pos.substr(-1) !== '%';
     return hasThreeSixtyPos === isThreeSixty;
   });
-};
-
-/**
- * Sets a default position for an interaction if it has an invalid position for
- * the given scene type
- *
- * @param interaction
- * @param isThreeSixty
- * @param cameraPos
- */
-const sanitizeInteractionPositions = (interaction, isThreeSixty, cameraPos) => {
-  if (!isInteractionPositionValid(interaction, isThreeSixty)) {
-    interaction.interactionpos = getNewInteractionPos(isThreeSixty, cameraPos);
-  }
 };
 
 /**
@@ -149,21 +93,65 @@ const getNewInteractionPos = (isThreeSixtyScene, cameraPos) => {
     spread = DefaultInteractionValues.threeSixty.spread * Math.PI / 180;
   }
 
-  return center.map(pos => spreadByValue(pos, spread))
-    .map(pos => isThreeSixtyScene ? pos : pos + '%')
+  return center.map((pos) => spreadByValue(pos, spread))
+    .map((pos) => isThreeSixtyScene ? pos : pos + '%')
     .join(',');
 };
 
 /**
- * Gets a random position within a percentage spread around the center
- * position
+ * Sets a default position for an interaction if it has an invalid position for
+ * the given scene type
  *
- * @param center
- * @param spread
- * @returns {number}
+ * @param interaction
+ * @param isThreeSixty
+ * @param cameraPos
  */
-const spreadByValue = (center, spread) => {
-  return center - (spread / 2) + (Math.random() * spread);
+const sanitizeInteractionPositions = (interaction, isThreeSixty, cameraPos) => {
+  if (!isInteractionPositionValid(interaction, isThreeSixty)) {
+    interaction.interactionpos = getNewInteractionPos(isThreeSixty, cameraPos);
+  }
+};
+
+/**
+ * Sets default values for scene parameters that are not initially set by
+ * the user when creating a scene.
+ *
+ * @param params
+ * @param isThreeSixty
+ * @param cameraPos
+ */
+export const sanitizeSceneForm = (params, isThreeSixty, cameraPos) => {
+  if (!params.cameraStartPosition) {
+    params.cameraStartPosition = [
+      -(Math.PI * (2 / 3)),
+      0
+    ].join(',');
+  }
+
+  if (!params.interactions) {
+    params.interactions = [];
+  }
+
+  params.interactions.forEach((interaction) => {
+    sanitizeInteractionPositions(interaction, isThreeSixty, cameraPos);
+  });
+};
+
+/**
+ * Check if all interactions has valid positions
+ *
+ * @param params
+ * @param isThreeSixty
+ * @returns {boolean}
+ */
+export const isInteractionsValid = (params, isThreeSixty) => {
+  if (!params.interactions) {
+    return true;
+  }
+
+  return params.interactions.every((interaction) => {
+    return isInteractionPositionValid(interaction, isThreeSixty);
+  });
 };
 
 /**
@@ -177,7 +165,19 @@ const getUniqueSceneId = (scenes) => {
     return 0;
   }
 
-  const sceneIds = scenes.map(scene => scene.sceneId);
+  const sceneIds = scenes.map((scene) => scene.sceneId);
   const maxSceneId = Math.max(...sceneIds);
   return maxSceneId + 1;
+};
+
+/**
+ * Get initial parameters for an empty scene
+ *
+ * @param scenes
+ * @returns {{sceneId: (number|*)}}
+ */
+export const getDefaultSceneParams = (scenes) => {
+  return {
+    sceneId: getUniqueSceneId(scenes),
+  };
 };

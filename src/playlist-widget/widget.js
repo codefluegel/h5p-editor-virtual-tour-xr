@@ -1,13 +1,13 @@
 // @ts-check
 
-import React from "react";
-import ReactDOM from "react-dom";
-import { updatePlaylist } from "../h5phelpers/playlistParams";
-import ChoosePlaylistWrapper from "./widget-components/ChoosePlaylist/ChoosePlaylistWrapper";
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { updatePlaylist } from '../h5phelpers/playlistParams';
+import ChoosePlaylistWrapper from './widget-components/ChoosePlaylist/ChoosePlaylistWrapper';
 import PlaylistEditor, {
   PlaylistEditingType,
-} from "./widget-components/PlaylistEditor";
-import "./widget.scss";
+} from './widget-components/PlaylistEditor';
+import './widget.scss';
 
 /** @typedef {any} jQuery */
 
@@ -105,7 +105,7 @@ class PlaylistWidgetComponent extends React.Component {
 
   componentDidMount() {
     window.addEventListener(
-      "h5pPlaylistsUpdated",
+      'h5pPlaylistsUpdated',
       (/** @type {CustomEvent<Array<Playlist>>} */ event) => {
         const updatedPlaylists = event.detail;
 
@@ -133,7 +133,7 @@ class PlaylistWidgetComponent extends React.Component {
    */
   triggerUpdatedEvent(updatedPlaylists) {
     /** @type {CustomEvent<Array<Playlist>>} */
-    const event = new CustomEvent("h5pPlaylistsUpdated", {
+    const event = new CustomEvent('h5pPlaylistsUpdated', {
       detail: updatedPlaylists,
     });
 
@@ -146,7 +146,7 @@ class PlaylistWidgetComponent extends React.Component {
    * @return {string}
    */
   translate(...args) {
-    const translations = ["H5PEditor.NDLAThreeImage", ...args];
+    const translations = ['H5PEditor.NDLAThreeImage', ...args];
     return H5PEditor.t.apply(window, translations);
   }
 
@@ -280,7 +280,7 @@ class PlaylistWidgetComponent extends React.Component {
    */
   removePlaylist(playlists, selectedPlaylist) {
     const index = playlists.indexOf(selectedPlaylist);
-    if (selectedPlaylist != null && selectedPlaylist.playlistId !== "") {
+    if (selectedPlaylist != null && selectedPlaylist.playlistId !== '') {
       playlists.splice(index, 1);
     }
     return playlists;
@@ -303,8 +303,8 @@ class PlaylistWidgetComponent extends React.Component {
     }
 
     const playlists = this.getPlaylists();
-    const playlistToRemove = playlists.find(playlist => {
-      return playlist.playlistId === playlistId
+    const playlistToRemove = playlists.find((playlist) => {
+      return playlist.playlistId === playlistId;
     });
     const newPlaylists = this.removePlaylist(
       playlists,
@@ -370,7 +370,7 @@ class PlaylistWidgetComponent extends React.Component {
         <ChoosePlaylistWrapper
           playlists={this.state.playlists}
           params={this.getParams()}
-          noPlaylistsTranslation={this.translate("noPlaylistsAdded")}
+          noPlaylistsTranslation={this.translate('noPlaylistsAdded')}
           markedPlaylist={
             this.state.selectedPlaylist
               ? this.state.selectedPlaylist.playlistId
@@ -392,23 +392,23 @@ class PlaylistWidgetComponent extends React.Component {
                 this.editPlaylist(PlaylistEditingType.NEW_PLAYLIST)
               }
             >
-              + {this.translate("newPlaylist")}
+              + {this.translate('newPlaylist')}
             </button>
           </div>
         )}
         {this.state.editingPlaylist !== PlaylistEditingType.NOT_EDITING &&
           this.props.canEdit && (
-            <PlaylistEditor
-              translate={this.translate}
-              removeAction={() =>
-                this.deletePlaylist(this.state.editingPlaylist)
-              }
-              doneAction={this.doneEditingPlaylist.bind(this)}
-              editingPlaylist={this.state.editingPlaylist}
-              context={this.getContext()}
-              playlists={this.state.playlists}
-            />
-          )}
+          <PlaylistEditor
+            translate={this.translate}
+            removeAction={() =>
+              this.deletePlaylist(this.state.editingPlaylist)
+            }
+            doneAction={this.doneEditingPlaylist.bind(this)}
+            editingPlaylist={this.state.editingPlaylist}
+            context={this.getContext()}
+            playlists={this.state.playlists}
+          />
+        )}
       </>
     );
   }
