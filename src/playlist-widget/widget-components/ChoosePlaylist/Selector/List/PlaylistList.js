@@ -1,5 +1,3 @@
-// @ts-check
-
 import PropTypes from 'prop-types';
 import React from 'react';
 import PlaylistRow from './PlaylistRow';
@@ -11,7 +9,7 @@ import PlaylistRow from './PlaylistRow';
  *   isShowingCheck: boolean;
  *   onTitleClick: (playlistId: string) => void;
  *   onPlaylistClick: (playlistId: string) => void;
- * }} props 
+ * }} props
  * @returns {JSX.Element}
  */
 function PlaylistList(props) {

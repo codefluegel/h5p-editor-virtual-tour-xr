@@ -1,24 +1,26 @@
 const path = require('path');
-const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
-const nodeEnv = process.env.NODE_ENV || 'development';
-const isProd = (nodeEnv === 'production');
+const mode = process.argv.includes('--mode=production') ?
+  'production' : 'development';
+const libraryName = process.env.npm_package_name;
 
 module.exports = {
-  mode: nodeEnv,
+  mode: mode,
   plugins: [
     new MiniCssExtractPlugin({
-      filename: 'h5p-editor-three-image.css'
+      filename: `${libraryName}.css`
     })
   ],
   entry: {
     dist: './src/app.js'
   },
   output: {
-    filename: 'h5p-editor-three-image.js',
-    path: path.resolve(__dirname, 'dist')
+    filename: `${libraryName}.js`,
+    path: path.resolve(__dirname, 'dist'),
+    clean: true
   },
-  target: ['web'],
+  target: ['browserslist'],
   module: {
     rules: [
       {
@@ -35,9 +37,9 @@ module.exports = {
               publicPath: ''
             }
           },
-          { loader: "css-loader" },
+          { loader: 'css-loader' },
           {
-            loader: "sass-loader"
+            loader: 'sass-loader'
           }
         ]
       },
@@ -56,5 +58,5 @@ module.exports = {
   stats: {
     colors: true
   },
-  devtool: (isProd) ? undefined : 'eval-cheap-module-source-map'
+  ...(mode !== 'production' && { devtool: 'eval-cheap-module-source-map' })
 };

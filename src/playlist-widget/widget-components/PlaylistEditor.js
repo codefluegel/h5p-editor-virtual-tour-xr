@@ -1,5 +1,3 @@
-// @ts-check
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import EditingDialog from '../../components/EditingDialog/EditingDialog';
@@ -44,7 +42,7 @@ export default class PlaylistEditor extends React.Component {
     this.params = this.getPlaylistParams();
 
     var contextParent = this.props.context.parent;
-    
+
     // Preserve parent's children
     this.parentChildren = contextParent && contextParent.children;
 

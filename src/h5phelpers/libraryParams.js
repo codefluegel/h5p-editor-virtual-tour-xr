@@ -1,5 +1,3 @@
-// @ts-check
-
 import { getSceneFromId } from './sceneParams';
 
 export const Libraries = {
@@ -26,7 +24,7 @@ export const getDefaultLibraryParams = (uberName) => {
 };
 
 /**
- * @param {HTMLElement} element 
+ * @param {HTMLElement} element
  * @param {Scene[]} scenes
  * @param {number} sceneId
  * @returns {Interaction}

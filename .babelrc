@@ -1,19 +1,11 @@
 {
   "presets": [
     [
-      "@babel/preset-env",
-      {
-        "targets": "last 2 versions, ie 11, > 0.5%, not dead",
-        "useBuiltIns": "entry",
-        "corejs": 3
-      }
+      "@babel/preset-env"
     ],
     "@babel/preset-react"
   ],
   "plugins": [
-    "@babel/plugin-transform-spread",
-    "@babel/plugin-proposal-class-properties",
-    "@babel/plugin-transform-destructuring",
     "@babel/plugin-transform-runtime"
   ]
 }

@@ -1,5 +1,3 @@
-// @ts-check
-
 import { PlaylistEditingType } from '../playlist-widget/widget-components/PlaylistEditor';
 
 /**

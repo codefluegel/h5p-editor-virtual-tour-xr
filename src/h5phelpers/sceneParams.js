@@ -1,5 +1,3 @@
-// @ts-check
-
 import { SceneEditingType } from '../components/EditingDialog/SceneEditor';
 import { isGoToScene } from './libraryParams';
 
