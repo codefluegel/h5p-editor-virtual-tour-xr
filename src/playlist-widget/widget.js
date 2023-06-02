@@ -1,5 +1,3 @@
-// @ts-check
-
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { updatePlaylist } from '../h5phelpers/playlistParams';
@@ -173,16 +171,16 @@ class PlaylistWidgetComponent extends React.Component {
 
     if (threeImage?.params?.playlists) {
       return threeImage.params.playlists;
-    } 
+    }
     else if (threeImage?.parent?.params?.threeImage?.playlists) {
       return threeImage.parent.params.threeImage.playlists;
-    } 
+    }
     else if (threeImage?.parent?.parent?.params?.threeImage?.playlists) {
       return threeImage.parent.parent.params.threeImage.playlists;
-    } 
+    }
     else if (threeImage?.form?.parent?.params?.threeImage?.playlists) {
       return threeImage.form.parent.params.threeImage.playlists;
-    } 
+    }
     else if (this.props.form?.parent?.params?.threeImage?.playlists) {
       return this.props.form.parent.params.threeImage.playlists;
     }

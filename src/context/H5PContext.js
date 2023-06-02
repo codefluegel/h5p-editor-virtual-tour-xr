@@ -1,5 +1,3 @@
-// @ts-check
-
 import React from 'react';
 import { getInteractionsField } from '../h5phelpers/editorForms';
 

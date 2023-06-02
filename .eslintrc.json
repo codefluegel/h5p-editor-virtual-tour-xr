@@ -1,9 +1,4 @@
 {
-  "globals": {
-    "H5P": "readonly",
-    "H5PEditor": "readonly",
-    "H5PIntegration": "readonly"
-  },
   "env": {
     "browser": true,
     "node": true,
@@ -27,7 +22,6 @@
   ],
   "rules": {
     "valid-jsdoc": "off",
-    "object-curly-spacing": ["error", "always"],
     "react/prop-types": 0
   }
 }

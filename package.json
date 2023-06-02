@@ -1,42 +1,35 @@
 {
-  "name": "h5p-editor-three-image",
-  "version": "0.4.18",
+  "name": "h5p-editor-ndla-three-image",
+  "version": "0.4.19",
   "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "cross-env NODE_ENV='production' webpack",
-    "watch": "cross-env NODE_ENV='development' webpack --watch",
-    "validate-types": "tsc --noEmit",
+    "build": "webpack --mode=production",
+    "watch": "webpack --mode=development --watch",
     "lint": "eslint './src/**/*.js'"
   },
   "devDependencies": {
-    "@babel/cli": "7.19.3",
-    "@babel/core": "^7.20.2",
-    "@babel/eslint-parser": "^7.19.1",
-    "@babel/plugin-proposal-class-properties": "^7.18.6",
-    "@babel/plugin-transform-destructuring": "^7.20.2",
-    "@babel/plugin-transform-spread": "^7.19.0",
-    "@babel/preset-env": "^7.20.2",
-    "@babel/preset-react": "^7.18.6",
-    "@types/react": "^16.8.25",
-    "@types/react-dom": "^16.9.13",
-    "babel-loader": "^9.1.0",
-    "cross-env": "^7.0.3",
-    "css-loader": "^6.7.1",
-    "eslint": "^8.28.0",
+    "@babel/cli": "7.21.5",
+    "@babel/core": "^7.22.1",
+    "@babel/eslint-parser": "^7.21.8",
+    "@babel/preset-env": "^7.22.2",
+    "@babel/preset-react": "^7.22.3",
+    "@types/react": "^16.14.42",
+    "@types/react-dom": "^16.9.19",
+    "babel-loader": "^9.1.2",
+    "css-loader": "^6.8.1",
+    "eslint": "^8.41.0",
     "eslint-config-ndla-h5p": "github:NDLANO/eslint-config-ndla-h5p",
-    "eslint-plugin-react": "^7.31.10",
-    "mini-css-extract-plugin": "^2.6.1",
-    "sass": "^1.56.0",
-    "sass-loader": "^13.1.0",
-    "typescript": "^4.8.4",
-    "webpack": "^5.74.0",
-    "webpack-cli": "^4.10.0"
+    "eslint-plugin-react": "^7.32.2",
+    "mini-css-extract-plugin": "^2.7.6",
+    "sass": "^1.62.1",
+    "sass-loader": "^13.3.1",
+    "webpack": "^5.84.1",
+    "webpack-cli": "^5.1.1"
   },
   "dependencies": {
-    "core-js": "^3.26.0",
-    "@babel/plugin-transform-runtime": "^7.19.6",
+    "@babel/plugin-transform-runtime": "^7.22.2",
     "prop-types": "^15.8.1",
     "react": "16.14",
     "react-dom": "16.14"
@@ -47,5 +40,6 @@
   "contributors": [
     "Frode Petterson <frode.petterson@joubel.com> (https://github.com/icc)",
     "Thomas Marstrander <thomas.marstrander@joubel.com> (https://github.com/thomasmars)"
-  ]
+  ],
+  "browserslist": "> 0.5%, last 2 versions, Firefox ESR, not dead"
 }

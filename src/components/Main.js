@@ -1,5 +1,3 @@
-// @ts-check
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import Scene, { SceneTypes } from './Scene/Scene';
@@ -14,8 +12,8 @@ import { getInteractionFromElement, isGoToScene, updatePosition } from '../h5phe
 import { showConfirmationDialog } from '../h5phelpers/h5pComponents';
 import { addBehavioralListeners } from '../h5phelpers/editorForms';
 
-/** 
- *  @typedef State 
+/**
+ *  @typedef State
  *  @property {number} editingScene
  *  @property {Library} editingLibrary;
  *  @property {number} editingInteraction;
@@ -99,7 +97,7 @@ export default class Main extends React.Component {
     // No scenes left
     this.setStartScene(startScene);
   }
-  
+
   cloneScene(sceneId) {
     const isNewScene = sceneId === SceneEditingType.NEW_SCENE;
     const deleteSceneText = isNewScene
@@ -366,7 +364,7 @@ export default class Main extends React.Component {
 
     this.scenePreview.off('movestop');
 
-    this.scenePreview.on('movestop', 
+    this.scenePreview.on('movestop',
       /**
        * @param {{
        *  data: {
@@ -380,11 +378,11 @@ export default class Main extends React.Component {
         if (!event.data) {
           return;
         }
-      
+
         const isElementMovement = Boolean(event.data.target);
         if (isElementMovement) {
           const interaction = getInteractionFromElement(
-            event.data.target, 
+            event.data.target,
             this.context.params.scenes,
             this.state.currentScene
           );
