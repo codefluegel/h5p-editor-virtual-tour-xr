@@ -16,7 +16,7 @@ function PlaylistList(props) {
   let previousElementHasTopBorder = false;
 
   return (
-    <div className='h5p-playlist-list'>
+    <ul className='h5p-playlist-list'>
       {
         props.playlists.map((playlist) => {
           const isMarkedPlaylist = playlist.playlistId === props.markedPlaylist;
@@ -42,7 +42,7 @@ function PlaylistList(props) {
           );
         })
       }
-    </div>
+    </ul>
   );
 }
 

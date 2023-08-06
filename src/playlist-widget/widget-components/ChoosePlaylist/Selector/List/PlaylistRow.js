@@ -57,19 +57,22 @@ export default class PlaylistRow extends Component {
     }
 
     return (
-      <div
-        className={rowClasses.join(' ')}
-        onClick={this.onPlaylistClick.bind(this)}
-      >
-        <div className='playlist-wrapper'>
-          <div
-            className='h5p-playlist-name'
-            onClick={this.onTitleClick.bind(this)}
-            dangerouslySetInnerHTML={ { __html: this.props.playlist.title } }
-          ></div>
-        </div>
-        {this.props.children}
-      </div>
+      <li className='h5p-playlist-listitem'>
+        <button
+          type='button'
+          className={rowClasses.join(' ')}
+          onClick={this.onPlaylistClick.bind(this)}
+        >
+          <div className='playlist-wrapper'>
+            <div
+              className='h5p-playlist-name'
+              onClick={this.onTitleClick.bind(this)}
+              dangerouslySetInnerHTML={ { __html: this.props.playlist.title } }
+            ></div>
+          </div>
+          {this.props.children}
+        </button>
+      </li>
     );
   }
 }
