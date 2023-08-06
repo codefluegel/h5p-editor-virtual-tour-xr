@@ -10,6 +10,12 @@ import SceneSelectorSubmenu from './SceneSelector/Row/Submenu/SceneSelectorSubme
 import SceneSelector from './SceneSelector/SceneSelector';
 
 export default class ControlBar extends Component {
+  constructor() {
+    super();
+
+    this.state = { setStartingPositionFocus: false };
+  }
+
   render() {
     const scenes = this.context.params.scenes;
     const scene = getSceneFromId(scenes, this.props.currentScene);
@@ -17,6 +23,12 @@ export default class ControlBar extends Component {
       scene.sceneType === SceneTypes.THREE_SIXTY_SCENE ||
       scene.sceneType === SceneTypes.PANORAMA_SCENE
     );
+
+    const setStartingPositionButtonClasses = [
+      'button-wrapper',
+      this.props.isInStartingPosition ? '' : 'not-disabled',
+      this.state.setStartingPositionFocus ? 'has-focus' : ''
+    ].join(' ');
 
     return (
       <div className='h5p-control-bar'>
@@ -55,10 +67,16 @@ export default class ControlBar extends Component {
           >+ {this.context.t('newScene')}</button>
           {
             is360Scene &&
-            <div className={ 'button-wrapper' + (this.props.isInStartingPosition ? '' : ' not-disabled') }>
+            <div className={ setStartingPositionButtonClasses }>
               <button
                 className='set-starting-position-button'
                 onClick={ this.props.onSetStartingPosition }
+                onFocus={ () => {
+                  this.setState({ setStartingPositionFocus: true });
+                } }
+                onBlur={ () => {
+                  this.setState({ setStartingPositionFocus: false });
+                } }
                 aria-describedby='set-starting-position-tooltip'
                 disabled={ this.props.isInStartingPosition }
               >{this.context.t('setCameraStart')}</button>
