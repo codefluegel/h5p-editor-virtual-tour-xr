@@ -9,6 +9,7 @@ import {
   getDefaultPlaylistParams,
   validatePlaylistForm
 } from '../../h5phelpers/forms/playlistForm';
+import { getFocussableElements } from '../../utils/dom';
 
 export const PlaylistEditingType = {
   NOT_EDITING: null,
@@ -56,6 +57,9 @@ export default class PlaylistEditor extends React.Component {
     // Capture own children and restore parent
     this.children = this.props.context.parent.children;
     this.props.context.parent.children = this.parentChildren;
+
+    // Focus first field
+    getFocussableElements(this.semanticsRef.current)?.shift()?.focus();
   }
 
   handleDone() {
