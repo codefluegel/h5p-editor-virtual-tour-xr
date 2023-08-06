@@ -87,6 +87,8 @@ class PlaylistWidgetComponent extends React.Component {
   constructor(props) {
     super(props);
 
+    this.newPlaylistButtonRef = React.createRef();
+
     const playlists = this.getPlaylists();
     this.state = {
       playlists,
@@ -290,6 +292,8 @@ class PlaylistWidgetComponent extends React.Component {
    * @returns if playlist not added
    */
   deletePlaylist(playlistId) {
+    this.setFocusButton(this.buttonToRestoreFocusTo, -1);
+
     this.setState({
       editingPlaylist: PlaylistEditingType.NOT_EDITING,
     });
@@ -330,6 +334,7 @@ class PlaylistWidgetComponent extends React.Component {
    * @param {string} playlistId
    */
   editPlaylist(playlistId = PlaylistEditingType.NEW_PLAYLIST) {
+    this.buttonToRestoreFocusTo = document.activeElement;
     this.setState({ editingPlaylist: playlistId });
   }
 
@@ -347,11 +352,59 @@ class PlaylistWidgetComponent extends React.Component {
 
     this.triggerUpdatedEvent(newPlaylists);
 
+    this.setFocusButton(this.buttonToRestoreFocusTo);
+
     this.setState({
       playlistUpdated: false,
       editingPlaylist: PlaylistEditingType.NOT_EDITING,
       selectedPlaylist: null,
     });
+  }
+
+  /**
+   * Set focus to button of playlist or fall back to new playlist button.
+   * @param {HTMLButtonElement} button Button that was used to open dialog.
+   * @param {number} [offset] Offset to select sibling.
+   * @returns
+   */
+  setFocusButton(button, offset = 0) {
+    if (!button?.isConnected || button === this.newPlaylistButtonRef.current) {
+      this.newPlaylistButtonRef.current.focus(); // Fallback
+      return;
+    }
+
+    if (typeof offset !== 'number' || offset === 0) {
+      button.focus();
+      return;
+    }
+
+    const list = button.closest('ul');
+    if (!list) {
+      this.newPlaylistButtonRef.current.focus();
+      return;
+    }
+
+    const listItems = [...list.childNodes];
+
+    const index = listItems.findIndex((listitem) => {
+      return button.closest(`.${listitem.className}`) === listitem;
+    });
+    if (index === -1) {
+      this.newPlaylistButtonRef.current.focus();
+      return;
+    }
+
+    const newIndex = (index === 0 && offset < 0) ?
+      1 :
+      Math.max(0, index + offset);
+
+    if (newIndex >= listItems.length) {
+      this.newPlaylistButtonRef.current.focus();
+      return;
+    }
+
+    listItems[newIndex]
+      .querySelector(`.${button.className}`)?.focus();
   }
 
   render() {
@@ -389,6 +442,7 @@ class PlaylistWidgetComponent extends React.Component {
               onClick={() =>
                 this.editPlaylist(PlaylistEditingType.NEW_PLAYLIST)
               }
+              ref={this.newPlaylistButtonRef}
             >
               + {this.translate('newPlaylist')}
             </button>
