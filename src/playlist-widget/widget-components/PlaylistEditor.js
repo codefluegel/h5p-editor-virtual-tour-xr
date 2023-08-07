@@ -95,6 +95,9 @@ export default class PlaylistEditor extends React.Component {
         doneAction={this.handleDone.bind(this)}
         doneLabel={this.props.translate('done')}
         removeLabel={this.props.translate('remove')}
+        resize={() => {
+          this.props.resize?.();
+        }}
       >
         <div className={semanticsClasses.join(' ')} ref={this.semanticsRef}/>
       </EditingDialog>
@@ -108,4 +111,5 @@ PlaylistEditor.propTypes = {
   editingPlaylist: PropTypes.string.isRequired,
   doneAction: PropTypes.func.isRequired,
   removeAction: PropTypes.func.isRequired,
+  resize: PropTypes.func
 };

@@ -7,15 +7,11 @@
   }
 }
 .choose-playlist-editor {
-  margin: 1em 0 12em;
+  margin: 1em 0;
 }
 
 .field-name-audioPlaylistsGroup {
-  .h5p-editing-overlay {
-    min-height: 481px;
-  }
   .h5p-editing-dialog {
     top: 2em;
-    max-height: calc(100% - 4em);
   }
 }

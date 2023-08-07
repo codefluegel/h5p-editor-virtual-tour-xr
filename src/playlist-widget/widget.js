@@ -49,20 +49,64 @@ H5PEditor.widgets.playlist = class PlaylistWidget {
    * @param {jQuery} $wrapper
    */
   appendTo($wrapper) {
+    this.wrapper = $wrapper.get(0);
+
     ReactDOM.render(
-      <PlaylistWidgetComponent
-        form={this.form}
-        setValue={(/** @type {number} */ value) => {
-          this.value = value;
-          this.setValue(this.field, value);
-        }}
-        playlistId={this.value}
-        label={this.field.label}
-        description={this.field.description}
-        canEdit={this.field.canEdit}
-      />,
-      $wrapper.get(0)
+      <div
+        className='h5p-playlist-settings-container'
+      >
+        <PlaylistWidgetComponent
+          form={this.form}
+          setValue={(/** @type {number} */ value) => {
+            this.value = value;
+            this.setValue(this.field, value);
+          }}
+          playlistId={this.value}
+          label={this.field.label}
+          description={this.field.description}
+          canEdit={this.field.canEdit}
+          resize={() => {
+            this.resize();
+          }}
+        />
+      </div>,
+      this.wrapper
     );
+  }
+
+  /**
+   * Resize settings container to fit absolutely positioned overlay height.
+   */
+  resize() {
+    this.settingsDOM = this.settingsDOM ??
+      this.wrapper.querySelector('.h5p-playlist-settings-container');
+
+    if (!this.settingsDOM) {
+      return;
+    }
+
+    // Reset to browser computation and then apply overlay height if relevant
+    this.settingsDOM.style.height = '';
+
+    const overlayDOM = this.settingsDOM?.querySelector('.h5p-editing-overlay');
+    if (!overlayDOM) {
+      return;
+    }
+
+    window.requestAnimationFrame(() => {
+      const settingsHeight = this.settingsDOM.getBoundingClientRect().height;
+      const parentStyle = window.getComputedStyle(this.settingsDOM.parentNode);
+
+      const overlayHeight = overlayDOM.getBoundingClientRect().height -
+        parseFloat(parentStyle.getPropertyValue('padding-top')) -
+        parseFloat(parentStyle.getPropertyValue('padding-bottom'));
+
+      if (overlayHeight === 0) {
+        return;
+      }
+
+      this.settingsDOM.style.height = `${Math.max(settingsHeight, overlayHeight)}px`;
+    });
   }
 
   validate() {
@@ -82,6 +126,7 @@ class PlaylistWidgetComponent extends React.Component {
    *   description: string;
    *   index: number;
    *   canEdit: boolean;
+   *   resize: () => void;
    * }} props
    */
   constructor(props) {
@@ -408,6 +453,10 @@ class PlaylistWidgetComponent extends React.Component {
   }
 
   render() {
+    window.requestAnimationFrame(() => {
+      this.props.resize();
+    });
+
     return (
       <>
         {this.props.label && (
@@ -459,6 +508,9 @@ class PlaylistWidgetComponent extends React.Component {
             editingPlaylist={this.state.editingPlaylist}
             context={this.getContext()}
             playlists={this.state.playlists}
+            resize={() => {
+              this.props.resize();
+            }}
           />
         )}
       </>
