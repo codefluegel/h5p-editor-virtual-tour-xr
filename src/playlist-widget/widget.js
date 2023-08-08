@@ -200,13 +200,11 @@ class PlaylistWidgetComponent extends React.Component {
    * @returns {object} context
    */
   getContext() {
-    if (
-      this.props.form?.parent?.children &&
-      this.props.form?.parent?.children[0]
-    ) {
-      return this.props.form?.parent?.children[0];
-    }
-    return this.props.form;
+    const threeImage = this.props.form?.parent?.children?.find?.((child) => {
+      return child.field?.name === 'threeImage';
+    });
+
+    return threeImage ?? this.props.form;
   }
 
   /**
@@ -214,7 +212,9 @@ class PlaylistWidgetComponent extends React.Component {
    * @returns {Array<Playlist>}
    */
   getPlaylists() {
-    const threeImage = this.props.form.children[0];
+    const threeImage = this.props.form?.parent?.children?.find?.((child) => {
+      return child.field?.name === 'threeImage';
+    });
 
     if (threeImage?.params?.playlists) {
       return threeImage.params.playlists;
@@ -239,7 +239,9 @@ class PlaylistWidgetComponent extends React.Component {
    * @returns {Array<Scene>}
    */
   getScenes() {
-    const threeImage = this.props.form.children[0];
+    const threeImage = this.props.form?.parent?.children?.find?.((child) => {
+      return child.field?.name === 'threeImage';
+    });
 
     if (threeImage?.form?.parent?.params?.threeImage?.scenes) {
       return threeImage.form.parent.params.threeImage.scenes;

@@ -1,5 +1,3 @@
-// @ts-check
-
 import React from 'react';
 import PropTypes from 'prop-types';
 import EditingDialog from './EditingDialog';
@@ -46,7 +44,7 @@ export default class InteractionEditor extends React.Component {
   }
 
   /**
-   * @param {number} interactionIndex 
+   * @param {number} interactionIndex
    * @returns {Interaction}
    */
   getInteractionParams(interactionIndex = null) {
@@ -101,6 +99,11 @@ export default class InteractionEditor extends React.Component {
 
     // Update state when library has loaded
     this.libraryWidget = this.children[2];
+
+    this.libraryWidget = this.children?.find?.((child) => {
+      return child.field?.name === 'action';
+    });
+
     const libraryLoadedCallback = () => {
       this.setState({
         isInitialized: true,
