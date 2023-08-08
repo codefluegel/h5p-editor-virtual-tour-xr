@@ -15,7 +15,10 @@ export default class NDLAThreeImage {
     this.setValue = setValue;
     this.wrapper = null;
 
-    H5P.$window.on('resize', this.resize.bind(this));
+    window.addEventListener('resize', () => {
+      this.scenePreview?.trigger('resize'); // View instance
+      this.resize();
+    });
     this.resize();
   }
 
@@ -46,7 +49,13 @@ export default class NDLAThreeImage {
 
     ReactDOM.render(
       <H5PContext.Provider value={this}>
-        <Main initialScene={startScene} />
+        <Main
+          initialScene={startScene}
+          setScenePreview={(scenePreview) => {
+            this.scenePreview = scenePreview;
+          }
+          }
+        />
       </H5PContext.Provider>,
       wrapper
     );

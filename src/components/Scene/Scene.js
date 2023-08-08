@@ -64,11 +64,6 @@ export default class Scene extends React.Component {
       }
     );
 
-    H5P.$window.on('resize', () => {
-      this.preview.trigger('resize');
-    });
-
-
     this.setAsActiveScene();
 
     this.setState({
@@ -111,5 +106,5 @@ Scene.propTypes = {
   hasOverlay: PropTypes.bool,
   currentScene: PropTypes.number,
   sceneIsInitialized: PropTypes.func.isRequired,
-  setScenePreview: PropTypes.func.isRequired,
+  setScenePreview: PropTypes.func.isRequired
 };

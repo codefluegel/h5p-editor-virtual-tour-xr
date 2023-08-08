@@ -320,6 +320,7 @@ export default class Main extends React.Component {
 
   setScenePreview(scene) {
     this.scenePreview = scene;
+    this.props.setScenePreview(scene);
 
     this.scenePreview.off('doubleClickedInteraction');
     this.scenePreview.on('doubleClickedInteraction', (e) => {
@@ -490,4 +491,5 @@ Main.contextType = H5PContext;
 
 Main.propTypes = {
   initialScene: PropTypes.number,
+  setScenePreview: PropTypes.func.isRequired
 };
