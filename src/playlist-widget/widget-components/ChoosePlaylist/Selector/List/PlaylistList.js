@@ -12,7 +12,7 @@ import PlaylistRow from './PlaylistRow';
  * }} props
  * @returns {JSX.Element}
  */
-function PlaylistList(props) {
+const PlaylistList = (props) => {
   let previousElementHasTopBorder = false;
 
   return (
@@ -44,7 +44,7 @@ function PlaylistList(props) {
       }
     </ul>
   );
-}
+};
 
 PlaylistList.propTypes = {
   playlists: PropTypes.arrayOf(PropTypes.shape({

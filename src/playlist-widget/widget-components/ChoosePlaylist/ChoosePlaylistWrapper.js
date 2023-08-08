@@ -17,7 +17,7 @@ export default class ChoosePlaylistWrapper extends Component {
   setNextPlaylistId(playlistId) {
     this.props.selectedPlaylist(playlistId);
 
-    var newMarkedPlaylist =
+    let newMarkedPlaylist =
       playlistId === this.state.markedPlaylist ? null : playlistId;
 
     if (this.props.canEdit) {

@@ -42,7 +42,7 @@ export default class PlaylistEditor extends React.Component {
   componentDidMount() {
     this.params = this.getPlaylistParams();
 
-    var contextParent = this.props.context.parent;
+    const contextParent = this.props.context.parent;
 
     // Preserve parent's children
     this.parentChildren = contextParent && contextParent.children;

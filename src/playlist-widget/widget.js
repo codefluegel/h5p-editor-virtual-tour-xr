@@ -31,7 +31,7 @@ import './widget.scss';
  * @typedef {(field: Field, value: number) => void} SetValue
  */
 
-H5PEditor.widgets.playlist = class PlaylistWidget {
+export default class PlaylistWidget {
   /**
    * @param {Form} form
    * @param {Field} field
@@ -114,7 +114,7 @@ H5PEditor.widgets.playlist = class PlaylistWidget {
   }
 
   remove() {}
-};
+}
 
 class PlaylistWidgetComponent extends React.Component {
   /**
@@ -519,3 +519,5 @@ class PlaylistWidgetComponent extends React.Component {
     );
   }
 }
+
+H5PEditor.widgets.playlist = PlaylistWidget;

@@ -3,7 +3,7 @@
  * @param {HTMLElement} container Container to look in.
  * @returns {HTMLElement[]} Focusable elements within container.
  */
-export function getFocussableElements(container) {
+export const getFocussableElements = (container) => {
   if (!container) {
     return [];
   }
@@ -26,4 +26,4 @@ export function getFocussableElements(container) {
       return element.getAttribute('disabled') !== 'true' &&
         element.getAttribute('disabled') !== true;
     });
-}
+};
