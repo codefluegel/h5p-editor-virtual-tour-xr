@@ -79,6 +79,10 @@ const EditingDialog = (props) => {
    * related editor form.
    */
   window.requestAnimationFrame(() => {
+    if (!dialogRef.current) {
+      return;
+    }
+
     const mutationObserverAddDialog = new MutationObserver((mutationList) => {
       // Ignore changes in dialog reference itself (style.height)
       const isRelevantTarget = [...mutationList].filter((item) => {
