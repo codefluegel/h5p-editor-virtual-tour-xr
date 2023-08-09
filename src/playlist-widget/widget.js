@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import { updatePlaylist } from '../h5phelpers/playlistParams';
 import ChoosePlaylistWrapper from './widget-components/ChoosePlaylist/ChoosePlaylistWrapper';
 import PlaylistEditor, {
@@ -31,7 +31,8 @@ export default class PlaylistWidget {
   appendTo($wrapper) {
     this.wrapper = $wrapper.get(0);
 
-    ReactDOM.render(
+    const root = createRoot(this.wrapper);
+    root.render(
       <div
         className='h5p-playlist-settings-container'
       >
@@ -49,8 +50,7 @@ export default class PlaylistWidget {
             this.resize();
           }}
         />
-      </div>,
-      this.wrapper
+      </div>
     );
   }
 

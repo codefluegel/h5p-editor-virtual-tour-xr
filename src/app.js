@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { createRoot } from 'react-dom/client';
 import Main from './components/Main';
 import { H5PContext } from './context/H5PContext';
 import './playlist-widget/widget';
@@ -57,7 +58,8 @@ export default class NDLAThreeImage {
       startScene = this.params.startSceneId;
     }
 
-    ReactDOM.render(
+    const root = createRoot(wrapper);
+    root.render(
       <H5PContext.Provider value={this}>
         <Main
           initialScene={startScene}
@@ -66,8 +68,7 @@ export default class NDLAThreeImage {
           }
           }
         />
-      </H5PContext.Provider>,
-      wrapper
+      </H5PContext.Provider>
     );
   }
 
