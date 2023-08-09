@@ -1,4 +1,7 @@
-import { getSceneField, isChildrenValid } from '../editorForms';
+import { getSceneField, areChildrenValid } from '../editorForms';
+
+/** @typedef {{ playlistId: string, title: string, audioTracks: object }} Playlist */
+/** @typedef {{ playlist: Playlist }} Scene */
 
 const DefaultInteractionValues = {
   threeSixty: {
@@ -12,11 +15,10 @@ const DefaultInteractionValues = {
 
 /**
  * Creates scene form and appends it to wrapper
- *
- * @param field
- * @param params
- * @param wrapper
- * @param parent
+ * @param {object} field Field to display in form.
+ * @param {object} params Parameters from form.
+ * @param {HTMLElement} wrapper Element to attach to.
+ * @param {object} parent Parent field.
  */
 export const createSceneForm = (field, params, wrapper, parent) => {
   const sceneField = getSceneField(field);
@@ -39,34 +41,30 @@ export const createSceneForm = (field, params, wrapper, parent) => {
 };
 
 /**
- * Gets a random position within a percentage spread around the center
- * position
- *
- * @param center
- * @param spread
- * @returns {number}
+ * Get random position within percentage spread around the center position.
+ * @param {number} center Center position.
+ * @param {number} spread Spread parameters.
+ * @returns {number} Random position around center.
  */
 const spreadByValue = (center, spread) => {
   return center - (spread / 2) + (Math.random() * spread);
 };
 
 /**
- * Checks if scene form is valid and marks invalid fields
- *
- * @param children
- * @returns {boolean} True if valid
+ * Check if scene form is valid and mark invalid fields.
+ * @param {object} children Childrento check.
+ * @returns {boolean} True if valid, else false.
  */
 export const validateSceneForm = (children) => {
   H5PEditor.Html.removeWysiwyg();
-  return isChildrenValid(children);
+  return areChildrenValid(children);
 };
 
 /**
- * Checks if a single interaction has a valid position given scene type
- *
- * @param interaction
- * @param isThreeSixty
- * @returns {boolean}
+ * Check if single interaction has valid position given scene type.
+ * @param {object} interaction Interaction.
+ * @param {boolean} isThreeSixty True for a three sixty scene.
+ * @returns {boolean} True, if position is valid.
  */
 const isInteractionPositionValid = (interaction, isThreeSixty) => {
   const position = interaction.interactionpos.split(',');
@@ -77,34 +75,35 @@ const isInteractionPositionValid = (interaction, isThreeSixty) => {
 };
 
 /**
- * Gets a default interaction position given a scene type
- *
- * @param isThreeSixtyScene
- * @param cameraPos
- * @returns {string}
+ * Get default interaction position given scene type.
+ * @param {boolean} isThreeSixtyScene True for a three sixty scene.
+ * @param {string} cameraPos Camera position.
+ * @returns {string} Position for CSS.
  */
 const getNewInteractionPos = (isThreeSixtyScene, cameraPos) => {
   // Place interactions spread randomly within a threshold in degrees
-  let center = DefaultInteractionValues.static.center;
-  let spread = DefaultInteractionValues.static.spread;
+  const center = (isThreeSixtyScene) ?
+    cameraPos.split(',').map(parseFloat) :
+    DefaultInteractionValues.static.center;
 
-  if (isThreeSixtyScene) {
-    center = cameraPos.split(',').map(parseFloat);
-    spread = DefaultInteractionValues.threeSixty.spread * Math.PI / 180;
-  }
+  const spread = (isThreeSixtyScene) ?
+    DefaultInteractionValues.threeSixty.spread * Math.PI / 180 :
+    DefaultInteractionValues.static.spread;
 
-  return center.map((pos) => spreadByValue(pos, spread))
-    .map((pos) => isThreeSixtyScene ? pos : pos + '%')
+  return center
+    .map((pos) => {
+      const newPos = spreadByValue(pos, spread);
+      return isThreeSixtyScene ? newPos : `${newPos}%`;
+    })
     .join(',');
 };
 
 /**
- * Sets a default position for an interaction if it has an invalid position for
- * the given scene type
- *
- * @param interaction
- * @param isThreeSixty
- * @param cameraPos
+ * Set default position for interaction if it has invalid position for given
+ * scene type.
+ * @param {object} interaction Interaction.
+ * @param {boolean} isThreeSixty True for a three sixty scene.
+ * @param {string} cameraPos Camera position.
  */
 const sanitizeInteractionPositions = (interaction, isThreeSixty, cameraPos) => {
   if (!isInteractionPositionValid(interaction, isThreeSixty)) {
@@ -113,36 +112,27 @@ const sanitizeInteractionPositions = (interaction, isThreeSixty, cameraPos) => {
 };
 
 /**
- * Sets default values for scene parameters that are not initially set by
- * the user when creating a scene.
- *
- * @param params
- * @param isThreeSixty
- * @param cameraPos
+ * Set default values for scene parameters that are not initially set by user
+ * when creating scene.
+ * @param {object} params Parameters.
+ * @param {boolean} isThreeSixty True for a three sixty scene.
+ * @param {string} cameraPos Camera position.
  */
 export const sanitizeSceneForm = (params, isThreeSixty, cameraPos) => {
   if (!params.cameraStartPosition) {
-    params.cameraStartPosition = [
-      -(Math.PI * (2 / 3)),
-      0
-    ].join(',');
+    params.cameraStartPosition = `${-(Math.PI * (2 / 3))},0`;
   }
 
-  if (!params.interactions) {
-    params.interactions = [];
-  }
-
-  params.interactions.forEach((interaction) => {
+  (params.interactions ?? []).forEach((interaction) => {
     sanitizeInteractionPositions(interaction, isThreeSixty, cameraPos);
   });
 };
 
 /**
- * Check if all interactions has valid positions
- *
- * @param params
- * @param isThreeSixty
- * @returns {boolean}
+ * Check if all interactions have valid positions.
+ * @param {object} params Parameters.
+ * @param {boolean} isThreeSixty True for a three sixty scene.
+ * @returns {boolean} True if all interactions have valid positions.
  */
 export const isInteractionsValid = (params, isThreeSixty) => {
   if (!params.interactions) {
@@ -155,10 +145,9 @@ export const isInteractionsValid = (params, isThreeSixty) => {
 };
 
 /**
- * Grabs a unique ID that is higher than the highest ID in our scenes collection
- *
- * @param scenes
- * @returns {number}
+ * Grab unique ID that is higher than the highest ID in our scenes collection.
+ * @param {Scene[]} scenes Scenes.
+ * @returns {number} New id.
  */
 const getUniqueSceneId = (scenes) => {
   if (!scenes.length) {
@@ -171,10 +160,9 @@ const getUniqueSceneId = (scenes) => {
 };
 
 /**
- * Get initial parameters for an empty scene
- *
- * @param scenes
- * @returns {{sceneId: (number|*)}}
+ * Get initial parameters for empty scene.
+ * @param {Scene[]} scenes Scenes.
+ * @returns {object} Initial parameters.
  */
 export const getDefaultSceneParams = (scenes) => {
   return {

@@ -1,40 +1,32 @@
-import { getInteractionsField, isChildrenValid } from '../editorForms';
+import { getInteractionsField, areChildrenValid } from '../editorForms';
 
 /**
- * Create interaction form and append it to wrapper
- *
- * @param field
- * @param params
- * @param wrapper
- * @param parent
+ * Create interaction form and append it to wrapper.
+ * @private
+ * @param {object} field Field of semantics.
+ * @param {object} params Parameters for field.
+ * @param {HTMLElement} wrapper Element to attach form to.
+ * @param {object} parent Parent field instance.
  */
 export const createInteractionForm = (field, params, wrapper, parent) => {
-
   /**
-   *
-   * @param checkBox - the checkbox input to listen for onChange
-   * @param elementToHide - an element to hide when 'checkBox' is toggled to true
+   * Hide elements on checked.
+   * @param {HTMLInputElement} checkBox Checkbox input to listen for onChange.
+   * @param {HTMLElement} elementToHide Element to hide when 'checkBox' toggled to true.
    */
   const hideElementsOnChecked = (checkBox, elementToHide) =>  {
     //If the element is already checked when the form is created, hide it
     if (checkBox.checked) {
       elementToHide.classList.add('do-not-display');
     }
-    //Add event listener on checkbox for to listen to changes in toggling
-    checkBox.addEventListener('change', (e) => {
-      if (e.target.checked) {
-        elementToHide.classList.add('do-not-display');
-      }
-      else {
-        elementToHide.classList.remove('do-not-display');
-      }
-    });
 
+    //Add event listener on checkbox for to listen to changes in toggling
+    checkBox.addEventListener('change', (event) => {
+      elementToHide.classList.toggle('do-not-display', event.target.checked);
+    });
   };
 
-  const hiddenFormFields = [
-    'interactionpos',
-  ];
+  const hiddenFormFields = ['interactionpos'];
 
   const interactionsField = getInteractionsField(field);
   const interactionFields = interactionsField.field.fields.filter((field) => {
@@ -49,18 +41,16 @@ export const createInteractionForm = (field, params, wrapper, parent) => {
   );
 
   /**
-   *
-   * @param wrapperElem - the parent element of the elements to be removed
-   * @param selectors - the list of class names to remove from wrapper
-   * @param selectorString - can be used for further specifying which elements to remove
+   * Remove elements.
+   * @private
+   * @param {HTMLElement} wrapperElem Parent element of elements to be removed.
+   * @param {string[]} selectors Class names to remove from wrapper.
+   * @param {string} selectorString Class name to further specifying which elements to remove.
    */
   const removeElements = (wrapperElem, selectors, selectorString) => {
     selectors.forEach((selector) => {
       const foundElement = wrapperElem.querySelector(`${selectorString} ${selector}`);
-
-      if (foundElement) {
-        foundElement.parentNode.removeChild(foundElement);
-      }
+      foundElement?.parentNode.removeChild(foundElement);
     });
   };
 
@@ -96,10 +86,9 @@ export const createInteractionForm = (field, params, wrapper, parent) => {
 
 /**
  * Set interaction position parameter
- *
- * @param params
- * @param interactionPosition
- * @returns {*}
+ * @param {object} params Parameters.
+ * @param {string} [interactionPosition] Position (`${yaw},${pitch}`).
+ * @returns {object} Sanitized parameters.
  */
 export const sanitizeInteractionParams = (params, interactionPosition) => {
   if (interactionPosition) {
@@ -110,12 +99,11 @@ export const sanitizeInteractionParams = (params, interactionPosition) => {
 };
 
 /**
- * Checks if interaction form is valid and marks invalid fields with an error
- *
- * @param children
- * @returns {boolean} True if all children are valid
+ * Check if interaction form is valid and mark invalid fields with an error.
+ * @param {object} children Children to validate.
+ * @returns {boolean} True if all children are valid, else false.
  */
 export const validateInteractionForm = (children) => {
   H5PEditor.Html.removeWysiwyg();
-  return isChildrenValid(children);
+  return areChildrenValid(children);
 };

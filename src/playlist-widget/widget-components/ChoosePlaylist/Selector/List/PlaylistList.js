@@ -3,14 +3,8 @@ import React from 'react';
 import PlaylistRow from './PlaylistRow';
 
 /**
- * @param {{
- *   playlists: Array<Playlist>;
- *   markedPlaylist: string;
- *   isShowingCheck: boolean;
- *   onTitleClick: (playlistId: string) => void;
- *   onPlaylistClick: (playlistId: string) => void;
- * }} props
- * @returns {JSX.Element}
+ * @param {object} props Props (React).
+ * @returns {object} JSX.Element.
  */
 const PlaylistList = (props) => {
   let previousElementHasTopBorder = false;

@@ -22,13 +22,13 @@ export const InteractionEditingType = {
 
 export default class InteractionEditor extends React.Component {
   /**
-   * @param {Object} props
-   * @param {number} props.currentScene
-   * @param {Library} props.library
-   * @param {ScenePreview} props.scenePreview
-   * @param {number} props.editingInteraction
-   * @param {(params: Object, editingScene?: number, skipChangingScene?: boolean) => void} props.doneAction
-   * @param {() => void} props.removeAction
+   * @param {object} props Props (React).
+   * @param {number} props.currentScene Current scene id.
+   * @param {object} props.library Library.
+   * @param {object} props.scenePreview View instance.
+   * @param {number} props.editingInteraction Indicator for interaction edited.
+   * @param {function} props.doneAction Callback for when user end editing.
+   * @param {function} props.removeAction Callback to remove interaction.
    */
   constructor(props) {
     super(props);
@@ -44,8 +44,9 @@ export default class InteractionEditor extends React.Component {
   }
 
   /**
-   * @param {number} interactionIndex
-   * @returns {Interaction}
+   * Get interaction by index.
+   * @param {number} interactionIndex Interaction index.
+   * @returns {object} Interaction.
    */
   getInteractionParams(interactionIndex = null) {
     const isNewScene = interactionIndex === InteractionEditingType.NEW_INTERACTION;
@@ -59,6 +60,10 @@ export default class InteractionEditor extends React.Component {
     return scene.interactions[interactionIndex];
   }
 
+  /**
+   * Get default position for interaction.
+   * @returns {string} Default position.
+   */
   getDefaultInteractionPosition() {
     const scenes = this.context.params.scenes;
     const scene = getSceneFromId(scenes, this.props.currentScene);
@@ -73,10 +78,7 @@ export default class InteractionEditor extends React.Component {
     const yaw = camera.camera.yaw;
     const pitch = camera.camera.pitch;
 
-    return [
-      yaw,
-      pitch
-    ].join(',');
+    return `${yaw},${pitch}`;
   }
 
   async componentDidMount() {

@@ -7,36 +7,16 @@ import PlaylistEditor, {
 } from './widget-components/PlaylistEditor';
 import './widget.scss';
 
-/** @typedef {any} jQuery */
-
-/**
- * @typedef {{
- *  children: [any, any, any];
- *  currentLibrary: string;
- * }} Form
- */
-
-/**
- * @typedef {{
- *  canEdit?: boolean;
- *  description: string;
- *  label: string;
- *  name: string;
- *  type: string;
- *  widget: string;
- * }} Field
- */
-
-/**
- * @typedef {(field: Field, value: number) => void} SetValue
- */
+/** @typedef {{ playlistId: string, title: string, audioTracks: object }} Playlist */
+/** @typedef {{ playlist: Playlist }} Scene */
 
 export default class PlaylistWidget {
   /**
-   * @param {Form} form
-   * @param {Field} field
-   * @param {number} value
-   * @param {SetValue} setValue
+   * @class
+   * @param {object} form Parent element in semantics.
+   * @param {object} field Semantics field properties.
+   * @param {object} value Parameters entered in editor form.
+   * @param {function} setValue Callback to set parameters.
    */
   constructor(form, field, value, setValue) {
     this.form = form;
@@ -46,7 +26,7 @@ export default class PlaylistWidget {
   }
 
   /**
-   * @param {jQuery} $wrapper
+   * @param {H5P.jQuery} $wrapper Wrapper to append to.
    */
   appendTo($wrapper) {
     this.wrapper = $wrapper.get(0);
@@ -109,17 +89,25 @@ export default class PlaylistWidget {
     });
   }
 
+  /**
+   * Validate current values. Invoked by H5P core.
+   * @returns {boolean} True, if current value is valid, else false.
+   */
   validate() {
     return true;
   }
 
+  /**
+   * Placeholder for remove call.
+   */
   remove() {}
 }
 
 class PlaylistWidgetComponent extends React.Component {
   /**
+   * @class
    * @param {{
-   *   form: Form;
+   *   form: object;
    *   setValue: (value: number) => void;
    *   playlistId: number;
    *   label: string;
@@ -127,7 +115,7 @@ class PlaylistWidgetComponent extends React.Component {
    *   index: number;
    *   canEdit: boolean;
    *   resize: () => void;
-   * }} props
+   * }} props React props.
    */
   constructor(props) {
     super(props);
@@ -148,10 +136,13 @@ class PlaylistWidgetComponent extends React.Component {
     };
   }
 
+  /**
+   * Handle component did mount (React).
+   */
   componentDidMount() {
     window.addEventListener(
       'h5pPlaylistsUpdated',
-      (/** @type {CustomEvent<Array<Playlist>>} */ event) => {
+      (event) => {
         const updatedPlaylists = event.detail;
 
         const selectedPlaylistStillExists =
@@ -173,22 +164,19 @@ class PlaylistWidgetComponent extends React.Component {
   }
 
   /**
-   * Event that updates the array of playlists when triggered.
-   * @param {Array<Playlist>} updatedPlaylists
+   * Trigger vvent that updates the array of playlists.
+   * @param {Playlist[]} updatedPlaylists Playlists.
    */
   triggerUpdatedEvent(updatedPlaylists) {
-    /** @type {CustomEvent<Array<Playlist>>} */
-    const event = new CustomEvent('h5pPlaylistsUpdated', {
+    window.dispatchEvent(new CustomEvent('h5pPlaylistsUpdated', {
       detail: updatedPlaylists,
-    });
-
-    window.dispatchEvent(event);
+    }));
   }
 
   /**
    * Help fetch the correct translations.
-   * @param {string[]} args
-   * @return {string}
+   * @param {string[]} args Arguments.
+   * @returns {string} Translation.
    */
   translate(...args) {
     const translations = ['H5PEditor.NDLAThreeImage', ...args];
@@ -196,8 +184,8 @@ class PlaylistWidgetComponent extends React.Component {
   }
 
   /**
-   * Help fetch the current context.
-   * @returns {object} context
+   * Fetch current context.
+   * @returns {object} context.
    */
   getContext() {
     const threeImage = this.props.form?.parent?.children?.find?.((child) => {
@@ -209,7 +197,7 @@ class PlaylistWidgetComponent extends React.Component {
 
   /**
    * Help fetch the current array of playlists.
-   * @returns {Array<Playlist>}
+   * @returns {Playlist[]} Playlist.
    */
   getPlaylists() {
     const threeImage = this.props.form?.parent?.children?.find?.((child) => {
@@ -236,21 +224,20 @@ class PlaylistWidgetComponent extends React.Component {
   }
 
   /**
-   * @returns {Array<Scene>}
+   * Get all scenes.
+   * @returns {Scene[]} Scene.
    */
   getScenes() {
     const threeImage = this.props.form?.parent?.children?.find?.((child) => {
       return child.field?.name === 'threeImage';
     });
 
-    if (threeImage?.form?.parent?.params?.threeImage?.scenes) {
-      return threeImage.form.parent.params.threeImage.scenes;
-    }
-    return [];
+    return threeImage?.form?.parent?.params?.threeImage?.scenes ?? [];
   }
 
   /**
-   * @param {string} playlistId
+   * Remove playlist.
+   * @param {string} playlistId Playlist id.
    */
   removePlaylistFromGlobal(playlistId) {
     const threeImage = this.props.form;
@@ -261,7 +248,8 @@ class PlaylistWidgetComponent extends React.Component {
   }
 
   /**
-   * @param {Array<Playlist>} newPlaylists
+   * Update playlists.
+   * @param {Playlist[]} newPlaylists Playlists.
    */
   updatePlaylists(newPlaylists) {
     const threeImage = this.props.form.children[0];
@@ -272,8 +260,8 @@ class PlaylistWidgetComponent extends React.Component {
   }
 
   /**
-   * Help fecth the current params.
-   * @returns {Object} params
+   * Fetch current params.
+   * @returns {object} params Parameters.
    */
   getParams() {
     const threeImage = this.props.form.children[0];
@@ -294,8 +282,8 @@ class PlaylistWidgetComponent extends React.Component {
   }
 
   /**
-   * Sets the selected playlist.
-   * @param {string} playlistId
+   * Set selected playlist.
+   * @param {string} playlistId Playlist id.
    */
   selectPlaylist(playlistId) {
     const selectedPlaylist = this.state.playlists.find(
@@ -320,23 +308,21 @@ class PlaylistWidgetComponent extends React.Component {
   }
 
   /**
-   * Actually removes the given playlistId from the playlists array.
-   * @param {Array<Playlist>} playlists
-   * @param {Playlist} selectedPlaylist
-   * @returns {Array<Playlist>} playlists
+   * Remove the given playlistId from the playlists array.
+   * @param {Playlist[]} playlists Current playlists.
+   * @param {Playlist} selectedPlaylist Playlist to be removed.
+   * @returns {Playlist[]} playlists Filtered playlists.
    */
-  removePlaylist(playlists, selectedPlaylist) {
-    const index = playlists.indexOf(selectedPlaylist);
-    if (selectedPlaylist != null && selectedPlaylist.playlistId !== '') {
-      playlists.splice(index, 1);
-    }
-    return playlists;
+  removePlaylist(playlists = [], selectedPlaylist) {
+    return playlists = playlists.filter(
+      (playlist) => playlist !== selectedPlaylist
+    );
   }
 
   /**
-   * Helps remove the given playlistId from the playlists array.
-   * @param {string} playlistId
-   * @returns if playlist not added
+   * Remove given playlistId from the playlists array.
+   * @param {string} playlistId Playlist id.
+   * @returns {boolean} False if playlist was not added in the first place. Else true.
    */
   deletePlaylist(playlistId) {
     this.setFocusButton(this.buttonToRestoreFocusTo, -1);
@@ -348,7 +334,7 @@ class PlaylistWidgetComponent extends React.Component {
     // Playlist not added to params
     const isNewPlaylist = playlistId === PlaylistEditingType.NEW_PLAYLIST;
     if (isNewPlaylist) {
-      return;
+      return false;
     }
 
     const playlists = this.getPlaylists();
@@ -374,11 +360,13 @@ class PlaylistWidgetComponent extends React.Component {
       playlistUpdated: false,
       selectedPlaylist: null,
     });
+
+    return true;
   }
 
   /**
-   * Sets the chosen playlist as editingPlaylist.
-   * @param {string} playlistId
+   * Sets chosen playlist as editingPlaylist.
+   * @param {string} playlistId Playlist id of playlist to be edited.
    */
   editPlaylist(playlistId = PlaylistEditingType.NEW_PLAYLIST) {
     this.buttonToRestoreFocusTo = document.activeElement;
@@ -386,9 +374,9 @@ class PlaylistWidgetComponent extends React.Component {
   }
 
   /**
-   * Updates the playlists array and states afte editing playlist.
-   * @param {*} params
-   * @param {string} thisEditingPlaylist
+   * Update playlists array and states afte editing playlist.
+   * @param {object} params Parameters.
+   * @param {string} thisEditingPlaylist Editing state.
    */
   doneEditingPlaylist(params, thisEditingPlaylist = null) {
     const playlists = this.getPlaylists();
@@ -412,7 +400,6 @@ class PlaylistWidgetComponent extends React.Component {
    * Set focus to button of playlist or fall back to new playlist button.
    * @param {HTMLButtonElement} button Button that was used to open dialog.
    * @param {number} [offset] Offset to select sibling.
-   * @returns
    */
   setFocusButton(button, offset = 0) {
     if (!button?.isConnected || button === this.newPlaylistButtonRef.current) {
@@ -454,6 +441,10 @@ class PlaylistWidgetComponent extends React.Component {
       .querySelector(`.${button.className}`)?.focus();
   }
 
+  /**
+   * Render (React).
+   * @returns {object} JSX of widget.
+   */
   render() {
     window.requestAnimationFrame(() => {
       this.props.resize();

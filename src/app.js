@@ -5,6 +5,13 @@ import { H5PContext } from './context/H5PContext';
 import './playlist-widget/widget';
 
 export default class NDLAThreeImage {
+  /**
+   * @class
+   * @param {object} parent Parent element in semantics.
+   * @param {object} field Semantics field properties.
+   * @param {object} params Parameters entered in editor form.
+   * @param {function} setValue Callback to set parameters.
+   */
   constructor(parent, field, params, setValue) {
     this.params = params || {};
     this.params = Object.assign({
@@ -23,16 +30,19 @@ export default class NDLAThreeImage {
   }
 
   /**
-   * Help fetch the correct translations.
-   *
-   * @param {string[]} args
-   * @return {string}
+   * Fetch correct translations.
+   * @param {string[]} args Arguments.
+   * @returns {string} Correct translation.
    */
   t(...args) {
     const translations = ['H5PEditor.NDLAThreeImage', ...args];
     return H5PEditor.t.apply(window, translations);
   }
 
+  /**
+   * Append field to wrapper. Invoked by H5P core.
+   * @param {H5P.jQuery} $container Container to append to.
+   */
   appendTo($container) {
     const wrapper = document.createElement('div');
     wrapper.classList.add('h5p-editor-three-image-wrapper');
@@ -61,6 +71,9 @@ export default class NDLAThreeImage {
     );
   }
 
+  /**
+   * Resize the editor.
+   */
   resize() {
     if (!this.wrapper) {
       return;
@@ -76,6 +89,10 @@ export default class NDLAThreeImage {
     }
   }
 
+  /**
+   * Ready handler.
+   * @param {function} ready Ready callback.
+   */
   ready(ready) {
     if (this.passReadies) {
       parent.ready(ready);
@@ -85,6 +102,10 @@ export default class NDLAThreeImage {
     }
   }
 
+  /**
+   * Validate current values. Invoked by H5P core.
+   * @returns {boolean} True, if current value is valid, else false.
+   */
   validate() {
     return true;
   }

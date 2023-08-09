@@ -17,6 +17,10 @@ export const PlaylistEditingType = {
 };
 
 export default class PlaylistEditor extends React.Component {
+  /**
+   * @class
+   * @param {object} props React props.
+   */
   constructor(props) {
     super(props);
 
@@ -28,17 +32,20 @@ export default class PlaylistEditor extends React.Component {
     };
   }
 
+  /**
+   * Get playlist parameters.
+   * @returns {object} Playlist parameters.
+   */
   getPlaylistParams() {
-    const playlists = this.props.playlists;
-
     // New playlist
-    if (this.props.editingPlaylist === PlaylistEditingType.NEW_PLAYLIST) {
-      return getDefaultPlaylistParams();
-    }
-
-    return getPlaylistFromId(playlists, this.props.editingPlaylist);
+    return (this.props.editingPlaylist === PlaylistEditingType.NEW_PLAYLIST) ?
+      getDefaultPlaylistParams() :
+      getPlaylistFromId(this.props.playlists, this.props.editingPlaylist);
   }
 
+  /**
+   * Handle component did mount (React).
+   */
   componentDidMount() {
     this.params = this.getPlaylistParams();
 
@@ -62,27 +69,36 @@ export default class PlaylistEditor extends React.Component {
     getFocussableElements(this.semanticsRef.current)?.shift()?.focus();
   }
 
+  /**
+   * Handle done editing.
+   */
   handleDone() {
     const isValid = validatePlaylistForm(this.children);
-    if (!isValid) {
+    if (!isValid || !this.params.audioTracks) {
       return;
     }
-    if (!this.params.audioTracks) {
-      return;
-    }
+
     this.props.doneAction(this.params);
   }
 
+  /**
+   * Handle confirm done editing.
+   */
   confirmDone() {
     this.props.doneAction(this.params);
   }
 
+  /**
+   * Remove input errors.
+   */
   removeInputErrors() {
-    this.setState({
-      hasInputError: false,
-    });
+    this.setState({ hasInputError: false });
   }
 
+  /**
+   * Render component (React).
+   * @returns {object} JSX.
+   */
   render() {
     const semanticsClasses = ['semantics-wrapper'];
     semanticsClasses.push('choose-playlist-editor');

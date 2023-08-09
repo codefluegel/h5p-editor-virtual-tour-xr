@@ -1,11 +1,12 @@
 import { PlaylistEditingType } from '../playlist-widget/widget-components/PlaylistEditor';
 
+/** @typedef {{ playlistId: string, title: string, audioTracks: object }} Playlist */
+
 /**
- * Get playlist from id
- *
- * @param {Playlist[]} playlists
- * @param {string} playlistId
- * @returns {Playlist}
+ * Get playlist from id.
+ * @param {Playlist[]} playlists Playlists.
+ * @param {string} playlistId Playlist id.
+ * @returns {Playlist} Playlist.
  */
 export const getPlaylistFromId = (playlists, playlistId) => {
   return playlists.find((playlist) => {
@@ -14,12 +15,11 @@ export const getPlaylistFromId = (playlists, playlistId) => {
 };
 
 /**
- * Updates a playlist within parameters
- *
- * @param {Playlist[]} playlists
- * @param {Playlist} params
- * @param {string} editingPlaylist
- * @returns {Playlist[]}
+ * Updates playlist within parameters.
+ * @param {Playlist[]} playlists Playlists.
+ * @param {object} params Parameters.
+ * @param {string} editingPlaylist Indicator for editing playlist.
+ * @returns {Playlist[]} Playlists.
  */
 export const updatePlaylist = (playlists, params, editingPlaylist = '') => {
   if (editingPlaylist === PlaylistEditingType.NEW_PLAYLIST) {
@@ -31,6 +31,7 @@ export const updatePlaylist = (playlists, params, editingPlaylist = '') => {
     if (playlist.playlistId === editingPlaylist) {
       playlist = params;
     }
+
     return playlist;
   });
 };

@@ -1,28 +1,30 @@
 import { SceneEditingType } from '../components/EditingDialog/SceneEditor';
 import { isGoToScene } from './libraryParams';
 
+/** @typedef {{ playlistId: string, title: string, audioTracks: object }} Playlist */
+/** @typedef {{ playlist: Playlist }} Scene */
+/** @typedef {{ yaw: number, pitch: number }} CameraPosition */
+
 /**
  * Get scene from id
- *
- * @param {Scene[]} scenes
- * @param {number} sceneId
- * @returns {Scene}
+ * @param {Scene[]} scenes Scenes.
+ * @param {number} sceneId Scene id.
+ * @returns {Scene} Scene.
  */
 export const getSceneFromId = (scenes, sceneId) => {
   return scenes.find((scene) => scene.sceneId === sceneId);
 };
 
 /**
- * Delete a scene in parameters and deletes any GoToScene interactions
+ * Delete scene in parameters and deletes any GoToScene interactions
  * within other scenes that was pointing to the deleted scene
- *
- * @param {Scene[]} scenes
- * @param {number} sceneId
- * @returns {Scene[]}
+ * @param {Scene[]} scenes Scenes.
+ * @param {number} sceneId Scene id.
+ * @returns {Scene[]} Scenes.
  */
 export const deleteScene = (scenes, sceneId) => {
   // Filter out the scene
-  const sceneRemoved = scenes.filter((scene) =>  scene.sceneId !== sceneId);
+  const sceneRemoved = scenes.filter((scene) => scene.sceneId !== sceneId);
 
   // Filter out any interactions pointing to the scene
   return sceneRemoved.map((scene) => {
@@ -43,40 +45,36 @@ export const deleteScene = (scenes, sceneId) => {
 };
 
 /**
- * Updates a scene within parameters
- *
- * @param {Scene[]} scenes
- * @param {Scene} params
- * @param {number|null} editingScene
- * @returns {Scene[]}
+ * Updates scene within parameters.
+ * @param {Scene[]} scenes Scenes.
+ * @param {object} params Parameters to be set.
+ * @param {number|null} sceneId Scene id.
+ * @returns {Scene[]} Scenes with updated parameters.
  */
-export const updateScene = (scenes, params, editingScene = -1) => {
-  if (editingScene === SceneEditingType.NEW_SCENE) {
+export const updateScene = (scenes, params, sceneId = -1) => {
+  if (sceneId === SceneEditingType.NEW_SCENE) {
     scenes.push(params);
     return scenes;
   }
 
   return scenes.map((scene) => {
-    if (scene.sceneId === editingScene) {
+    if (scene.sceneId === sceneId) {
       // Replace scene
       scene = params;
     }
+
     return scene;
   });
 };
 
 /**
- * Set scene position in parameters
- *
- * @param {Scene[]} scenes
- * @param {number} sceneId
- * @param {CameraPosition} camera
+ * Set scene position in parameters.
+ * @param {Scene[]} scenes Scenes
+ * @param {number} sceneId Scene id.
+ * @param {CameraPosition} cameraPosition Camera position.
  */
-export const setScenePositionFromCamera = (scenes, sceneId, camera) => {
+export const setScenePositionFromCamera = (scenes, sceneId, cameraPosition) => {
   const scene = getSceneFromId(scenes, sceneId);
-  scene.cameraStartPosition = [
-    camera.yaw,
-    camera.pitch,
-  ].join(',');
+  scene.cameraStartPosition = `${cameraPosition.yaw},${cameraPosition.pitch}`;
 };
 

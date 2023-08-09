@@ -3,6 +3,11 @@ import PropTypes from 'prop-types';
 import PlaylistList from './List/PlaylistList';
 import './ChoosePlaylistSelector.scss';
 
+/**
+ * Render component (React).
+ * @param {object} props Props (React).
+ * @returns {object} JSX.
+ */
 const ChoosePlaylistSelector = (props) => (
   <div className='choose-playlist-selector'>
     <PlaylistList
