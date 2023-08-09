@@ -463,7 +463,6 @@ export default class Main extends React.Component {
           toggleExpandSceneSelector={this.toggleExpandSceneSelector.bind(this)}
         />
         {
-          // TODO: Refactor to single editor dialog since they can never be shown together
           (this.state.editingScene !== SceneEditingType.NOT_EDITING) &&
           <SceneEditor
             removeAction={this.deleteScene.bind(this, this.state.editingScene)}
