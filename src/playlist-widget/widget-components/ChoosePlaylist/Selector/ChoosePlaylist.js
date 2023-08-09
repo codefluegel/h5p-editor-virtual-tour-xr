@@ -5,7 +5,10 @@ import './ChoosePlaylist.scss';
 import ChoosePlaylistSelector from './ChoosePlaylistSelector';
 
 export default class ChoosePlaylist extends Component {
-
+  /**
+   * Render component (React).
+   * @returns {object} JSX.
+   */
   render() {
     const playlistClasses = ['choose-playlist'];
     if (this.props.hasInputError) {

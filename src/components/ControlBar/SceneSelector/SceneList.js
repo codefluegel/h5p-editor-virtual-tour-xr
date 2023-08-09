@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SceneRow from './Row/SceneRow';
 
-function SceneList(props) {
+const SceneList = (props) => {
   let previousElementHasTopBorder = false;
 
   return (
@@ -41,7 +41,7 @@ function SceneList(props) {
       }
     </div>
   );
-}
+};
 
 SceneList.propTypes = {
   scenes: PropTypes.arrayOf(PropTypes.shape({

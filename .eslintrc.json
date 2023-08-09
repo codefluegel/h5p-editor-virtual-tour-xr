@@ -5,7 +5,10 @@
     "es2020": true
   },
   "extends": [
-    "eslint:recommended", "plugin:react/recommended", "eslint-config-ndla-h5p"
+    "eslint:recommended",
+    "plugin:react/recommended",
+    "eslint-config-ndla-h5p",
+    "plugin:jsdoc/recommended"
   ],
   "parser": "@babel/eslint-parser",
   "parserOptions": {
@@ -15,10 +18,16 @@
   "settings": {
     "react": {
       "version": "detect"
+    },
+    "jsdoc": {
+      "preferredTypes": {
+        "Function": "function"
+      }
     }
   },
   "plugins": [
-    "react"
+    "react",
+    "jsdoc"
   ],
   "rules": {
     "valid-jsdoc": "off",

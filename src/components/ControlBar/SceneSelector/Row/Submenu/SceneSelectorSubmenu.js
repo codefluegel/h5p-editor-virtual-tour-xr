@@ -3,11 +3,6 @@ import PropTypes from 'prop-types';
 import './SceneSelectorSubmenu.scss';
 
 const SceneSelectorSubmenu = (props) => {
-
-  /**
-   * TODO: Use separate <Button> component for mapping instead.
-   */
-
   const handleClick = (type) => {
     return (e) => {
       e.stopPropagation();

@@ -9,6 +9,7 @@ import {
   getDefaultPlaylistParams,
   validatePlaylistForm
 } from '../../h5phelpers/forms/playlistForm';
+import { getFocussableElements } from '../../utils/dom';
 
 export const PlaylistEditingType = {
   NOT_EDITING: null,
@@ -16,6 +17,10 @@ export const PlaylistEditingType = {
 };
 
 export default class PlaylistEditor extends React.Component {
+  /**
+   * @class
+   * @param {object} props React props.
+   */
   constructor(props) {
     super(props);
 
@@ -27,21 +32,24 @@ export default class PlaylistEditor extends React.Component {
     };
   }
 
+  /**
+   * Get playlist parameters.
+   * @returns {object} Playlist parameters.
+   */
   getPlaylistParams() {
-    const playlists = this.props.playlists;
-
     // New playlist
-    if (this.props.editingPlaylist === PlaylistEditingType.NEW_PLAYLIST) {
-      return getDefaultPlaylistParams();
-    }
-
-    return getPlaylistFromId(playlists, this.props.editingPlaylist);
+    return (this.props.editingPlaylist === PlaylistEditingType.NEW_PLAYLIST) ?
+      getDefaultPlaylistParams() :
+      getPlaylistFromId(this.props.playlists, this.props.editingPlaylist);
   }
 
+  /**
+   * Handle component did mount (React).
+   */
   componentDidMount() {
     this.params = this.getPlaylistParams();
 
-    var contextParent = this.props.context.parent;
+    const contextParent = this.props.context.parent;
 
     // Preserve parent's children
     this.parentChildren = contextParent && contextParent.children;
@@ -56,29 +64,41 @@ export default class PlaylistEditor extends React.Component {
     // Capture own children and restore parent
     this.children = this.props.context.parent.children;
     this.props.context.parent.children = this.parentChildren;
+
+    // Focus first field
+    getFocussableElements(this.semanticsRef.current)?.shift()?.focus();
   }
 
+  /**
+   * Handle done editing.
+   */
   handleDone() {
     const isValid = validatePlaylistForm(this.children);
-    if (!isValid) {
+    if (!isValid || !this.params.audioTracks) {
       return;
     }
-    if (!this.params.audioTracks) {
-      return;
-    }
+
     this.props.doneAction(this.params);
   }
 
+  /**
+   * Handle confirm done editing.
+   */
   confirmDone() {
     this.props.doneAction(this.params);
   }
 
+  /**
+   * Remove input errors.
+   */
   removeInputErrors() {
-    this.setState({
-      hasInputError: false,
-    });
+    this.setState({ hasInputError: false });
   }
 
+  /**
+   * Render component (React).
+   * @returns {object} JSX.
+   */
   render() {
     const semanticsClasses = ['semantics-wrapper'];
     semanticsClasses.push('choose-playlist-editor');
@@ -91,6 +111,9 @@ export default class PlaylistEditor extends React.Component {
         doneAction={this.handleDone.bind(this)}
         doneLabel={this.props.translate('done')}
         removeLabel={this.props.translate('remove')}
+        resize={() => {
+          this.props.resize?.();
+        }}
       >
         <div className={semanticsClasses.join(' ')} ref={this.semanticsRef}/>
       </EditingDialog>
@@ -104,4 +127,5 @@ PlaylistEditor.propTypes = {
   editingPlaylist: PropTypes.string.isRequired,
   doneAction: PropTypes.func.isRequired,
   removeAction: PropTypes.func.isRequired,
+  resize: PropTypes.func
 };

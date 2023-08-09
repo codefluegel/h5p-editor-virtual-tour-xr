@@ -4,6 +4,10 @@ import './PlaylistRow.scss';
 import { H5PContext } from '../../../../../context/H5PContext';
 
 export default class PlaylistRow extends Component {
+  /**
+   * @class
+   * @param {object} props Props (React).
+   */
   constructor(props) {
     super(props);
 
@@ -14,6 +18,9 @@ export default class PlaylistRow extends Component {
     };
   }
 
+  /**
+   * Handle image loaded and set orientation state.
+   */
   onImageLoad() {
     const image = this.imageRef.current;
     const ratio = 4 / 3;
@@ -23,20 +30,29 @@ export default class PlaylistRow extends Component {
     });
   }
 
+  /**
+   * Handle click on playlist.
+   */
   onPlaylistClick() {
     if (this.props.onPlaylistClick) {
       this.props.onPlaylistClick(this.props.playlist.playlistId);
     }
   }
 
+  /**
+   * Handle click on title.
+   */
   onTitleClick() {
     if (this.props.onTitleClick) {
       this.props.onTitleClick(this.props.playlist.playlistId);
     }
   }
 
+  /**
+   * Render component (React).
+   * @returns {object} JSX.
+   */
   render() {
-
     const rowClasses = ['h5p-playlist-row'];
 
     if (this.props.isMarkedPlaylist) {
@@ -57,19 +73,22 @@ export default class PlaylistRow extends Component {
     }
 
     return (
-      <div
-        className={rowClasses.join(' ')}
-        onClick={this.onPlaylistClick.bind(this)}
-      >
-        <div className='playlist-wrapper'>
-          <div
-            className='h5p-playlist-name'
-            onClick={this.onTitleClick.bind(this)}
-            dangerouslySetInnerHTML={ { __html: this.props.playlist.title } }
-          ></div>
-        </div>
-        {this.props.children}
-      </div>
+      <li className='h5p-playlist-listitem'>
+        <button
+          type='button'
+          className={rowClasses.join(' ')}
+          onClick={this.onPlaylistClick.bind(this)}
+        >
+          <div className='playlist-wrapper'>
+            <div
+              className='h5p-playlist-name'
+              onClick={this.onTitleClick.bind(this)}
+              dangerouslySetInnerHTML={ { __html: this.props.playlist.title } }
+            ></div>
+          </div>
+          {this.props.children}
+        </button>
+      </li>
     );
   }
 }

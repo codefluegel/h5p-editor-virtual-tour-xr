@@ -3,20 +3,14 @@ import React from 'react';
 import PlaylistRow from './PlaylistRow';
 
 /**
- * @param {{
- *   playlists: Array<Playlist>;
- *   markedPlaylist: string;
- *   isShowingCheck: boolean;
- *   onTitleClick: (playlistId: string) => void;
- *   onPlaylistClick: (playlistId: string) => void;
- * }} props
- * @returns {JSX.Element}
+ * @param {object} props Props (React).
+ * @returns {object} JSX.Element.
  */
-function PlaylistList(props) {
+const PlaylistList = (props) => {
   let previousElementHasTopBorder = false;
 
   return (
-    <div className='h5p-playlist-list'>
+    <ul className='h5p-playlist-list'>
       {
         props.playlists.map((playlist) => {
           const isMarkedPlaylist = playlist.playlistId === props.markedPlaylist;
@@ -42,9 +36,9 @@ function PlaylistList(props) {
           );
         })
       }
-    </div>
+    </ul>
   );
-}
+};
 
 PlaylistList.propTypes = {
   playlists: PropTypes.arrayOf(PropTypes.shape({

@@ -4,6 +4,10 @@ import ChoosePlaylist from './Selector/ChoosePlaylist';
 import { H5PContext } from '../../../context/H5PContext';
 
 export default class ChoosePlaylistWrapper extends Component {
+  /**
+   * @class
+   * @param {object} props React props.
+   */
   constructor(props) {
     super(props);
 
@@ -14,10 +18,14 @@ export default class ChoosePlaylistWrapper extends Component {
     };
   }
 
+  /**
+   * Set next playlist id.
+   * @param {string} playlistId Playlist id to be set.
+   */
   setNextPlaylistId(playlistId) {
     this.props.selectedPlaylist(playlistId);
 
-    var newMarkedPlaylist =
+    let newMarkedPlaylist =
       playlistId === this.state.markedPlaylist ? null : playlistId;
 
     if (this.props.canEdit) {
@@ -30,6 +38,10 @@ export default class ChoosePlaylistWrapper extends Component {
     });
   }
 
+  /**
+   * Render component (React).
+   * @returns {object} JSX.
+   */
   render() {
     const classes = ['choose-playlist-wrapper'];
     return (

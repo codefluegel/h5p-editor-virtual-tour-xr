@@ -1,9 +1,9 @@
 /**
- * Initializes Three Sixty content from parameters
- *
- * @param container
- * @param params
- * @returns {*|*}
+ * Initialize Three Sixty content from parameters.
+ * @param {HTMLElement} container Container element.
+ * @param {object} params Parameters.
+ * @param {object} l10n Localization strings.
+ * @returns {object|null} H5P library instance.
  */
 export const initializeThreeSixtyPreview = (container, params, l10n) => {
   const library = Object.keys(H5PEditor.libraryLoaded)
@@ -27,26 +27,21 @@ export const initializeThreeSixtyPreview = (container, params, l10n) => {
 };
 
 /**
- * Shows confirmation dialog
- *
- * @param dialogOptions
- * @param confirm
- * @param cancel
+ * Show confirmation dialog.
+ * @param {object} dialogOptions Options.
+ * @param {function} confirm Confirmation callback.
+ * @param {function} cancel Cancel callback.
  */
 export const showConfirmationDialog = (dialogOptions, confirm, cancel) => {
   const deleteDialog = new H5P.ConfirmationDialog(dialogOptions)
     .appendTo(document.body);
 
   deleteDialog.on('confirmed', () => {
-    if (confirm) {
-      confirm();
-    }
+    confirm?.();
   });
 
   deleteDialog.on('canceled', () => {
-    if (cancel) {
-      cancel();
-    }
+    cancel?.();
   });
 
   deleteDialog.show();

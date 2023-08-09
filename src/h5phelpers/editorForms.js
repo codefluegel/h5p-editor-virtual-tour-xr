@@ -1,10 +1,9 @@
 import { getLibraries } from '../context/H5PContext';
 
 /**
- * Get scenes field from Three Image semantics structure
- *
- * @param field
- * @returns {Object}
+ * Get scenes field from Three Image semantics structure.
+ * @param {object} field Field to start searching at.
+ * @returns {object|false} Field from semantics.
  */
 export const getSceneField = (field) => {
   return H5PEditor.findSemanticsField(
@@ -14,12 +13,11 @@ export const getSceneField = (field) => {
 };
 
 /**
- * Get playlist field from Three Image semantics structure
- *
- * @param field
- * @returns {Object}
+ * Get playlist field from Three Image semantics structure.
+ * @param {object} field Field to start searching at.
+ * @returns {object|false} Field from semantics.
  */
-export const getPlaylistField = (field) => { 
+export const getPlaylistField = (field) => {
   return H5PEditor.findSemanticsField(
     'playlists',
     field
@@ -27,11 +25,9 @@ export const getPlaylistField = (field) => {
 };
 
 /**
- * Get interactions field within a scene from the Three Image semantics
- * structure
- *
- * @param field
- * @returns {Object}
+ * Get interactions field within scene from Three Image semantics structure.
+ * @param {object} field Field to start searching at.
+ * @returns {object|false} Field from semantics.
  */
 export const getInteractionsField = (field) => {
   const sceneFields = getSceneField(field);
@@ -43,32 +39,27 @@ export const getInteractionsField = (field) => {
 };
 
 /**
- * Get library data for a single library
- *
- * @param field
- * @param library
- * @returns {Promise<*>}
+ * Get library data for single library.
+ * @param {object} field Field with library options.
+ * @param {string} libraryName Library full name.
+ * @returns {Promise} Promise to return library.
  */
-export const getLibraryDataFromFields = async (field, library) => {
+export const getLibraryDataFromFields = async (field, libraryName) => {
   const libraries = await getLibraries(field);
-  return libraries.find((lib) => {
-    return lib.uberName === library;
-  });
+  return libraries.find((lib) => lib.uberName === libraryName);
 };
 
 /**
- * Checks if children are valid and sets error messages for invalid fields.
- *
- * @param children
- * @returns {boolean}
+ * Check if children are valid and set error messages for invalid fields.
+ * @param {object} children Children to validate.
+ * @returns {boolean} True, if all children validate.
  */
-export const isChildrenValid = (children) => {
+export const areChildrenValid = (children) => {
   let isInputsValid = true;
 
   // validate() should always run for all children because it adds
-  // styling to children that fails to validate
+  // styling to children that fail to validate
   children.forEach((child) => {
-
     // Special validation for scene image, since having a required image
     // is not supported by core yet
     const isRequiredImage = child.field.type === 'image'
@@ -91,6 +82,11 @@ export const isChildrenValid = (children) => {
   return isInputsValid;
 };
 
+/**
+ * Add listeners for behavioural settings fields.
+ * @param {object} parent Parent field instance.
+ * @param {function} callback Callback.
+ */
 const addBehavioralChangeListeners = (parent, callback) => {
   const behaviour = parent.children.find((child) => {
     return child.field.name === 'behaviour';
@@ -107,10 +103,15 @@ const addBehavioralChangeListeners = (parent, callback) => {
   for (let i = 0 ; i < label.children.length ; i++) {
     label.children[i].changes.push(callback);
   }
-  
+
   sceneRendering.changes.push(callback);
 };
 
+/**
+ * Add listeners for behavioural settings fields once ready.
+ * @param {object} parent Parent field instance.
+ * @param {function} callback Callback.
+ */
 export const addBehavioralListeners = (parent, callback) => {
   if (parent.children.length === 0) {
     parent.ready(() => {
