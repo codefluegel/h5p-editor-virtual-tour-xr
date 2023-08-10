@@ -63,6 +63,10 @@ const EditingDialog = (props) => {
     };
 
     window.requestAnimationFrame(() => {
+      if (!overlayRef.current || !dialogRef.current) {
+        return;
+      }
+
       const requiredHeight = computeRequiredHeight();
 
       // Dialog size keeping absolutely positioned children in check
