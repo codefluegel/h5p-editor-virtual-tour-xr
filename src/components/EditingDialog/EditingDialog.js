@@ -24,11 +24,11 @@ const EditingDialog = (props) => {
 
     const computeRequiredHeight = () => {
       const style = window.getComputedStyle(
-        dialogRef.current.querySelector('.h5p-editing-dialog-body')
+        dialogRef.current?.querySelector('.h5p-editing-dialog-body')
       );
-      const paddingBottom = parseFloat(
-        style.getPropertyValue('padding-bottom')
-      ) ?? 0;
+      const paddingBottom = style ?
+        parseFloat(style.getPropertyValue('padding-bottom')) ?? 0 :
+        0;
 
       const addTrackDialog = dialogRef.current.querySelector(
         '.field-name-audioTracks .h5p-add-dialog.h5p-open'
