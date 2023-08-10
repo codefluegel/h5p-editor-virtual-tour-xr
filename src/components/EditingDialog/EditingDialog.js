@@ -33,7 +33,7 @@ const EditingDialog = (props) => {
         ) ?? 0;
       }
 
-      const addTrackDialog = dialogRef.current.querySelector(
+      const addTrackDialog = dialogRef.current?.querySelector(
         '.field-name-audioTracks .h5p-add-dialog.h5p-open'
       );
       const requiredHeightAddTrackDialog = (addTrackDialog) ?
@@ -43,7 +43,7 @@ const EditingDialog = (props) => {
           paddingBottom :
         0;
 
-      const editCopyrightDialog = dialogRef.current.querySelector(
+      const editCopyrightDialog = dialogRef.current?.querySelector(
         '.field-name-audioTracks .h5p-editor-dialog.h5p-open'
       );
       const requiredHeightEditCopyrightDialog = (editCopyrightDialog) ?
@@ -53,7 +53,7 @@ const EditingDialog = (props) => {
           32 : // margin difference that's not being computed here
         0;
 
-      const dialogHeight = dialogRef.current.getBoundingClientRect().height;
+      const dialogHeight = dialogRef.current?.getBoundingClientRect().height ?? 0;
 
       return Math.max(
         requiredHeightAddTrackDialog,
