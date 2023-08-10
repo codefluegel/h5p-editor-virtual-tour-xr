@@ -48,11 +48,17 @@ export const createInteractionForm = (field, params, wrapper, parent) => {
    * @param {string} selectorString Class name to further specifying which elements to remove.
    */
   const removeElements = (wrapperElem, selectors, selectorString) => {
+    if (!Array.isArray(selectors)) {
+      selectors = [selectors];
+    }
+
     selectors.forEach((selector) => {
       const foundElement = wrapperElem.querySelector(`${selectorString} ${selector}`);
       foundElement?.parentNode.removeChild(foundElement);
     });
   };
+
+  // TODO: Why was removing fields done using DOM queries? Couldn't this be done on the instances?
 
   const libraryWrapper = wrapper.querySelector('.field.library');
 
@@ -63,20 +69,15 @@ export const createInteractionForm = (field, params, wrapper, parent) => {
     '.h5peditor-copypaste-wrap',
   ];
 
-  const interactionDataWrapper = wrapper.querySelector('.field.field-name-label');
-  const hiddenInteractionDataSelectors = [
-    '.field-name-showAsOpenSceneContent',
-  ];
-
   // Remove fields in that we don't want to show when library is not AdvancedText
-  if (!params.action.library.includes('H5P.AdvancedText')) {
-    removeElements(interactionDataWrapper, hiddenInteractionDataSelectors, '');
+  if (params.action.library.indexOf('H5P.AdvancedText') === -1) {
+    removeElements(wrapper, '.field-name-showAsOpenSceneContent', '');
   }
   else {
     //If library is AdvancedText, then add a listener for dynamically removing the hotspot checkbox when opene scene content is checked.
     //The hiding/removal of the openSceneContent checkbox when hotspot is toggle is handled by the showWhen widget declared in semantics.json
-    const hotSpotField = interactionDataWrapper.querySelector('.field-name-showAsHotspot');
-    const openSceneContentToggle = interactionDataWrapper.querySelector('.field-name-showAsOpenSceneContent input');
+    const hotSpotField = wrapper.querySelector('.field-name-showAsHotspot');
+    const openSceneContentToggle = wrapper.querySelector('.field-name-showAsOpenSceneContent input');
     hideElementsOnChecked(openSceneContentToggle, hotSpotField);
   }
 
