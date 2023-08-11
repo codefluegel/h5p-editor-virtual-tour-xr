@@ -137,15 +137,15 @@ const sanitizeInteractionGeometry = ({
     targetHeight = height / 100 * previewSize.height;
   }
   else {
-    const [x, y] = interaction.interactionpos;
+    const [x, y] = interaction.interactionpos.split(',');
 
     // Percentage value of mininum size for current preview size
     minWidth = minWidth / previewSize.width * 100;
     minHeight = minHeight / previewSize.height * 100;
 
     // Max size as 100% - position percentage
-    maxWidth = 100 - parseInt(x);
-    maxHeight = 100 - parseInt(y);
+    maxWidth = 100 - parseFloat(x);
+    maxHeight = 100 - parseFloat(y);
 
     // Convert 360 into static (pixels into current percentage)
     targetWidth = width / previewSize.width * 100;
