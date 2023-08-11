@@ -83,14 +83,15 @@ export default class SceneEditor extends React.Component {
 
   }
 
-  confirmDone() {      
+  confirmDone() {
     const { sceneType } = this.params;
     const isThreeSixtyScene = sceneType === SceneTypes.THREE_SIXTY_SCENE || sceneType === SceneTypes.PANORAMA_SCENE;
 
     sanitizeSceneForm(
       this.params,
       isThreeSixtyScene,
-      this.params.cameraStartPosition
+      this.params.cameraStartPosition,
+      this.props.previewRect
     );
 
     this.props.doneAction(this.params);
@@ -118,4 +119,5 @@ SceneEditor.propTypes = {
   editingScene: editingSceneType,
   doneAction: PropTypes.func.isRequired,
   removeAction: PropTypes.func.isRequired,
+  previewRect: PropTypes.object.isRequired
 };

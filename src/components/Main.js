@@ -508,6 +508,7 @@ export default class Main extends React.Component {
             removeAction={this.deleteScene.bind(this, this.state.editingScene)}
             doneAction={this.doneEditingScene.bind(this)}
             editingScene={this.state.editingScene}
+            previewRect={this.scenePreview.getRect()}
           />
         }
         {
