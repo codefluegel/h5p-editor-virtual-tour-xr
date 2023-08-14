@@ -101,14 +101,61 @@ const getNewInteractionPos = (isThreeSixtyScene, cameraPos) => {
 /**
  * Set default position for interaction if it has invalid position for given
  * scene type.
- * @param {object} interaction Interaction.
- * @param {boolean} isThreeSixty True for a three sixty scene.
- * @param {string} cameraPos Camera position.
+ * @param {object} params Interaction.
+ * @param {object} params.interaction Interaction.
+ * @param {boolean} params.isThreeSixty True for a three sixty scene.
+ * @param {string} params.cameraPos Camera position.
+ * @param {string} [params.previewSize] Current width and height of preview size.
  */
-const sanitizeInteractionPositions = (interaction, isThreeSixty, cameraPos) => {
+const sanitizeInteractionGeometry = ({
+  interaction, isThreeSixty, cameraPos, previewSize = {}
+}) => {
   if (!isInteractionPositionValid(interaction, isThreeSixty)) {
     interaction.interactionpos = getNewInteractionPos(isThreeSixty, cameraPos);
   }
+
+  // Default to 1:1
+  previewSize.width = previewSize.width ?? 100;
+  previewSize.height = previewSize.height ?? 100;
+
+  /*
+   * TODO: Private constants from view
+   * (HotspotNavButton: minimumSize, maximumSize),
+   * should be retrieved from the scene preview, not duplicated here, but fix
+   * the sizing overflow in static scenes first
+   */
+  let minWidth = 20, minHeight = 20;
+  let maxWidth = 2000, maxHeight = 2000;
+
+  let targetWidth, targetHeight;
+  const [width, height] = (interaction.hotspotSettings.hotSpotSizeValues || '')
+    .split(',');
+
+  if (isThreeSixty) {
+    // Convert static into 360 (current percentage to pixels)
+    targetWidth = width / 100 * previewSize.width;
+    targetHeight = height / 100 * previewSize.height;
+  }
+  else {
+    const [x, y] = interaction.interactionpos.split(',');
+
+    // Percentage value of mininum size for current preview size
+    minWidth = minWidth / previewSize.width * 100;
+    minHeight = minHeight / previewSize.height * 100;
+
+    // Max size as 100% - position percentage
+    maxWidth = 100 - parseFloat(x);
+    maxHeight = 100 - parseFloat(y);
+
+    // Convert 360 into static (pixels into current percentage)
+    targetWidth = width / previewSize.width * 100;
+    targetHeight = height / previewSize.height * 100;
+  }
+
+  targetWidth = Math.max(minWidth, Math.min(targetWidth, maxWidth));
+  targetHeight = Math.max(minHeight, Math.min(targetHeight, maxHeight));
+
+  interaction.hotspotSettings.hotSpotSizeValues = `${targetWidth},${targetHeight}`;
 };
 
 /**
@@ -117,14 +164,19 @@ const sanitizeInteractionPositions = (interaction, isThreeSixty, cameraPos) => {
  * @param {object} params Parameters.
  * @param {boolean} isThreeSixty True for a three sixty scene.
  * @param {string} cameraPos Camera position.
+ * @param {object} [previewSize] Current scene preview wrapper bounding client rect.
  */
-export const sanitizeSceneForm = (params, isThreeSixty, cameraPos) => {
+export const sanitizeSceneForm = (
+  params, isThreeSixty, cameraPos, previewSize = {}
+) => {
   if (!params.cameraStartPosition) {
     params.cameraStartPosition = `${-(Math.PI * (2 / 3))},0`;
   }
 
   (params.interactions ?? []).forEach((interaction) => {
-    sanitizeInteractionPositions(interaction, isThreeSixty, cameraPos);
+    sanitizeInteractionGeometry({
+      interaction, isThreeSixty, cameraPos, previewSize
+    });
   });
 };
 
