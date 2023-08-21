@@ -345,9 +345,8 @@ export default class Main extends React.Component {
       this.state.currentScene,
       camera
     );
-    this.setState({
-      currentCameraPosition: camera.yaw + ',' + camera.pitch,
-    });
+
+    this.setState({ currentCameraPosition: `${camera.yaw},${camera.pitch}` });
   }
 
   /**
