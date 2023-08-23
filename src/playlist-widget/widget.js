@@ -123,6 +123,7 @@ class PlaylistWidgetComponent extends React.Component {
     this.newPlaylistButtonRef = React.createRef();
 
     const playlists = this.getPlaylists();
+
     this.state = {
       playlists,
       selectedPlaylist: playlists.find(
@@ -200,20 +201,26 @@ class PlaylistWidgetComponent extends React.Component {
    * @returns {Playlist[]} Playlist.
    */
   getPlaylists() {
-    const threeImage = this.props.form?.parent?.children?.find?.((child) => {
+    const root = this.props.form?.parent?.children || this.props.form?.children;
+
+    const threeImage = root?.find?.((child) => {
       return child.field?.name === 'threeImage';
     });
 
-    if (threeImage?.params?.playlists) {
+    if (!threeImage) {
+      return [];
+    }
+
+    if (threeImage.params?.playlists) {
       return threeImage.params.playlists;
     }
-    else if (threeImage?.parent?.params?.threeImage?.playlists) {
+    else if (threeImage.parent?.params?.threeImage?.playlists) {
       return threeImage.parent.params.threeImage.playlists;
     }
-    else if (threeImage?.parent?.parent?.params?.threeImage?.playlists) {
+    else if (threeImage.parent?.parent?.params?.threeImage?.playlists) {
       return threeImage.parent.parent.params.threeImage.playlists;
     }
-    else if (threeImage?.form?.parent?.params?.threeImage?.playlists) {
+    else if (threeImage.form?.parent?.params?.threeImage?.playlists) {
       return threeImage.form.parent.params.threeImage.playlists;
     }
     else if (this.props.form?.parent?.params?.threeImage?.playlists) {
