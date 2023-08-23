@@ -106,9 +106,10 @@ const getNewInteractionPos = (isThreeSixtyScene, cameraPos) => {
  * @param {boolean} params.isThreeSixty True for a three sixty scene.
  * @param {string} params.cameraPos Camera position.
  * @param {string} [params.previewSize] Current width and height of preview size.
+ * @param {string} [params.wasThreeSixty] True for a three sixty scene if changed.
  */
 const sanitizeInteractionGeometry = ({
-  interaction, isThreeSixty, cameraPos, previewSize = {}
+  interaction, isThreeSixty, cameraPos, previewSize = {}, wasThreeSixty
 }) => {
   if (!isInteractionPositionValid(interaction, isThreeSixty)) {
     interaction.interactionpos = getNewInteractionPos(isThreeSixty, cameraPos);
@@ -130,6 +131,10 @@ const sanitizeInteractionGeometry = ({
   let targetWidth, targetHeight;
   const [width, height] = (interaction.hotspotSettings.hotSpotSizeValues || '')
     .split(',');
+
+  if (typeof wasThreeSixty !== 'boolean' || wasThreeSixty === isThreeSixty) {
+    return; // Scene type did not change
+  }
 
   if (isThreeSixty) {
     // Convert static into 360 (current percentage to pixels)
@@ -165,9 +170,10 @@ const sanitizeInteractionGeometry = ({
  * @param {boolean} isThreeSixty True for a three sixty scene.
  * @param {string} cameraPos Camera position.
  * @param {object} [previewSize] Current scene preview wrapper bounding client rect.
+ * @param {boolean} wasThreeSixty True for a three sixty scene if changed.
  */
 export const sanitizeSceneForm = (
-  params, isThreeSixty, cameraPos, previewSize = {}
+  params, isThreeSixty, cameraPos, previewSize = {}, wasThreeSixty
 ) => {
   if (!params.cameraStartPosition) {
     params.cameraStartPosition = `${-(Math.PI * (2 / 3))},0`;
@@ -175,7 +181,7 @@ export const sanitizeSceneForm = (
 
   (params.interactions ?? []).forEach((interaction) => {
     sanitizeInteractionGeometry({
-      interaction, isThreeSixty, cameraPos, previewSize
+      interaction, isThreeSixty, cameraPos, previewSize, wasThreeSixty
     });
   });
 };

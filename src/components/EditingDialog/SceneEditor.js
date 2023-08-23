@@ -51,6 +51,9 @@ export default class SceneEditor extends React.Component {
    */
   componentDidMount() {
     this.params = this.getSceneParams();
+    this.wasThreeSixtyScene =
+      this.params.sceneType === SceneTypes.THREE_SIXTY_SCENE ||
+      this.params.sceneType === SceneTypes.PANORAMA_SCENE;
 
     // Preserve parent's children
     this.parentChildren = this.context.parent.children;
@@ -102,13 +105,16 @@ export default class SceneEditor extends React.Component {
    */
   confirmDone() {
     const { sceneType } = this.params;
-    const isThreeSixtyScene = sceneType === SceneTypes.THREE_SIXTY_SCENE || sceneType === SceneTypes.PANORAMA_SCENE;
+    const isThreeSixtyScene =
+      sceneType === SceneTypes.THREE_SIXTY_SCENE ||
+      sceneType === SceneTypes.PANORAMA_SCENE;
 
     sanitizeSceneForm(
       this.params,
       isThreeSixtyScene,
       this.params.cameraStartPosition,
-      this.props.previewRect
+      this.props.previewRect,
+      this.wasThreeSixtyScene,
     );
 
     this.props.doneAction(this.params);
