@@ -21,12 +21,20 @@ export const SceneEditingType = {
 };
 
 export default class SceneEditor extends React.Component {
+  /**
+   * @class
+   * @param {object} props React props.
+   */
   constructor(props) {
     super(props);
 
     this.semanticsRef = React.createRef();
   }
 
+  /**
+   * Get scene parameters.
+   * @returns {object} Scene parameters.
+   */
   getSceneParams() {
     const scenes = this.context.params.scenes;
 
@@ -38,6 +46,9 @@ export default class SceneEditor extends React.Component {
     return getSceneFromId(scenes, this.props.editingScene);
   }
 
+  /**
+   * React life-cycle handler: Component did mount.
+   */
   componentDidMount() {
     this.params = this.getSceneParams();
 
@@ -56,6 +67,9 @@ export default class SceneEditor extends React.Component {
     this.context.parent.children = this.parentChildren;
   }
 
+  /**
+   * Handle done editing form.
+   */
   handleDone() {
     const isValid = validateSceneForm(this.children);
     if (!isValid) {
@@ -83,6 +97,9 @@ export default class SceneEditor extends React.Component {
 
   }
 
+  /**
+   * Handle confirming done editing form.
+   */
   confirmDone() {
     const { sceneType } = this.params;
     const isThreeSixtyScene = sceneType === SceneTypes.THREE_SIXTY_SCENE || sceneType === SceneTypes.PANORAMA_SCENE;
@@ -97,6 +114,10 @@ export default class SceneEditor extends React.Component {
     this.props.doneAction(this.params);
   }
 
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
     return (
       <EditingDialog
