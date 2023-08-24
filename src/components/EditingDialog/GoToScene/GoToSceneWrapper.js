@@ -7,6 +7,7 @@ import { H5PContext } from '../../../context/H5PContext';
 export default class GoToSceneWrapper extends Component {
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.newScene = React.createRef();
 

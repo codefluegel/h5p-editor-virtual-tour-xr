@@ -10,6 +10,7 @@ export default class ChoosePlaylistWrapper extends Component {
    */
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.newPlaylist = React.createRef();
 

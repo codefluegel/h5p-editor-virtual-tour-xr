@@ -369,8 +369,8 @@ export default class Main extends React.Component {
     this.props.setScenePreview(scene);
 
     this.scenePreview.off('doubleClickedInteraction');
-    this.scenePreview.on('doubleClickedInteraction', (e) => {
-      const interactionIndex = e.data;
+    this.scenePreview.on('doubleClickedInteraction', (event) => {
+      const interactionIndex = event.data;
       const interaction = this.getInteractionFromIndex(interactionIndex);
       if (isGoToScene(interaction)) {
         this.changeScene(parseInt(interaction.action.params.nextSceneId));
@@ -381,8 +381,8 @@ export default class Main extends React.Component {
     });
 
     this.scenePreview.off('goToScene');
-    this.scenePreview.on('goToScene', (e) => {
-      const interaction = this.getInteractionFromIndex(e.data);
+    this.scenePreview.on('goToScene', (event) => {
+      const interaction = this.getInteractionFromIndex(event.data);
       if (!isGoToScene(interaction)) {
         return;
       }
@@ -392,46 +392,45 @@ export default class Main extends React.Component {
     });
 
     this.scenePreview.off('editInteraction');
-    this.scenePreview.on('editInteraction', (e) => {
-      const interactionIndex = e.data;
+    this.scenePreview.on('editInteraction', (event) => {
+      const interactionIndex = event.data;
       this.setState({
         editingInteraction: interactionIndex,
       });
     });
 
     this.scenePreview.off('deleteInteraction');
-    this.scenePreview.on('deleteInteraction', (e) => {
-      this.removeInteraction(e.data);
+    this.scenePreview.on('deleteInteraction', (event) => {
+      this.removeInteraction(event.data);
     });
 
     this.scenePreview.off('movestop');
 
-    this.scenePreview.on('movestop',
-      (event) => {
-        if (!event.data) {
-          return;
-        }
+    this.scenePreview.on('movestop', (event) => {
+      if (!event.data) {
+        return;
+      }
 
-        const isElementMovement = Boolean(event.data.target);
-        if (isElementMovement) {
-          const interaction = getInteractionFromElement(
-            event.data.target,
-            this.context.params.scenes,
-            this.state.currentScene
-          );
+      const isElementMovement = Boolean(event.data.target);
+      if (isElementMovement) {
+        const interaction = getInteractionFromElement(
+          event.data.target,
+          this.context.params.scenes,
+          this.state.currentScene
+        );
 
-          updatePosition(interaction, event.data);
-        }
-        else {
-        // The event was triggered by camera movement
-          this.setState({
-            currentCameraPosition: `${event.data.yaw},${event.data.pitch}`,
-          });
-        }
-      });
+        updatePosition(interaction, event.data);
+      }
+      else {
+      // The event was triggered by camera movement
+        this.setState({
+          currentCameraPosition: `${event.data.yaw},${event.data.pitch}`,
+        });
+      }
+    });
 
-    this.scenePreview.on('changedScene', (e) => {
-      this.setState({ currentScene: e.data });
+    this.scenePreview.on('changedScene', (event) => {
+      this.setState({ currentScene: event.data });
     });
   }
 

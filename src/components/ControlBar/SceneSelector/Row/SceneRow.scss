@@ -22,7 +22,7 @@
   }
 
   &.marked-scene.checked:after {
-    font-family: "H5PFontAwesome4";
+    font-family: "H5PFontAwesome4", sans-serif;
     content: "\f00c";
     font-size: 1.5em;
     align-self: center;

@@ -6,6 +6,7 @@ import { getLibraries, H5PContext } from '../../context/H5PContext';
 export default class InteractionsBar extends React.Component {
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.state = {
       isInitialized: false,

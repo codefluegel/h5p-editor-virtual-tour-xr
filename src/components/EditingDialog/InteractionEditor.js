@@ -32,6 +32,7 @@ export default class InteractionEditor extends React.Component {
    */
   constructor(props) {
     super(props);
+    this.props = props;
     this.semanticsRef = React.createRef();
 
     this.state = {

@@ -119,6 +119,7 @@ class PlaylistWidgetComponent extends React.Component {
    */
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.newPlaylistButtonRef = React.createRef();
 

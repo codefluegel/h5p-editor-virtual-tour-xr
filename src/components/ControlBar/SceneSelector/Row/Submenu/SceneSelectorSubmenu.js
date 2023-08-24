@@ -3,11 +3,9 @@ import PropTypes from 'prop-types';
 import './SceneSelectorSubmenu.scss';
 
 const SceneSelectorSubmenu = (props) => {
-  const handleClick = (type) => {
-    return (e) => {
-      e.stopPropagation();
-      props[type]();
-    };
+  const handleClick = (event, type) => {
+    event.stopPropagation();
+    props[type]();
   };
 
   return (
@@ -15,31 +13,41 @@ const SceneSelectorSubmenu = (props) => {
       <button
         className='set-start-scene'
         disabled={props.isStartScene}
-        onClick={ handleClick('setStartScene') }
+        onClick={ (event, ) => {
+          handleClick(event, 'setStartScene');
+        } }
       >
         <div className='tooltip'>{props.setStartingSceneLabel}</div>
       </button>
       <button
         className='jump'
-        onClick={ handleClick('onJump') }
+        onClick={ (event) => {
+          handleClick(event, 'onJump');
+        } }
       >
         <div className='tooltip'>{props.goToSceneLabel}</div>
       </button>
       <button
         className='edit'
-        onClick={ handleClick('onEdit') }
+        onClick={ (event) => {
+          handleClick(event, 'onEdit');
+        } }
       >
         <div className='tooltip'>{props.editLabel}</div>
       </button>
       <button
         className='clone'
-        onClick={ handleClick('onClone') }
+        onClick={ (event) => {
+          handleClick(event, 'onClone');
+        } }
       >
         <div className='tooltip'>{props.cloneLabel}</div>
       </button>
       <button
         className='delete'
-        onClick={ handleClick('onDelete') }
+        onClick={ (event) => {
+          handleClick(event, 'onDelete');
+        } }
       >
         <div className='tooltip'>{props.deleteLabel}</div>
       </button>

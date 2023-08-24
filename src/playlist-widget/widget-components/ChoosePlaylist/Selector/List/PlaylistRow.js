@@ -10,6 +10,7 @@ export default class PlaylistRow extends Component {
    */
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.imageRef = React.createRef();
 

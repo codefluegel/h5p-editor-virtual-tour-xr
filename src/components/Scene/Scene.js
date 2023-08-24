@@ -15,6 +15,8 @@ export const SceneTypes = {
 export default class Scene extends React.Component {
   constructor(props) {
     super(props);
+    this.props = props;
+
     this.previewRef = React.createRef();
 
     this.state = {

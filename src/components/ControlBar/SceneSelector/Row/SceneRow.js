@@ -8,6 +8,7 @@ import { H5PContext } from '../../../../context/H5PContext';
 export default class SceneRow extends Component {
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.imageRef = React.createRef();
 
@@ -40,7 +41,7 @@ export default class SceneRow extends Component {
   render() {
 
     const rowClasses = ['h5p-scene-row'];
-    
+
     const { sceneType } = this.props.scene;
     const is3dScene = sceneType === SceneTypes.THREE_SIXTY_SCENE || sceneType === SceneTypes.PANORAMA_SCENE;
     if (is3dScene) {

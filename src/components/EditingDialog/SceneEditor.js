@@ -27,6 +27,7 @@ export default class SceneEditor extends React.Component {
    */
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.semanticsRef = React.createRef();
   }

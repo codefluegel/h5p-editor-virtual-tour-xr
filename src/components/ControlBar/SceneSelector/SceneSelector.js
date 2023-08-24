@@ -8,6 +8,7 @@ import ExpandedSceneSelector from './ExpandedSceneSelector';
 export default class SceneSelector extends React.Component {
   constructor(props) {
     super(props);
+    this.props = props;
 
     this.state = {
       isExpanded: false,
