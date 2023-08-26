@@ -13,6 +13,10 @@ export const SceneTypes = {
 };
 
 export default class Scene extends React.Component {
+  /**
+   * @class
+   * @param {object} props React props.
+   */
   constructor(props) {
     super(props);
     this.props = props;
@@ -24,10 +28,16 @@ export default class Scene extends React.Component {
     };
   }
 
+  /**
+   * React life-cycle handler: Component did mount.
+   */
   componentDidMount() {
     this.initializePreview();
   }
 
+  /**
+   * React life-cycle handler: Component did update.
+   */
   componentDidUpdate() {
     if (this.props.isSceneUpdated) {
       return;
@@ -41,16 +51,25 @@ export default class Scene extends React.Component {
     this.redrawScene();
   }
 
+  /**
+   * Set the scene in preview.
+   */
   setAsActiveScene() {
     this.props.setScenePreview(this.preview);
     this.props.sceneIsInitialized();
   }
 
+  /**
+   * Redraw the scene.
+   */
   redrawScene() {
     this.preview.setCurrentSceneId(this.props.currentScene);
     this.setAsActiveScene();
   }
 
+  /**
+   * Initialize preview.
+   */
   initializePreview() {
     if (this.context.params.scenes.length <= 0) {
       return;
@@ -73,6 +92,10 @@ export default class Scene extends React.Component {
     });
   }
 
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
     const sceneClasses = ['scene-wrapper'];
     const hasNoScenes = this.context.params.scenes.length <= 0;
