@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './EditingDialog.scss';
 
+/**
+ * @param {object} props React props.
+ * @returns {object} JSX element.
+ */
 const EditingDialog = (props) => {
   const titleClasses = [
     'title',

@@ -3,6 +3,10 @@ import './NoScene.scss';
 import { H5PContext } from '../../context/H5PContext';
 
 export default class NoScene extends React.Component {
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
     return (
       <div className='no-scene-container'>

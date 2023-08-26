@@ -2,6 +2,10 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './SceneSelectorSubmenu.scss';
 
+/**
+ * @param {object} props React props.
+ * @returns {object} JSX element.
+ */
 const SceneSelectorSubmenu = (props) => {
   const handleClick = (event, type) => {
     event.stopPropagation();

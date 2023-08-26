@@ -10,12 +10,19 @@ import SceneSelectorSubmenu from './SceneSelector/Row/Submenu/SceneSelectorSubme
 import SceneSelector from './SceneSelector/SceneSelector';
 
 export default class ControlBar extends Component {
+  /**
+   * @class
+   */
   constructor() {
     super();
 
     this.state = { setStartingPositionFocus: false };
   }
 
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
     const scenes = this.context.params.scenes;
     const scene = getSceneFromId(scenes, this.props.currentScene);

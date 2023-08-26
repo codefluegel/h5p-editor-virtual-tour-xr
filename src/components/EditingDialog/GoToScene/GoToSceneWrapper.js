@@ -5,6 +5,10 @@ import { createSceneForm, getDefaultSceneParams } from '../../../h5phelpers/form
 import { H5PContext } from '../../../context/H5PContext';
 
 export default class GoToSceneWrapper extends Component {
+  /**
+   * @class
+   * @param {object} props React props.
+   */
   constructor(props) {
     super(props);
     this.props = props;
@@ -17,6 +21,9 @@ export default class GoToSceneWrapper extends Component {
     };
   }
 
+  /**
+   * Create a new scene.
+   */
   createNewScene() {
     // Process semantics for new scene
     const scenes = this.context.params.scenes;
@@ -49,6 +56,10 @@ export default class GoToSceneWrapper extends Component {
     });
   }
 
+  /**
+   * Set next scene.
+   * @param {number} sceneId Next scene id.
+   */
   setNextSceneId(sceneId) {
     // Update number widget and params
     const nextSceneIdWidget = this.props.nextSceneIdWidget;
@@ -61,6 +72,10 @@ export default class GoToSceneWrapper extends Component {
     });
   }
 
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
     const classes = ['go-to-scene-wrapper'];
     if (this.state.isCreatingNewScene) {

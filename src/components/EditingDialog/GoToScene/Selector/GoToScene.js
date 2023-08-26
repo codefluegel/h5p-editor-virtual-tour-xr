@@ -5,7 +5,10 @@ import './GoToScene.scss';
 import GoToSceneSelector from './GoToSceneSelector';
 
 export default class GoToScene extends Component {
-
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
     // Filter out current scene
     const scenes = this.context.params.scenes.filter((scene) => {

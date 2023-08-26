@@ -4,7 +4,10 @@ import './ActiveSceneRow.scss';
 import { SceneTypes } from '../../../Scene/Scene';
 import PropTypes from 'prop-types';
 
-
+/**
+ * @param {object} props React props.
+ * @returns {object} JSX element.
+ */
 const ActiveSceneRow = (props) => {
   if (!props.scene) {
     return (

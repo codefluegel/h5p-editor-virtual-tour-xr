@@ -2,6 +2,11 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SceneRow from './Row/SceneRow';
 
+/**
+ * @class
+ * @param {object} props React props.
+ * @returns {object} JSX element.
+ */
 const SceneList = (props) => {
   let previousElementHasTopBorder = false;
 

@@ -6,6 +6,10 @@ import ActiveSceneRow from './Row/ActiveSceneRow';
 import ExpandedSceneSelector from './ExpandedSceneSelector';
 
 export default class SceneSelector extends React.Component {
+  /**
+   * @class
+   * @param {object} props React props.
+   */
   constructor(props) {
     super(props);
     this.props = props;
@@ -15,6 +19,10 @@ export default class SceneSelector extends React.Component {
     };
   }
 
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
     const scenes = this.context.params.scenes;
     const activeScene = scenes.find((scene) => {

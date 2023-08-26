@@ -4,6 +4,10 @@ import './InteractionsBar.scss';
 import { getLibraries, H5PContext } from '../../context/H5PContext';
 
 export default class InteractionsBar extends React.Component {
+  /**
+   * @class
+   * @param {object} props React props.
+   */
   constructor(props) {
     super(props);
     this.props = props;
@@ -14,6 +18,9 @@ export default class InteractionsBar extends React.Component {
     };
   }
 
+  /**
+   * React life-cycle handler: Component did mount.
+   */
   async componentDidMount() {
     const libraries = await getLibraries(this.context.field);
     this.setState({
@@ -22,6 +29,10 @@ export default class InteractionsBar extends React.Component {
     });
   }
 
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
     if (!this.props.isShowing) {
       return null;

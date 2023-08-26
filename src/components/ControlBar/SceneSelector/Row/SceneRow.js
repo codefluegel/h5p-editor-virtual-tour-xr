@@ -6,6 +6,10 @@ import { getImageSource } from '../../../../context/H5PContext';
 import { H5PContext } from '../../../../context/H5PContext';
 
 export default class SceneRow extends Component {
+/**
+ * @class
+ * @param {object} props React props.
+ */
   constructor(props) {
     super(props);
     this.props = props;
@@ -17,6 +21,9 @@ export default class SceneRow extends Component {
     };
   }
 
+  /**
+   * Handle image loaded.
+   */
   onImageLoad() {
     const image = this.imageRef.current;
     const ratio = 4 / 3;
@@ -26,20 +33,29 @@ export default class SceneRow extends Component {
     });
   }
 
+  /**
+   * Handle scene clicked.
+   */
   onSceneClick() {
     if (this.props.onSceneClick) {
       this.props.onSceneClick(this.props.scene.sceneId);
     }
   }
 
+  /**
+   * Handle title clicked.
+   */
   onTitleClick() {
     if (this.props.onTitleClick) {
       this.props.onTitleClick(this.props.scene.sceneId);
     }
   }
 
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
-
     const rowClasses = ['h5p-scene-row'];
 
     const { sceneType } = this.props.scene;
