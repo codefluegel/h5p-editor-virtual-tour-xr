@@ -120,7 +120,7 @@ const sanitizeInteractionGeometry = ({
   previewSize.height = previewSize.height ?? 100;
 
   /*
-   * TODO: Private constants from view
+   * // TODO: Private constants from view
    * (HotspotNavButton: minimumSize, maximumSize),
    * should be retrieved from the scene preview, not duplicated here, but fix
    * the sizing overflow in static scenes first
