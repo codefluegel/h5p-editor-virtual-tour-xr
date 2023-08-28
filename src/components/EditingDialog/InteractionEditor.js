@@ -82,6 +82,9 @@ export default class InteractionEditor extends React.Component {
     return `${yaw},${pitch}`;
   }
 
+  /**
+   * React life-cycle-function: Component did mount.
+   */
   async componentDidMount() {
     this.params = this.getInteractionParams(this.props.editingInteraction);
     const field = this.context.field;
@@ -108,27 +111,27 @@ export default class InteractionEditor extends React.Component {
     });
 
     const libraryLoadedCallback = () => {
-      this.setState({
-        isInitialized: true,
-      });
+      this.setState({ isInitialized: true });
     };
 
     // Check if children has been loaded, since ready() doesn't work for library
-    if (this.libraryWidget.children && this.libraryWidget.children.length) {
+    if (this.libraryWidget.children?.length) {
       libraryLoadedCallback();
     }
     else {
       this.libraryWidget.change(libraryLoadedCallback.bind(this));
     }
 
-    const uberName = this.params.action.library;
-    const library = await getLibraryDataFromFields(field, uberName);
+    const library = await getLibraryDataFromFields(
+      field, this.params.action.library
+    );
 
-    this.setState({
-      library: library,
-    });
+    this.setState({ library: library });
   }
 
+  /**
+   * Handle user done editing interaction.
+   */
   handleDone() {
     const interactionIndex = this.props.editingInteraction;
     let interactionPosition = null;
@@ -160,6 +163,10 @@ export default class InteractionEditor extends React.Component {
     this.props.doneAction(this.params, this.scene && this.scene.params);
   }
 
+  /**
+   * Validate scene.
+   * @returns {boolean} True, if scene is valid. Else false.
+   */
   validateScene() {
     const isValid = validateSceneForm(this.scene.children);
     if (!isValid) {
@@ -177,20 +184,27 @@ export default class InteractionEditor extends React.Component {
     return true;
   }
 
+  /**
+   * Remove error messages from form.
+   */
   removeInputErrors() {
     this.setState({
       hasInputError: false,
     });
   }
 
+  /**
+   * Set scene.
+   * @param {object} scene Scene.
+   */
   setScene(scene) {
     this.scene = scene;
   }
 
-  setChosenPlaylist(playlist) {
-    this.playlist = playlist;
-  }
-
+  /**
+   * React render function.
+   * @returns {object} JSX element.
+   */
   render() {
     let title = '';
     let className = '';
@@ -226,7 +240,6 @@ export default class InteractionEditor extends React.Component {
             currentScene={this.props.currentScene}
             params={this.params}
             setScene={this.setScene.bind(this)}
-            chosenPlaylist={this.setChosenPlaylist.bind(this)}
           />
         }
       </EditingDialog>
