@@ -108,7 +108,7 @@ const getNewInteractionPos = (isThreeSixtyScene, cameraPos) => {
  * @param {string} [params.previewSize] Current width and height of preview size.
  * @param {string} [params.wasThreeSixty] True for a three sixty scene if changed.
  */
-const sanitizeInteractionGeometry = ({
+export const sanitizeInteractionGeometry = ({
   interaction, isThreeSixty, cameraPos, previewSize = {}, wasThreeSixty
 }) => {
   if (!isInteractionPositionValid(interaction, isThreeSixty)) {

@@ -13,7 +13,7 @@ import {
   validateInteractionForm
 } from '../../h5phelpers/forms/interactionForm';
 import GoToSceneWrapper from './GoToScene/GoToSceneWrapper';
-import { sanitizeSceneForm, validateSceneForm } from '../../h5phelpers/forms/sceneForm';
+import { sanitizeSceneForm, sanitizeInteractionGeometry, validateSceneForm } from '../../h5phelpers/forms/sceneForm';
 
 export const InteractionEditingType = {
   NOT_EDITING: null,
@@ -149,7 +149,30 @@ export default class InteractionEditor extends React.Component {
       }
     }
 
-    this.params = sanitizeInteractionParams(this.params, interactionPosition);
+    this.params = sanitizeInteractionParams(
+      this.params, interactionPosition
+    );
+
+    // There is only a default size suitable for 3D scenes. Convert to 2D.
+    const scene = getSceneFromId(
+      this.context.params.scenes,
+      this.props.currentScene
+    );
+
+    if (
+      scene.sceneType === 'static' &&
+      this.params.label &&
+      this.params.showAsHotspot
+    ) {
+      sanitizeInteractionGeometry({
+        interaction: this.params,
+        isThreeSixty: false,
+        cameraPos: scene.cameraStartPosition,
+        previewSize: this.props.scenePreview.getRect(),
+        wasThreeSixty: true
+      });
+    }
+
     const isValid = validateInteractionForm(this.children);
 
     // Return to form with error messages if form is invalid
