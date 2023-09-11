@@ -20,10 +20,10 @@ const DEFAULT_HOTSPOT_MIN_WIDTH = 20;
 const DEFAULT_HOTSPOT_MIN_HEIGHT = 20;
 
 /** @constant {number} DEFAULT_HOTSPOT_MAX_WIDTH Maximum width for hotspot. */
-const DEFAULT_HOTSPOT_MAX_WIDTH = 20;
+const DEFAULT_HOTSPOT_MAX_WIDTH = 2000;
 
 /** @constant {number} DEFAULT_HOTSPOT_MAX_HEIGHT Maximum height for hotspot. */
-const DEFAULT_HOTSPOT_MAX_HEIGHT = 20;
+const DEFAULT_HOTSPOT_MAX_HEIGHT = 2000;
 
 /**
  * Creates scene form and appends it to wrapper
