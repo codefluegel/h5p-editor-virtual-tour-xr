@@ -13,6 +13,18 @@ const DefaultInteractionValues = {
   }
 };
 
+/** @constant {number} DEFAULT_HOTSPOT_MIN_WIDTH Minimum width for hotspot. */
+const DEFAULT_HOTSPOT_MIN_WIDTH = 20;
+
+/** @constant {number} DEFAULT_HOTSPOT_MIN_HEIGHT Minimum height for hotspot. */
+const DEFAULT_HOTSPOT_MIN_HEIGHT = 20;
+
+/** @constant {number} DEFAULT_HOTSPOT_MAX_WIDTH Maximum width for hotspot. */
+const DEFAULT_HOTSPOT_MAX_WIDTH = 20;
+
+/** @constant {number} DEFAULT_HOTSPOT_MAX_HEIGHT Maximum height for hotspot. */
+const DEFAULT_HOTSPOT_MAX_HEIGHT = 20;
+
 /**
  * Creates scene form and appends it to wrapper
  * @param {object} field Field to display in form.
@@ -119,14 +131,10 @@ export const sanitizeInteractionGeometry = ({
   previewSize.width = previewSize.width ?? 100;
   previewSize.height = previewSize.height ?? 100;
 
-  /*
-   * // TODO: Private constants from view
-   * (HotspotNavButton: minimumSize, maximumSize),
-   * should be retrieved from the scene preview, not duplicated here, but fix
-   * the sizing overflow in static scenes first
-   */
-  let minWidth = 20, minHeight = 20;
-  let maxWidth = 2000, maxHeight = 2000;
+  let minWidth = DEFAULT_HOTSPOT_MIN_WIDTH;
+  let minHeight = DEFAULT_HOTSPOT_MIN_HEIGHT;
+  let maxWidth = DEFAULT_HOTSPOT_MAX_WIDTH;
+  let maxHeight = DEFAULT_HOTSPOT_MAX_HEIGHT;
 
   let targetWidth, targetHeight;
   const [width, height] = (interaction.hotspotSettings.hotSpotSizeValues || '')
