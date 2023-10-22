@@ -8,8 +8,8 @@
     "remove": "Entfernen",
     "done": "Fertig",
     "edit": "Bearbeiten",
-    "clone": "Clone",
-    "copy": "copy",
+    "clone": "Kopieren",
+    "copy": "Kopie",
     "delete": "Löschen",
     "or": "oder",
     "scene": "Szene",
@@ -33,11 +33,11 @@
     "deleteSceneTitle": "Lösche Szene",
     "deleteSceneText": "Bist du sicher, dass du diese Szene löschen möchtest?",
     "deleteSceneTextWithObjects": "Wenn diese Szene gelöscht wird, werden auch alle Interaktionen in der Szene gelöscht. Dasselbe gilt für Hotspots, die auf die Szene zeigen. Bist du sicher, dass du diese Szene löschen möchtest?",
-    "cloneSceneTitle": "Cloning scene",
-    "cloneSceneText": "Are you sure you wish to clone this scene?",
-    "cloneSceneTextWithObjects": "Cloning this scene will also clone all interactions within the scene. Are you sure you wish to clone this scene?",
-    "noPlaylistsAdded": "No playlists added",
+    "cloneSceneTitle": "Kopiere Szene",
+    "cloneSceneText": "Bist du sicher, dass du diese Szene kopieren möchtest?",
+    "cloneSceneTextWithObjects": "Wenn du diese Szene kopierst, werden auch alle Interaktionen innerhalb der Szene kopiert. Bist du sicher, dass du diese Szene kopieren möchtest?",
+    "noPlaylistsAdded": "Keine Playlists hinzugefügt",
     "playlist": "Playlist",
-    "newPlaylist": "New playlist"
+    "newPlaylist": "Neue Playlist"
   }
 }
