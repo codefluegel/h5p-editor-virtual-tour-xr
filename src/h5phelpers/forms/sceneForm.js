@@ -1,4 +1,5 @@
 import { getSceneField, areChildrenValid } from '../editorForms';
+import { SceneTypes } from './../../components/Scene/Scene';
 
 /** @typedef {{ playlistId: string, title: string, audioTracks: object }} Playlist */
 /** @typedef {{ playlist: Playlist }} Scene */
@@ -75,24 +76,42 @@ export const validateSceneForm = (children) => {
 /**
  * Check if single interaction has valid position given scene type.
  * @param {object} interaction Interaction.
- * @param {boolean} isThreeSixty True for a three sixty scene.
+ * @param {string} sceneType 360, panorama, static.
  * @returns {boolean} True, if position is valid.
  */
-const isInteractionPositionValid = (interaction, isThreeSixty) => {
+const isInteractionPositionValid = (interaction, sceneType) => {
   const position = interaction.interactionpos.split(',');
-  return position.every((pos) => {
-    const hasThreeSixtyPos = pos.substr(-1) !== '%';
-    return hasThreeSixtyPos === isThreeSixty;
-  });
+
+  if (sceneType === SceneTypes.THREE_SIXTY_SCENE) {
+    return position.every((pos) => pos.substr(-1) !== '%');
+  }
+  else if (sceneType === SceneTypes.STATIC_SCENE) {
+    return position.every((pos) => pos.substr(-1) === '%');
+  }
+  else if (sceneType === SceneTypes.PANORAMA_SCENE) {
+    const allAbsolutes = position.every((pos) => pos.substr(-1) !== '%');
+    if (!allAbsolutes) {
+      return false;
+    }
+    const no = parseFloat(position[1]);
+    return (no > -0.5 && no < 0.5); // Should mean that position is visible in panorama
+  }
+  else {
+    return false;
+  }
 };
 
 /**
  * Get default interaction position given scene type.
- * @param {boolean} isThreeSixtyScene True for a three sixty scene.
+ * @param {string} sceneType 360, panorama, static.
  * @param {string} cameraPos Camera position.
  * @returns {string} Position for CSS.
  */
-const getNewInteractionPos = (isThreeSixtyScene, cameraPos) => {
+const getNewInteractionPos = (sceneType, cameraPos) => {
+  const isThreeSixtyScene =
+    sceneType === SceneTypes.THREE_SIXTY_SCENE ||
+    sceneType === SceneTypes.PANORAMA_SCENE;
+
   // Place interactions spread randomly within a threshold in degrees
   const center = (isThreeSixtyScene) ?
     cameraPos.split(',').map(parseFloat) :
@@ -115,16 +134,16 @@ const getNewInteractionPos = (isThreeSixtyScene, cameraPos) => {
  * scene type.
  * @param {object} params Interaction.
  * @param {object} params.interaction Interaction.
- * @param {boolean} params.isThreeSixty True for a three sixty scene.
+ * @param {string} params.sceneType 360, panorama, static.
  * @param {string} params.cameraPos Camera position.
  * @param {string} [params.previewSize] Current width and height of preview size.
- * @param {string} [params.wasThreeSixty] True for a three sixty scene if changed.
+ * @param {string} [params.previousSceneType] 360, panorama, static.
  */
 export const sanitizeInteractionGeometry = ({
-  interaction, isThreeSixty, cameraPos, previewSize = {}, wasThreeSixty
+  interaction, sceneType, cameraPos, previewSize = {}, previousSceneType
 }) => {
-  if (!isInteractionPositionValid(interaction, isThreeSixty)) {
-    interaction.interactionpos = getNewInteractionPos(isThreeSixty, cameraPos);
+  if (!isInteractionPositionValid(interaction, sceneType)) {
+    interaction.interactionpos = getNewInteractionPos(sceneType, cameraPos);
   }
 
   // Default to 1:1
@@ -140,16 +159,22 @@ export const sanitizeInteractionGeometry = ({
   const [width, height] = (interaction.hotspotSettings.hotSpotSizeValues || '')
     .split(',');
 
-  if (typeof wasThreeSixty !== 'boolean' || wasThreeSixty === isThreeSixty) {
+  if (typeof previousSceneType !== 'string' || previousSceneType === sceneType) {
     return; // Scene type did not change
   }
 
-  if (isThreeSixty) {
+  if (
+    previousSceneType === 'static' &&
+    (sceneType === '360' || sceneType === 'panorama')
+  ) {
     // Convert static into 360 (current percentage to pixels)
     targetWidth = width / 100 * previewSize.width;
     targetHeight = height / 100 * previewSize.height;
   }
-  else {
+  else if (
+    (previousSceneType === '360' || previousSceneType === 'panorama') &&
+    sceneType === 'static'
+  ) {
     const [x, y] = interaction.interactionpos.split(',');
 
     // Percentage value of mininum size for current preview size
@@ -164,9 +189,16 @@ export const sanitizeInteractionGeometry = ({
     targetWidth = width / previewSize.width * 100;
     targetHeight = height / previewSize.height * 100;
   }
+  else if (previousSceneType === '360' && sceneType === 'panorama') {
+    // TODO: Improvement: Resize suitable for Panorama. May require to change hotspot size max size
+  }
 
   targetWidth = Math.max(minWidth, Math.min(targetWidth, maxWidth));
   targetHeight = Math.max(minHeight, Math.min(targetHeight, maxHeight));
+
+  if (!targetWidth || !targetHeight) {
+    return;
+  }
 
   interaction.hotspotSettings.hotSpotSizeValues = `${targetWidth},${targetHeight}`;
 };
@@ -175,13 +207,13 @@ export const sanitizeInteractionGeometry = ({
  * Set default values for scene parameters that are not initially set by user
  * when creating scene.
  * @param {object} params Parameters.
- * @param {boolean} isThreeSixty True for a three sixty scene.
+ * @param {string} sceneType 360, panorama, static.
  * @param {string} cameraPos Camera position.
  * @param {object} [previewSize] Current scene preview wrapper bounding client rect.
- * @param {boolean} wasThreeSixty True for a three sixty scene if changed.
+ * @param {string} previousSceneType 360, panorama, static.
  */
 export const sanitizeSceneForm = (
-  params, isThreeSixty, cameraPos, previewSize = {}, wasThreeSixty
+  params, sceneType, cameraPos, previewSize = {}, previousSceneType
 ) => {
   if (!params.cameraStartPosition) {
     params.cameraStartPosition = `${-(Math.PI * (2 / 3))},0`;
@@ -189,7 +221,7 @@ export const sanitizeSceneForm = (
 
   (params.interactions ?? []).forEach((interaction) => {
     sanitizeInteractionGeometry({
-      interaction, isThreeSixty, cameraPos, previewSize, wasThreeSixty
+      interaction, sceneType, cameraPos, previewSize, previousSceneType
     });
   });
 };
@@ -197,16 +229,16 @@ export const sanitizeSceneForm = (
 /**
  * Check if all interactions have valid positions.
  * @param {object} params Parameters.
- * @param {boolean} isThreeSixty True for a three sixty scene.
+ * @param {string} sceneType 360, panorama, static.
  * @returns {boolean} True if all interactions have valid positions.
  */
-export const isInteractionsValid = (params, isThreeSixty) => {
+export const isInteractionsValid = (params, sceneType) => {
   if (!params.interactions) {
     return true;
   }
 
   return params.interactions.every((interaction) => {
-    return isInteractionPositionValid(interaction, isThreeSixty);
+    return isInteractionPositionValid(interaction, sceneType);
   });
 };
 

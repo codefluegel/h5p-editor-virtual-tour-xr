@@ -166,10 +166,10 @@ export default class InteractionEditor extends React.Component {
     ) {
       sanitizeInteractionGeometry({
         interaction: this.params,
-        isThreeSixty: false,
+        sceneType: scene.sceneType,
         cameraPos: scene.cameraStartPosition,
         previewSize: this.props.scenePreview.getRect(),
-        wasThreeSixty: true
+        previousSceneType: '360' // This may need to be expanded to potentially reflect 'panorama', too.
       });
     }
 
@@ -197,11 +197,10 @@ export default class InteractionEditor extends React.Component {
     }
 
     const { sceneType } = this.scene.params;
-    const is3dScene = sceneType === SceneTypes.THREE_SIXTY_SCENE || sceneType === SceneTypes.PANORAMA_SCENE;
 
     sanitizeSceneForm(
       this.scene.params,
-      is3dScene,
+      sceneType,
       this.scene.params.cameraStartPosition
     );
     return true;
