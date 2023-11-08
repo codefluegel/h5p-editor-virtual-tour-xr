@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { editingSceneType } from '../../types/types';
 import EditingDialog from './EditingDialog';
 import { H5PContext } from '../../context/H5PContext';
-import { SceneTypes } from '../Scene/Scene';
 import './SceneEditor.scss';
 import { getSceneFromId } from '../../h5phelpers/sceneParams';
 import { createSceneForm } from '../../h5phelpers/forms/sceneForm';
