@@ -1,6 +1,6 @@
-# NDLA Virtual Tour Editor
+# NDLA Escape Room 360 Editor
 
-An editor for the NDLA Virtual Tour content type.
+An editor for the NDLA Escape Room 360 content type.
 
 ## Getting started
 Clone this repository with git and check out the branch that you are interested
