@@ -4,7 +4,7 @@ import Main from '@components/Main.js';
 import { H5PContext } from '@context/H5PContext.js';
 import '@scripts/playlist-widget/widget.js';
 
-export default class NDLAThreeImage {
+export default class NDLAEscapeRoom {
   /**
    * @class
    * @param {object} parent Parent element in semantics.
@@ -111,4 +111,4 @@ export default class NDLAThreeImage {
   }
 }
 
-H5PEditor.widgets.NDLAthreeImage = H5PEditor.NDLAThreeImage = NDLAThreeImage;
+H5PEditor.widgets.NDLAthreeImage = H5PEditor.NDLAThreeImage = NDLAEscapeRoom;
