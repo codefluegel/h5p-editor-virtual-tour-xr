@@ -200,6 +200,7 @@ export default class Main extends React.Component {
     }
 
     this.context.params.scenes = updateScene(scenes, params, editingScene);
+    this.scenePreview.params.scenes = this.context.params.scenes;
 
     // Set current scene
     const isChangingScene = !(skipChangingScene || isEditing);
