@@ -200,7 +200,10 @@ export default class Main extends React.Component {
     }
 
     this.context.params.scenes = updateScene(scenes, params, editingScene);
-    this.scenePreview.params.scenes = this.context.params.scenes;
+
+    if (this.scenePreview) {
+      this.scenePreview.params.scenes = this.context.params.scenes;
+    }
 
     // Set current scene
     const isChangingScene = !(skipChangingScene || isEditing);
@@ -496,7 +499,7 @@ export default class Main extends React.Component {
           changeScene={this.changeScene.bind(this)}
           setStartScene={this.setStartScene.bind(this)}
           startScene={this.state.startScene}
-          onSetStartingPosition={ this.handleSetStartingPosition }
+          onSetStartingPosition={ this.handleSetStartingPosition.bind(this) }
           isInStartingPosition={ isInStartingPosition }
           isSceneSelectorExpanded={this.state.isSceneSelectorExpanded}
           toggleExpandSceneSelector={this.toggleExpandSceneSelector.bind(this)}
