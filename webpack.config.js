@@ -7,13 +7,25 @@ const libraryName = process.env.npm_package_name;
 
 module.exports = {
   mode: mode,
+  resolve: {
+    alias: {
+      '@assets': path.resolve(__dirname, 'src/assets'),
+      '@components': path.resolve(__dirname, 'src/scripts/components'),
+      '@context': path.resolve(__dirname, 'src/scripts/context'),
+      '@h5phelpers': path.resolve(__dirname, 'src/scripts/h5phelpers'),
+      '@scripts': path.resolve(__dirname, 'src/scripts'),
+      '@services': path.resolve(__dirname, 'src/scripts/services'),
+      '@styles': path.resolve(__dirname, 'src/styles'),
+      '@types': path.resolve(__dirname, 'src/scripts/types'),
+    }
+  },
   plugins: [
     new MiniCssExtractPlugin({
       filename: `${libraryName}.css`
     })
   ],
   entry: {
-    dist: './src/app.js'
+    dist: './src/scripts/app.js'
   },
   output: {
     filename: `${libraryName}.js`,
