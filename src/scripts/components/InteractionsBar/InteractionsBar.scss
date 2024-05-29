@@ -112,4 +112,10 @@
   .h5p-blanks:before {
     content: $blanks;
   }
+
+  .h5p-crossword:before {
+    font-family: '360-image';
+    font-size: 0.8em;
+    content: $crossword;
+  }
 }
