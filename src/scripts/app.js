@@ -4,7 +4,7 @@ import Main from '@components/Main.js';
 import { H5PContext } from '@context/H5PContext.js';
 import '@scripts/playlist-widget/widget.js';
 
-export default class NDLAEscapeRoom {
+export default class EscapeRoom {
   /**
    * @class
    * @param {object} parent Parent element in semantics.
@@ -35,7 +35,7 @@ export default class NDLAEscapeRoom {
    * @returns {string} Correct translation.
    */
   t(...args) {
-    const translations = ['H5PEditor.NDLAThreeImage', ...args];
+    const translations = ['H5PEditor.EscapeRoom', ...args];
     return H5PEditor.t.apply(window, translations);
   }
 
@@ -45,7 +45,7 @@ export default class NDLAEscapeRoom {
    */
   appendTo($container) {
     const wrapper = document.createElement('div');
-    wrapper.classList.add('h5p-editor-three-image-wrapper');
+    wrapper.classList.add('h5p-editor-escape-room-wrapper');
     this.wrapper = wrapper;
 
     $container[0].appendChild(wrapper);
@@ -111,4 +111,4 @@ export default class NDLAEscapeRoom {
   }
 }
 
-H5PEditor.widgets.NDLAthreeImage = H5PEditor.NDLAThreeImage = NDLAEscapeRoom;
+H5PEditor.widgets.EscapeRoom = H5PEditor.EscapeRoom = EscapeRoom;
