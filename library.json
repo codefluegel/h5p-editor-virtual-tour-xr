@@ -1,13 +1,13 @@
 {
-  "title": "NDLA Escape Room 360 (Editor)",
-  "description": "Editor for a tool that can explore 3D spaces.",
+  "title": "VirtualTourXR (Editor)",
+  "description": "Editor for VirtualTourXR",
   "majorVersion": 0,
   "minorVersion": 5,
-  "patchVersion": 0,
+  "patchVersion": 1,
   "runnable": 0,
   "author": "Joubel, NDLA",
   "license": "MIT",
-  "machineName": "H5PEditor.EscapeRoom",
+  "machineName": "H5PEditor.VirtualTourXR",
   "preloadedJs": [
     {
       "path": "dist/h5p-editor-ndla-escape-room.js"
@@ -65,7 +65,7 @@
       "minorVersion": 5
     },
     {
-      "machineName": "H5P.EscapeRoom",
+      "machineName": "H5P.VirtualTourXR",
       "majorVersion": 0,
       "minorVersion": 5
     },

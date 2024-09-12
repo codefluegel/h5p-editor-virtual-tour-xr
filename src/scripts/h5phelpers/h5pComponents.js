@@ -6,22 +6,21 @@
  * @returns {object|null} H5P library instance.
  */
 export const initializeThreeSixtyPreview = (container, params, l10n) => {
-  const library = Object.keys(H5PEditor.libraryLoaded)
-    .filter((library) => {
-      return library.split(' ')[0] === 'H5P.EscapeRoom';
-    })[0];
+  const library = Object.keys(H5PEditor.libraryLoaded).filter((library) => {
+    return library.split(' ')[0] === 'H5P.VirtualTourXR';
+  })[0];
 
   return H5P.newRunnable(
     {
       library: library,
-      params: params
+      params: params,
     },
     H5PEditor.contentId,
     H5P.jQuery(container),
     undefined,
     {
       isEditor: true,
-      l10n
+      l10n,
     }
   );
 };
@@ -33,8 +32,7 @@ export const initializeThreeSixtyPreview = (container, params, l10n) => {
  * @param {function} cancel Cancel callback.
  */
 export const showConfirmationDialog = (dialogOptions, confirm, cancel) => {
-  const deleteDialog = new H5P.ConfirmationDialog(dialogOptions)
-    .appendTo(document.body);
+  const deleteDialog = new H5P.ConfirmationDialog(dialogOptions).appendTo(document.body);
 
   deleteDialog.on('confirmed', () => {
     confirm?.();

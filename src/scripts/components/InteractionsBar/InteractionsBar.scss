@@ -5,6 +5,7 @@
   background: #f5f5f5;
   border-top: 1px solid #d1d1d1;
   border-bottom: 1px solid #d1d1d1;
+  display: flex;
 
   button {
     box-sizing: content-box;
@@ -83,6 +84,14 @@
   .h5p-video:before {
     content: $video;
   }
+  
+  .h5p-modelviewer:before {
+    content: $modelViewer;
+  }
+
+  .h5p-filefordownload:before {
+    content: $fileForDownload;
+  }
 
   .h5p-imageslider:before,
   .h5p-singlechoiceset:before,
@@ -111,6 +120,10 @@
 
   .h5p-blanks:before {
     content: $blanks;
+  }
+
+  .h5p-questionset:before {
+    content: $questionset;
   }
 
   .h5p-crossword:before {

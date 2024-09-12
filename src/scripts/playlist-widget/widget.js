@@ -2,9 +2,7 @@ import React from 'react';
 import { createRoot } from 'react-dom/client';
 import { updatePlaylist } from '@h5phelpers/playlistParams.js';
 import ChoosePlaylistWrapper from './widget-components/ChoosePlaylist/ChoosePlaylistWrapper.js';
-import PlaylistEditor, {
-  PlaylistEditingType,
-} from './widget-components/PlaylistEditor.js';
+import PlaylistEditor, { PlaylistEditingType } from './widget-components/PlaylistEditor.js';
 import './widget.scss';
 
 /** @typedef {{ playlistId: string, title: string, audioTracks: object }} Playlist */
@@ -33,9 +31,7 @@ export default class PlaylistWidget {
 
     const root = createRoot(this.wrapper);
     root.render(
-      <div
-        className='h5p-playlist-settings-container'
-      >
+      <div className='h5p-playlist-settings-container'>
         <PlaylistWidgetComponent
           form={this.form}
           setValue={(/** @type {number} */ value) => {
@@ -58,8 +54,8 @@ export default class PlaylistWidget {
    * Resize settings container to fit absolutely positioned overlay height.
    */
   resize() {
-    this.settingsDOM = this.settingsDOM ??
-      this.wrapper.querySelector('.h5p-playlist-settings-container');
+    this.settingsDOM =
+      this.settingsDOM ?? this.wrapper.querySelector('.h5p-playlist-settings-container');
 
     if (!this.settingsDOM) {
       return;
@@ -77,7 +73,8 @@ export default class PlaylistWidget {
       const settingsHeight = this.settingsDOM.getBoundingClientRect().height;
       const parentStyle = window.getComputedStyle(this.settingsDOM.parentNode);
 
-      const overlayHeight = overlayDOM.getBoundingClientRect().height -
+      const overlayHeight =
+        overlayDOM.getBoundingClientRect().height -
         parseFloat(parentStyle.getPropertyValue('padding-top')) -
         parseFloat(parentStyle.getPropertyValue('padding-bottom'));
 
@@ -127,9 +124,7 @@ class PlaylistWidgetComponent extends React.Component {
 
     this.state = {
       playlists,
-      selectedPlaylist: playlists.find(
-        (playlist) => playlist.playlistId === this.props.playlistId
-      ),
+      selectedPlaylist: playlists.find((playlist) => playlist.playlistId === this.props.playlistId),
       prevSelectedPlaylist: playlists.find(
         (playlist) => playlist.playlistId === this.props.playlistId
       ),
@@ -142,27 +137,23 @@ class PlaylistWidgetComponent extends React.Component {
    * Handle component did mount (React).
    */
   componentDidMount() {
-    window.addEventListener(
-      'h5pPlaylistsUpdated',
-      (event) => {
-        const updatedPlaylists = event.detail;
+    window.addEventListener('h5pPlaylistsUpdated', (event) => {
+      const updatedPlaylists = event.detail;
 
-        const selectedPlaylistStillExists =
-          this.state.selectedPlaylist &&
-          updatedPlaylists.find(
-            (playlist) =>
-              playlist.playlistId === this.state.selectedPlaylist.playlistId
-          );
+      const selectedPlaylistStillExists =
+        this.state.selectedPlaylist &&
+        updatedPlaylists.find(
+          (playlist) => playlist.playlistId === this.state.selectedPlaylist.playlistId
+        );
 
-        this.setState({
-          playlists: updatedPlaylists,
-        });
+      this.setState({
+        playlists: updatedPlaylists,
+      });
 
-        if (!selectedPlaylistStillExists) {
-          this.selectPlaylist(null);
-        }
+      if (!selectedPlaylistStillExists) {
+        this.selectPlaylist(null);
       }
-    );
+    });
   }
 
   /**
@@ -170,9 +161,11 @@ class PlaylistWidgetComponent extends React.Component {
    * @param {Playlist[]} updatedPlaylists Playlists.
    */
   triggerUpdatedEvent(updatedPlaylists) {
-    window.dispatchEvent(new CustomEvent('h5pPlaylistsUpdated', {
-      detail: updatedPlaylists,
-    }));
+    window.dispatchEvent(
+      new CustomEvent('h5pPlaylistsUpdated', {
+        detail: updatedPlaylists,
+      })
+    );
   }
 
   /**
@@ -181,7 +174,7 @@ class PlaylistWidgetComponent extends React.Component {
    * @returns {string} Translation.
    */
   translate(...args) {
-    const translations = ['H5PEditor.EscapeRoom', ...args];
+    const translations = ['H5PEditor.VirtualTourXR', ...args];
     return H5PEditor.t.apply(window, translations);
   }
 
@@ -214,17 +207,13 @@ class PlaylistWidgetComponent extends React.Component {
 
     if (threeImage.params?.playlists) {
       return threeImage.params.playlists;
-    }
-    else if (threeImage.parent?.params?.threeImage?.playlists) {
+    } else if (threeImage.parent?.params?.threeImage?.playlists) {
       return threeImage.parent.params.threeImage.playlists;
-    }
-    else if (threeImage.parent?.parent?.params?.threeImage?.playlists) {
+    } else if (threeImage.parent?.parent?.params?.threeImage?.playlists) {
       return threeImage.parent.parent.params.threeImage.playlists;
-    }
-    else if (threeImage.form?.parent?.params?.threeImage?.playlists) {
+    } else if (threeImage.form?.parent?.params?.threeImage?.playlists) {
       return threeImage.form.parent.params.threeImage.playlists;
-    }
-    else if (this.props.form?.parent?.params?.threeImage?.playlists) {
+    } else if (this.props.form?.parent?.params?.threeImage?.playlists) {
       return this.props.form.parent.params.threeImage.playlists;
     }
 
@@ -299,13 +288,9 @@ class PlaylistWidgetComponent extends React.Component {
     );
 
     const newMarkedPlaylist =
-      selectedPlaylist !== this.state.prevSelectedPlaylist
-        ? selectedPlaylist
-        : null;
+      selectedPlaylist !== this.state.prevSelectedPlaylist ? selectedPlaylist : null;
     const newPlaylistId =
-      selectedPlaylist !== this.state.prevSelectedPlaylist
-        ? playlistId
-        : undefined;
+      selectedPlaylist !== this.state.prevSelectedPlaylist ? playlistId : undefined;
 
     this.setState({
       selectedPlaylist: newMarkedPlaylist,
@@ -322,9 +307,7 @@ class PlaylistWidgetComponent extends React.Component {
    * @returns {Playlist[]} playlists Filtered playlists.
    */
   removePlaylist(playlists = [], selectedPlaylist) {
-    return playlists = playlists.filter(
-      (playlist) => playlist !== selectedPlaylist
-    );
+    return (playlists = playlists.filter((playlist) => playlist !== selectedPlaylist));
   }
 
   /**
@@ -349,10 +332,7 @@ class PlaylistWidgetComponent extends React.Component {
     const playlistToRemove = playlists.find((playlist) => {
       return playlist.playlistId === playlistId;
     });
-    const newPlaylists = this.removePlaylist(
-      playlists,
-      playlistToRemove
-    );
+    const newPlaylists = this.removePlaylist(playlists, playlistToRemove);
     this.updatePlaylists(newPlaylists);
     this.removePlaylistFromGlobal(playlistId);
     this.triggerUpdatedEvent(newPlaylists);
@@ -436,17 +416,14 @@ class PlaylistWidgetComponent extends React.Component {
       return;
     }
 
-    const newIndex = (index === 0 && offset < 0) ?
-      1 :
-      Math.max(0, index + offset);
+    const newIndex = index === 0 && offset < 0 ? 1 : Math.max(0, index + offset);
 
     if (newIndex >= listItems.length) {
       this.newPlaylistButtonRef.current.focus();
       return;
     }
 
-    listItems[newIndex]
-      .querySelector(`.${button.className}`)?.focus();
+    listItems[newIndex].querySelector(`.${button.className}`)?.focus();
   }
 
   /**
@@ -460,22 +437,16 @@ class PlaylistWidgetComponent extends React.Component {
 
     return (
       <>
-        {this.props.label && (
-          <span className="h5peditor-label">{this.props.label}</span>
-        )}
+        {this.props.label && <span className='h5peditor-label'>{this.props.label}</span>}
         {this.props.description && (
-          <span className="h5peditor-field-description">
-            {this.props.description}
-          </span>
+          <span className='h5peditor-field-description'>{this.props.description}</span>
         )}
         <ChoosePlaylistWrapper
           playlists={this.state.playlists}
           params={this.getParams()}
           noPlaylistsTranslation={this.translate('noPlaylistsAdded')}
           markedPlaylist={
-            this.state.selectedPlaylist
-              ? this.state.selectedPlaylist.playlistId
-              : null
+            this.state.selectedPlaylist ? this.state.selectedPlaylist.playlistId : null
           }
           selectedPlaylist={this.selectPlaylist.bind(this)}
           editPlaylist={this.editPlaylist.bind(this)}
@@ -486,25 +457,20 @@ class PlaylistWidgetComponent extends React.Component {
           doneAction={this.doneEditingPlaylist.bind(this)}
         />
         {this.props.canEdit && (
-          <div className="buttons-wrapper">
+          <div className='buttons-wrapper'>
             <button
-              className="h5p-new-playlist-button"
-              onClick={() =>
-                this.editPlaylist(PlaylistEditingType.NEW_PLAYLIST)
-              }
+              className='h5p-new-playlist-button'
+              onClick={() => this.editPlaylist(PlaylistEditingType.NEW_PLAYLIST)}
               ref={this.newPlaylistButtonRef}
             >
               + {this.translate('newPlaylist')}
             </button>
           </div>
         )}
-        {this.state.editingPlaylist !== PlaylistEditingType.NOT_EDITING &&
-          this.props.canEdit && (
+        {this.state.editingPlaylist !== PlaylistEditingType.NOT_EDITING && this.props.canEdit && (
           <PlaylistEditor
             translate={this.translate}
-            removeAction={() =>
-              this.deletePlaylist(this.state.editingPlaylist)
-            }
+            removeAction={() => this.deletePlaylist(this.state.editingPlaylist)}
             doneAction={this.doneEditingPlaylist.bind(this)}
             editingPlaylist={this.state.editingPlaylist}
             context={this.getContext()}

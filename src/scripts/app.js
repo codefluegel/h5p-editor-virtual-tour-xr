@@ -4,7 +4,7 @@ import Main from '@components/Main.js';
 import { H5PContext } from '@context/H5PContext.js';
 import '@scripts/playlist-widget/widget.js';
 
-export default class EscapeRoom {
+export default class VirtualTourXR {
   /**
    * @class
    * @param {object} parent Parent element in semantics.
@@ -14,9 +14,12 @@ export default class EscapeRoom {
    */
   constructor(parent, field, params, setValue) {
     this.params = params || {};
-    this.params = Object.assign({
-      scenes: [],
-    }, this.params);
+    this.params = Object.assign(
+      {
+        scenes: [],
+      },
+      this.params
+    );
     this.parent = parent;
     this.field = field;
     this.setValue = setValue;
@@ -35,7 +38,7 @@ export default class EscapeRoom {
    * @returns {string} Correct translation.
    */
   t(...args) {
-    const translations = ['H5PEditor.EscapeRoom', ...args];
+    const translations = ['H5PEditor.VirtualTourXR', ...args];
     return H5PEditor.t.apply(window, translations);
   }
 
@@ -64,8 +67,7 @@ export default class EscapeRoom {
           initialScene={startScene}
           setScenePreview={(scenePreview) => {
             this.scenePreview = scenePreview;
-          }
-          }
+          }}
         />
       </H5PContext.Provider>
     );
@@ -83,8 +85,7 @@ export default class EscapeRoom {
     const wrapperSize = this.wrapper.getBoundingClientRect();
     if (wrapperSize.width < mobileThreshold) {
       this.wrapper.classList.add('mobile');
-    }
-    else {
+    } else {
       this.wrapper.classList.remove('mobile');
     }
   }
@@ -96,8 +97,7 @@ export default class EscapeRoom {
   ready(ready) {
     if (this.passReadies) {
       parent.ready(ready);
-    }
-    else {
+    } else {
       this.readies.push(ready);
     }
   }
@@ -111,4 +111,4 @@ export default class EscapeRoom {
   }
 }
 
-H5PEditor.widgets.EscapeRoom = H5PEditor.EscapeRoom = EscapeRoom;
+H5PEditor.widgets.VirtualTourXR = H5PEditor.VirtualTourXR = VirtualTourXR;

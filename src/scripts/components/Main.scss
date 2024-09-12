@@ -9,7 +9,7 @@
   font-style: normal;
 }
 
-.h5p-escaperoom-editor {
+.h5p-editor-escape-room-wrapper {
   .scene-editor {
     position: relative;
     /*****
@@ -20,8 +20,14 @@
     ******/
   }
 
+
+
   .scene-wrapper.no-scenes .scene-container {
     display: none;
+  }
+
+  .h5p-three-sixty-wrapper{
+    position: relative;
   }
 
   .h5p-editing-dialog .field-name-iconTypeTextBox .h5p-editor-radio-group-container {
