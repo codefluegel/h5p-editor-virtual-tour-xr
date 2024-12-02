@@ -4,10 +4,21 @@ import Scene, { SceneTypes } from '@components/Scene/Scene.js';
 import ControlBar from './ControlBar/ControlBar.js';
 import SceneEditor, { SceneEditingType } from '@components/EditingDialog/SceneEditor.js';
 import InteractionsBar from '@components/InteractionsBar/InteractionsBar.js';
-import InteractionEditor, { InteractionEditingType } from '@components/EditingDialog/InteractionEditor.js';
+import InteractionEditor, {
+  InteractionEditingType,
+} from '@components/EditingDialog/InteractionEditor.js';
 import { H5PContext } from '@context/H5PContext.js';
-import { deleteScene, getSceneFromId, setScenePositionFromCamera, updateScene } from '@h5phelpers/sceneParams.js';
-import { getInteractionFromElement, isGoToScene, updatePosition } from '@h5phelpers/libraryParams.js';
+import {
+  deleteScene,
+  getSceneFromId,
+  setScenePositionFromCamera,
+  updateScene,
+} from '@h5phelpers/sceneParams.js';
+import {
+  getInteractionFromElement,
+  isGoToScene,
+  updatePosition,
+} from '@h5phelpers/libraryParams.js';
 import { showConfirmationDialog } from '@h5phelpers/h5pComponents.js';
 import { addBehavioralListeners } from '@h5phelpers/editorForms.js';
 import '@components/Main.scss';
@@ -31,7 +42,7 @@ export default class Main extends React.Component {
       startScene: this.props.initialScene,
       isSceneUpdated: false,
       isSceneSelectorExpanded: false,
-      currentCameraPosition: null
+      currentCameraPosition: null,
     };
   }
 
@@ -107,12 +118,15 @@ export default class Main extends React.Component {
       : this.context.t('cloneSceneTextWithObjects');
 
     // Confirm deletion
-    showConfirmationDialog({
-      headerText: this.context.t('cloneSceneTitle'),
-      dialogText: deleteSceneText,
-      cancelText: this.context.t('cancel'),
-      confirmText: this.context.t('confirm'),
-    }, this.confirmedCloneScene.bind(this, sceneId));
+    showConfirmationDialog(
+      {
+        headerText: this.context.t('cloneSceneTitle'),
+        dialogText: deleteSceneText,
+        cancelText: this.context.t('cancel'),
+        confirmText: this.context.t('confirm'),
+      },
+      this.confirmedCloneScene.bind(this, sceneId)
+    );
   }
 
   /**
@@ -151,12 +165,15 @@ export default class Main extends React.Component {
       : this.context.t('deleteSceneTextWithObjects');
 
     // Confirm deletion
-    showConfirmationDialog({
-      headerText: this.context.t('deleteSceneTitle'),
-      dialogText: deleteSceneText,
-      cancelText: this.context.t('cancel'),
-      confirmText: this.context.t('confirm'),
-    }, this.confirmedDeleteScene.bind(this, sceneId));
+    showConfirmationDialog(
+      {
+        headerText: this.context.t('deleteSceneTitle'),
+        dialogText: deleteSceneText,
+        cancelText: this.context.t('cancel'),
+        confirmText: this.context.t('confirm'),
+      },
+      this.confirmedDeleteScene.bind(this, sceneId)
+    );
   }
 
   /**
@@ -222,12 +239,15 @@ export default class Main extends React.Component {
    * @param {number} [interactionIndex] Index of interaction to be removed.
    */
   removeInteraction(interactionIndex = null) {
-    showConfirmationDialog({
-      headerText: this.context.t('deleteInteractionTitle'),
-      dialogText: this.context.t('deleteInteractionText'),
-      cancelText: this.context.t('cancel'),
-      confirmText: this.context.t('confirm'),
-    }, this.confirmRemoveInteraction.bind(this, interactionIndex));
+    showConfirmationDialog(
+      {
+        headerText: this.context.t('deleteInteractionTitle'),
+        dialogText: this.context.t('deleteInteractionText'),
+        cancelText: this.context.t('cancel'),
+        confirmText: this.context.t('confirm'),
+      },
+      this.confirmRemoveInteraction.bind(this, interactionIndex)
+    );
   }
 
   /**
@@ -264,11 +284,7 @@ export default class Main extends React.Component {
   editInteraction(params, sceneParams = null) {
     // Creating scene as well
     if (sceneParams) {
-      this.doneEditingScene(
-        sceneParams,
-        SceneEditingType.NEW_SCENE,
-        true,
-      );
+      this.doneEditingScene(sceneParams, SceneEditingType.NEW_SCENE, true);
     }
 
     const scenes = this.context.params.scenes;
@@ -277,15 +293,13 @@ export default class Main extends React.Component {
       scene.interactions = [];
     }
 
-    const isEditing = this.state.editingInteraction
-      !== InteractionEditingType.NEW_INTERACTION;
+    const isEditing = this.state.editingInteraction !== InteractionEditingType.NEW_INTERACTION;
 
     let interactionIndex = null;
     if (isEditing) {
       scene.interactions[this.state.editingInteraction] = params;
       interactionIndex = this.state.editingInteraction;
-    }
-    else {
+    } else {
       scene.interactions.push(params);
       interactionIndex = scene.interactions.length - 1;
     }
@@ -344,11 +358,7 @@ export default class Main extends React.Component {
    */
   handleSetStartingPosition() {
     const camera = this.scenePreview.getCamera().camera;
-    setScenePositionFromCamera(
-      this.context.params.scenes,
-      this.state.currentScene,
-      camera
-    );
+    setScenePositionFromCamera(this.context.params.scenes, this.state.currentScene, camera);
 
     this.setState({ currentCameraPosition: `${camera.yaw},${camera.pitch}` });
   }
@@ -424,9 +434,8 @@ export default class Main extends React.Component {
         );
 
         updatePosition(interaction, event.data);
-      }
-      else {
-      // The event was triggered by camera movement
+      } else {
+        // The event was triggered by camera movement
         this.setState({
           currentCameraPosition: `${event.data.yaw},${event.data.pitch}`,
         });
@@ -449,9 +458,7 @@ export default class Main extends React.Component {
     }
 
     this.setState((prevState) => {
-      const isExpanded = forceState !== undefined
-        ? forceState
-        : !prevState.isSceneSelectorExpanded;
+      const isExpanded = forceState !== undefined ? forceState : !prevState.isSceneSelectorExpanded;
 
       return { isSceneSelectorExpanded: isExpanded };
     });
@@ -463,9 +470,7 @@ export default class Main extends React.Component {
    */
   render() {
     const hasScenes = this.context.params.scenes.length > 0;
-    const scene = getSceneFromId(
-      this.context.params.scenes, this.state.currentScene
-    );
+    const scene = getSceneFromId(this.context.params.scenes, this.state.currentScene);
 
     const isInStartingPosition =
       this.state.currentCameraPosition === null ||
@@ -485,9 +490,9 @@ export default class Main extends React.Component {
             setScenePreview={this.setScenePreview.bind(this)}
             currentScene={this.state.currentScene}
             hasOverlay={this.state.isSceneSelectorExpanded}
-            onCloseOverlay={ () => {
+            onCloseOverlay={() => {
               this.toggleExpandSceneSelector(false);
-            } }
+            }}
           />
         </div>
         <ControlBar
@@ -499,24 +504,20 @@ export default class Main extends React.Component {
           changeScene={this.changeScene.bind(this)}
           setStartScene={this.setStartScene.bind(this)}
           startScene={this.state.startScene}
-          onSetStartingPosition={ this.handleSetStartingPosition.bind(this) }
-          isInStartingPosition={ isInStartingPosition }
+          onSetStartingPosition={this.handleSetStartingPosition.bind(this)}
+          isInStartingPosition={isInStartingPosition}
           isSceneSelectorExpanded={this.state.isSceneSelectorExpanded}
           toggleExpandSceneSelector={this.toggleExpandSceneSelector.bind(this)}
         />
-        {
-          (this.state.editingScene !== SceneEditingType.NOT_EDITING) &&
+        {this.state.editingScene !== SceneEditingType.NOT_EDITING && (
           <SceneEditor
             removeAction={this.deleteScene.bind(this, this.state.editingScene)}
             doneAction={this.doneEditingScene.bind(this)}
             editingScene={this.state.editingScene}
-            previewRect={
-              this.scenePreview?.getRect() ?? { width: 16, height: 9 }
-            }
+            previewRect={this.scenePreview?.getRect() ?? { width: 16, height: 9 }}
           />
-        }
-        {
-          this.state.editingInteraction !== InteractionEditingType.NOT_EDITING &&
+        )}
+        {this.state.editingInteraction !== InteractionEditingType.NOT_EDITING && (
           <InteractionEditor
             removeAction={this.removeInteraction.bind(this, this.state.editingInteraction)}
             doneAction={this.editInteraction.bind(this)}
@@ -525,7 +526,7 @@ export default class Main extends React.Component {
             editingInteraction={this.state.editingInteraction}
             library={this.state.editingLibrary}
           />
-        }
+        )}
       </div>
     );
   }
@@ -535,5 +536,5 @@ Main.contextType = H5PContext;
 
 Main.propTypes = {
   initialScene: PropTypes.number,
-  setScenePreview: PropTypes.func.isRequired
+  setScenePreview: PropTypes.func.isRequired,
 };
