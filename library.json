@@ -65,6 +65,11 @@
       "minorVersion": 5
     },
     {
+      "machineName": "H5P.ThreeDModel",
+      "majorVersion": 1,
+      "minorVersion": 0
+    },
+    {
       "machineName": "H5P.EscapeRoom",
       "majorVersion": 0,
       "minorVersion": 5
